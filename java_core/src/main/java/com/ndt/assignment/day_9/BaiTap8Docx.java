@@ -20,6 +20,7 @@ public class BaiTap8Docx {
         return true;
     }
 
+
     public static void Q1() {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
@@ -54,6 +55,8 @@ public class BaiTap8Docx {
 
 
     static void main() {
-        System.out.println("Hello World");
+        Q1();
+        Q11();
+        Q12();
     }
 }
