@@ -1,10 +1,7 @@
 package com.ndt.assignment.day_9;
 
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class BaiTap8Docx {
