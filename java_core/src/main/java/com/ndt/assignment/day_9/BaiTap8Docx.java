@@ -1,6 +1,9 @@
 package com.ndt.assignment.day_9;
 
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -49,14 +52,142 @@ public class BaiTap8Docx {
         if (isPrime(n))
             System.out.println("Số nguyên tố");
         else
-            System.out.println("Không phải ố nguyên tố");
+            System.out.println("Không phải số nguyên tố");
+    }
 
+
+    public static void Q2() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        if (n < 1 || n > 10)
+            throw new IllegalArgumentException("n must be between 1 and 10");
+
+        Map<Integer, String> map = new HashMap<>() {
+        };
+
+        map.put(1, "Một");
+        map.put(2, "Hai");
+        map.put(3, "Ba");
+        map.put(4, "Bốn");
+        map.put(5, "Năm");
+        map.put(6, "Sáu");
+        map.put(7, "Bảy");
+        map.put(8, "Tám");
+        map.put(9, "Chín");
+        map.put(10, "Mười");
+
+        System.out.println(map.get(n));
+    }
+
+
+    public static void Q3() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        int sum = 0;
+        for (int i = 0; i <= n; i += 2) {
+            sum += i;
+        }
+
+        System.out.printf("Bai 3: %d", sum);
+    }
+
+
+    public static void Q4() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập n: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        System.out.printf("Bai 4: %.2f", (double) Arrays.stream(arr).sum() / n);
+    }
+
+
+    public static void Q5() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập n: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        int min = arr[0];
+        int max = arr[0];
+        for (int i = 1; i < n; i++) {
+            if (arr[i] > min)
+                min = arr[i];
+            else
+                max = arr[i];
+        }
+
+        System.out.printf("Bai 5: max: %d, min: %d", min, max);
+    }
+
+
+    public static void Q6() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Chieu rong hinh vuong: ");
+        double n = sc.nextDouble();
+
+        System.out.printf("Bai 6: dien tich: %f, chu vi: %f", Math.pow(n, 2), n * 4);
+    }
+
+
+    public static void Q7() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập n: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        System.out.print("Bai 7: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+
+    public static void Q8() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập n: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        System.out.print("Bai 8: ");
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] % 2 == 0)
+                System.out.print(arr[i] + " ");
+        }
+        System.out.println();
     }
 
 
     static void main() {
-        Q1();
-        Q11();
-        Q12();
+        // Q1();
+        // Q11();
+        // Q12();
+        // Q2();
+        // Q3();
+        // Q4();
+        // Q5();
+        // Q6();
+        Q7();
+        Q8();
     }
 }
