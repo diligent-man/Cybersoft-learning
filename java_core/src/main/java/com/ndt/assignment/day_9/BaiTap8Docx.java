@@ -60,21 +60,8 @@ public class BaiTap8Docx {
         if (n < 1 || n > 10)
             throw new IllegalArgumentException("n must be between 1 and 10");
 
-        Map<Integer, String> map = new HashMap<>() {
-        };
-
-        map.put(1, "Một");
-        map.put(2, "Hai");
-        map.put(3, "Ba");
-        map.put(4, "Bốn");
-        map.put(5, "Năm");
-        map.put(6, "Sáu");
-        map.put(7, "Bảy");
-        map.put(8, "Tám");
-        map.put(9, "Chín");
-        map.put(10, "Mười");
-
-        System.out.println(map.get(n));
+        String[] arr = new String[]{"Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười"};
+        System.out.println(arr[n - 1]);
     }
 
 
