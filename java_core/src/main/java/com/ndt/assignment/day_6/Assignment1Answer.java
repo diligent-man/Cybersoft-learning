@@ -1,20 +1,58 @@
 package com.ndt.assignment.day_6;
 
 import java.math.BigInteger;
+import java.util.Random;
 import java.util.Scanner;
 
 
 public class Assignment1Answer {
     static void Q1() {
-        System.out.println("Question 1:");
+        // {0,1,2} == {"kéo", "búa", "bao"}
+        Scanner sc = new Scanner(System.in);
+        Random rand = new Random();
 
+        int opt = 1;
+        String msg = """
+            Your choice:
+            1/ play
+            2/ exit
+            """;
+
+        while (opt == 1) {
+            int computerChoice = rand.nextInt(3);
+
+            System.out.println("""
+                1/ Rock
+                2/ Scissor
+                3/ Paper
+                """);
+            int playerChoice = rand.nextInt(3);
+
+            // if (computerChoice == 1) {
+            //     if (playerChoice == 1)
+            //         System.out.println("Tie");
+            //     else if (playerChoice == 2)
+            //         System.out.println("Lose");
+            //     else
+            //         System.out.println("Win");
+            // } else if (computerChoice == 2)
+            //     if (playerChoice == 1)
+            //         System.out.println("Lose");
+            //     else if (playerChoice == 2)
+            //         System.out.println("Tie");
+            //     else
+            //         System.out.println("Lose");
+            // }
+            // opt = sc.nextInt();
+
+        }
     }
 
 
     static void Q2() {
         int n = 1;
         int sum = 0;
-        while (sum < 10_000){
+        while (sum <= 10_000) {
             sum += n;
             n++;
         }
@@ -28,13 +66,13 @@ public class Assignment1Answer {
         Scanner sc = new Scanner(System.in);
         int n = 0;
 
-        while (n <= 0){
+        while (n <= 0) {
             System.out.print("Enter a number larger than 0: ");
             n = sc.nextInt();
         }
 
         int sum = 0;
-        for  (int i = 1; i < n; i+=2)
+        for (int i = 1; i < n; i += 2)
             sum += i;
 
         System.out.println("Question 3:");
@@ -65,7 +103,7 @@ public class Assignment1Answer {
 
         double actualVal = principal;
         int year = 0;
-        while (actualVal <= desiredVal){
+        while (actualVal <= desiredVal) {
             actualVal += actualVal * interest;
             year++;
             System.out.println(actualVal);
@@ -75,9 +113,12 @@ public class Assignment1Answer {
         System.out.printf("Year to wait: %d", year);
     }
 
+    static void sum(int a){
+        a += 10;
+    }
 
     static void main() {
-        Q1();
+        // Q1();
         // Q2();
         // Q3();
         // Q4();
