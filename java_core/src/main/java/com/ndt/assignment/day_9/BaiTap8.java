@@ -4,7 +4,7 @@ package com.ndt.assignment.day_9;
 import java.util.*;
 
 
-public class BaiTap8Docx {
+public class BaiTap8 {
     public static boolean isPrime(int n) {
         if (n < 2)
             return false;
