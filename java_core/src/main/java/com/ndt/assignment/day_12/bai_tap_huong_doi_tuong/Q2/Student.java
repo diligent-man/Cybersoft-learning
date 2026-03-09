@@ -1,7 +1,6 @@
 package com.ndt.assignment.day_12.bai_tap_huong_doi_tuong.Q2;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class Student {
