@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ndt/assignment/db/day_19/mysql_2.sql" value="fb732ae0-6d21-4365-a9c6-0491a20e5fc3" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ndt/assignment/db/day_19/tao_bang_va_truy_van.sql" value="fb732ae0-6d21-4365-a9c6-0491a20e5fc3" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ndt/assignment/db/day_22/bai_tap_mysql.sql" value="fb732ae0-6d21-4365-a9c6-0491a20e5fc3" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/ndt/db/day_16_17/script.sql" value="fb732ae0-6d21-4365-a9c6-0491a20e5fc3" />
+  </component>
+</project>

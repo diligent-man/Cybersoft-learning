@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Top 5 khách hàng chi tiêu nhiều nhất</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: linear-gradient(120deg, #f0fdfa 0%, #e0e7ff 100%); font-family: 'Inter', sans-serif;}
+    .custom-card { border: none; border-radius: 2rem; box-shadow: 0 10px 30px rgba(25,60,112,0.08); background: rgba(255,255,255,0.99); padding: 2.5rem 2rem 1.5rem 2rem;}
+    h2 { color: #a21caf; font-weight: 700;}
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="custom-card mx-auto" style="max-width: 850px;">
+      <h2 class="mb-4"><i class="bi bi-trophy-fill me-2"></i>Top 5 khách hàng chi tiêu nhiều nhất</h2>
+      <canvas id="topCustomerChart" height="110"></canvas>
+      <table class="table mt-4 table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Hạng</th>
+            <th>Tên khách hàng</th>
+            <th>Tổng chi tiêu (triệu VND)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Trần Văn An</td><td>10</td></tr>
+          <tr><td>2</td><td>Nguyễn Minh B</td><td>8</td></tr>
+          <tr><td>3</td><td>Lê Thị C</td><td>5.2</td></tr>
+          <tr><td>4</td><td>Phạm Hoàng D</td><td>4.8</td></tr>
+          <tr><td>5</td><td>Đỗ Thúy E</td><td>4.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const ctx = document.getElementById('topCustomerChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Trần Văn An', 'Nguyễn Minh B', 'Lê Thị C', 'Phạm Hoàng D', 'Đỗ Thúy E'],
+        datasets: [{
+          label: 'Tổng chi tiêu',
+          data: [10, 8, 5.2, 4.8, 4.2],
+          backgroundColor: [
+            'rgba(236,72,153,0.8)',
+            'rgba(59,130,246,0.8)',
+            'rgba(251,191,36,0.8)',
+            'rgba(16,185,129,0.8)',
+            'rgba(132,204,22,0.8)'
+          ],
+          borderRadius: 12,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        indexAxis: 'y',
+        scales: {
+          x: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

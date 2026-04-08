@@ -1,0 +1,9 @@
+                                                    Set up mysql dbs
+1/ Configure user name/pwd and port in compose.yaml
+
+
+
+
+                                                    Config dbeaver
+1/ In mysql new connection tab
+choose Drive properties -> allowPublicKeyRetrieval = true
