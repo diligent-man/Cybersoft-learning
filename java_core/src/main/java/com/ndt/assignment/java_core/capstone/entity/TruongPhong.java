@@ -39,7 +39,6 @@ public class TruongPhong extends Human {
     }
 
 
-
     @Override
     public String toString() {
         return "TP{" +
@@ -48,6 +47,13 @@ public class TruongPhong extends Human {
         ) +
             '}';
     }
+
+
+    @Override
+    public void remove() {
+        nhanVienLst.forEach(NhanVien::remove);
+    }
+
 
     public void quanLy(NhanVien nv) {
         if (!nhanVienLst.contains(nv))

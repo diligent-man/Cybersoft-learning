@@ -5,7 +5,6 @@ import java.util.stream.*;
 
 import com.ndt.assignment.java_core.capstone.entity.*;
 import com.ndt.utils.AnsiColor;
-import com.ndt.assignment.java_core.capstone.entity.*;
 import com.ndt.assignment.java_core.capstone.utils.DataPool;
 
 
@@ -31,11 +30,13 @@ public final class HumanManagementApp {
 
     private final CongTy congTy = CongTy.getInstance();
 
-    private List<NhanVien> nhanVienLst = new ArrayList<>();
+    private final List<NhanVien> nhanVienLst = new ArrayList<>();
 
-    private List<TruongPhong> truongPhongLst = new ArrayList<>();
+    private final List<TruongPhong> truongPhongLst = new ArrayList<>();
 
-    private List<GiamDoc> giamDocLst = new ArrayList<>();
+    private final List<GiamDoc> giamDocLst = new ArrayList<>();
+
+    private final List<Human> humanLst = new ArrayList<>();
 
 
     public HumanManagementApp() {
@@ -47,6 +48,15 @@ public final class HumanManagementApp {
                 giamDocLst.add(dataPool.getGiamDoc());
             }
         );
+
+        IntStream.range(0, 10).forEach(
+            _ -> {
+                humanLst.add(dataPool.getNhanVien());
+                humanLst.add(dataPool.getTruongPhong());
+                humanLst.add(dataPool.getGiamDoc());
+            }
+        );
+
 
         nhanVienLst.forEach(System.out::println);
         System.out.println();
@@ -60,11 +70,12 @@ public final class HumanManagementApp {
         giamDocLst.forEach(System.out::println);
         System.out.println();
         System.out.println();
+
+        humanLst.forEach(System.out::println);
     }
 
+
     /* -------------------------------------------------------------------------------------------------------------- */
-
-
     private String _makePrompt(String[] requirements) {
         int maxLineWidth = Arrays.stream(requirements)
             .mapToInt(String::length)
@@ -89,7 +100,15 @@ public final class HumanManagementApp {
     }
 
 
-    private Human _findByMaSo(List<? extends Human> lst, String maSo) {
+    private <T extends Human> List<T> _getHumanByType(Class<T> clazz) {
+        return humanLst.parallelStream()
+            .filter(clazz::isInstance)
+            .map(clazz::cast)
+            .collect(Collectors.toList());
+    }
+
+
+    private <T extends Human> T _findByMaSo(List<T> lst, String maSo) {
         return lst.stream()
             .filter(ele -> ele.getMaSo().equals(maSo))
             .findFirst().orElse(null);
@@ -125,18 +144,18 @@ public final class HumanManagementApp {
 
 
     public void assignEmployeeToDeptManager() {
-        System.out.print("Select employee (by maSo) to assign to a department manager:");
+        System.out.print("Select employee (by maSo) to assign to a department manager: ");
         String employeeMaSo = sc.nextLine();
-        NhanVien nv = (NhanVien) _findByMaSo(nhanVienLst, employeeMaSo);
+        NhanVien nv = _findByMaSo(_getHumanByType(NhanVien.class), employeeMaSo);
 
         if (nv == null) {
             System.out.println("Invalid ma so nhan vien. Return to main menu.");
             return;
         }
 
-        System.out.print("Select truong phong (by maSo):");
+        System.out.print("Select truong phong (by maSo): ");
         String truongPhongMaSo = sc.nextLine();
-        TruongPhong tp = (TruongPhong) _findByMaSo(truongPhongLst, truongPhongMaSo);
+        TruongPhong tp = _findByMaSo(_getHumanByType(TruongPhong.class), truongPhongMaSo);
 
         if (tp == null) {
             System.out.println("Invalid ma so truong phong. Return to main menu.");
@@ -155,28 +174,62 @@ public final class HumanManagementApp {
     }
 
 
-    public void modifyEmployeeInfo() {
-        throw new UnsupportedOperationException();
+    public void modifyHumanInfo() {
+        String modifyPrompt = "1. Add a new human\n2. Remove an existing human";
+        System.out.println("Enter operation to perform:\n" + modifyPrompt);
+        String opt = sc.nextLine();
+
+        switch (opt) {
+            case "1" -> {
+                String humanPrompt = "1. NhanVien\n2. TruongPhong\n3. GiamDoc";
+                System.out.println("Enter human type to add:\n" + humanPrompt);
+                String humanType = sc.nextLine();
+
+                switch (humanType) {
+                    case "1" -> humanLst.add(dataPool.getNhanVien());
+                    case "2" -> humanLst.add(dataPool.getTruongPhong());
+                    case "3" -> humanLst.add(dataPool.getGiamDoc());
+                    default -> System.out.println("Invalid human type. Return to main menu.");
+                }
+            }
+
+            case "2" -> {
+                System.out.print("Enter maSo of the employee to modify: ");
+                String maSo = sc.nextLine();
+
+                Optional<Human> human = humanLst.parallelStream().filter(e -> e.getMaSo().equals(maSo)).findFirst();
+
+                if (human.isEmpty()) {
+                    System.out.println("Invalid ma so. Return to main menu.");
+                } else {
+                    human.get().remove();
+                    humanLst.remove(human.get());
+                    System.out.println("Human information has been removed.");
+                    System.out.println();
+                    System.out.println();
+                }
+            }
+
+            default -> System.out.println("Invalid option. Return to main menu.");
+        }
     }
 
 
-    public void getAllEmployeeInfo() {
-        Stream<Stream<? extends Human>> stream = Stream.of(nhanVienLst.stream(), truongPhongLst.stream(), giamDocLst.stream());
-
+    public void getAllHumanInfo() {
         System.out.printf("%s%40sCompany's employees information%s\n", AnsiColor.PURPLE, " ", AnsiColor.RESET);
-        stream.forEach(subStream -> subStream.forEach(System.out::println));
+        humanLst.forEach(System.out::println);
         System.out.println("\n");
     }
 
 
-    public void computeEmployeeSalary(Stream<? extends Human> stream, String prompt) {
+    public void computeHumanSalary(Stream<? extends Human> stream, String prompt) {
         System.out.printf(prompt);
         stream.forEach(ele -> System.out.printf("maSo: %s, luong: %.4f\n", ele.getMaSo(), ele.tinhLuongThang()));
         System.out.println("\n");
     }
 
 
-    public <T extends Human> void findEmployeeBySalary(List<T> humanLst, Comparator<T> comparator, String prompt) {
+    public <T extends Human> void findHumanBySalary(List<T> humanLst, Comparator<T> comparator, String prompt) {
         // Tìm Nhân viên thường có lương cao nhất
         Human nv = humanLst.stream().max(comparator).orElse(null);
         System.out.println(prompt + nv);
@@ -193,12 +246,7 @@ public final class HumanManagementApp {
 
 
     public void sortEmployee(Comparator<Human> comparator) {
-        Stream<? extends Human> stream = Stream.concat(
-            Stream.concat(nhanVienLst.stream(), truongPhongLst.stream()),
-            giamDocLst.stream()
-        );
-
-        stream.sorted(comparator).forEach(System.out::println);
+        humanLst.stream().sorted(comparator).forEach(System.out::println);
     }
 
 
@@ -220,21 +268,21 @@ public final class HumanManagementApp {
                 }
                 case "1" -> inputCompanyInfo();
                 case "2" -> assignEmployeeToDeptManager();
-                case "3" -> modifyEmployeeInfo();  // TODO
-                case "4" -> getAllEmployeeInfo();
-                case "5" -> computeEmployeeSalary(
-                    Stream.concat(Stream.concat(nhanVienLst.stream(), truongPhongLst.stream()), giamDocLst.stream()),
+                case "3" -> modifyHumanInfo();
+                case "4" -> getAllHumanInfo();
+                case "5" -> computeHumanSalary(
+                    humanLst.stream(),
                     String.format("%s%40sCompany's salary information%s\n", AnsiColor.BLUE, " ", AnsiColor.RESET)
                 );
                 case "6" ->
-                    findEmployeeBySalary(nhanVienLst, Comparator.comparing(Human::tinhLuongThang), "Employee having highest salary: ");
+                    findHumanBySalary(_getHumanByType(NhanVien.class), Comparator.comparing(Human::tinhLuongThang), "Nhan vien having highest salary: ");
                 case "7" -> findDeptManagerHavingHighestSubordinates();
                 case "8" -> sortEmployee(Comparator.comparing(Human::getHoTen));
                 case "9" -> sortEmployee(Comparator.comparing(Human::tinhLuongThang).reversed());
                 case "10" ->
-                    findEmployeeBySalary(giamDocLst, Comparator.comparing(GiamDoc::getCoPhan), "Director having highest salary: ");
-                case "11" -> computeEmployeeSalary(
-                    giamDocLst.stream(),
+                    findHumanBySalary(_getHumanByType(GiamDoc.class), Comparator.comparing(GiamDoc::getCoPhan), "Giam doc having highest salary: ");
+                case "11" -> computeHumanSalary(
+                    _getHumanByType(GiamDoc.class).stream(),
                     String.format("%s%40sDirector's salary information%s\n", AnsiColor.BLUE, " ", AnsiColor.RESET)
                 );
                 default -> System.out.println(AnsiColor.YELLOW + "Invalid option !\n" + AnsiColor.RESET);

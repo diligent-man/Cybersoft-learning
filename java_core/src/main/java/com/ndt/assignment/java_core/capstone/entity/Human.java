@@ -86,4 +86,6 @@ public abstract class Human implements ChamCong {
             maSo, hoTen, soDienThoai, soNgayLamViec, luongMotNgay
         );
     }
+
+    public abstract void remove();
 }

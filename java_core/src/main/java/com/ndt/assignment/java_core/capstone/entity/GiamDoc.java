@@ -39,4 +39,6 @@ public class GiamDoc extends Human {
             "coPhan=" + coPhan +
             '}';
     }
+
+    public void remove() {}
 }

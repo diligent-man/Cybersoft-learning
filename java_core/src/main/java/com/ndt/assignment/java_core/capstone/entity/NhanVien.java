@@ -44,4 +44,16 @@ public class NhanVien extends Human {
             "truongPhong=" + truongPhong +
             '}';
     }
+
+
+    @Override
+    public void remove() {
+        truongPhong = null;
+    }
+
+    // @Override
+    // public void PreRemove() {
+    //     truongPhong.getNhanVienLst().remove(this);
+    //     truongPhong = null;
+    // }
 }
