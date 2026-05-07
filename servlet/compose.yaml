@@ -1,0 +1,111 @@
+services:
+    postgres:
+        build:
+            context: ./docker/postgres
+            dockerfile: Dockerfile
+            platforms:
+                - "linux/amd64"
+            tags:
+                - "PRJ301/postgres:1.0.0"
+
+        container_name: prj301_postgres
+
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_PORT: ${POSTGRES_PORT}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+        networks:
+            - prj301
+
+        ports:
+            - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+
+        volumes:
+            - ~/Java_web_dev/PRJ301/postgres/data:/var/lib/postgresql/data
+
+        restart: on-failure
+
+        healthcheck:
+            test: [ "CMD-SHELL", "psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c 'SELECT 1' || exit 1" ]
+            interval: 5s
+            timeout: 3s
+            retries: 3
+
+        deploy:
+            mode: global
+
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    tomee:
+        build:
+            context: ./docker/tomee
+            dockerfile: Dockerfile
+            args:
+                - TOMEE_PORT=${TOMEE_PORT}
+                - TOMEE_ADMIN_USERNAME=${TOMEE_ADMIN_USERNAME}
+                - TOMEE_ADMIN_PASSWORD=${TOMEE_ADMIN_PASSWORD}
+            platforms:
+                - "linux/amd64"
+            tags:
+                - "PRJ301/tomee:1.0.0"
+
+        container_name: prj301_tomee
+
+        networks:
+            - prj301
+
+        ports:
+            - "${TOMEE_PORT}:${TOMEE_PORT}"
+
+        volumes:
+            - ~/Java_web_dev/PRJ301/tomee/logs:/usr/local/tomee/logs/
+#            - ~/Java_web_dev/PRJ301/tomee/conf:/usr/local/tomee/conf/
+#            - ~/Java_web_dev/PRJ301/tomee/temp:/usr/local/tomee/temp/
+#            - ~/Java_web_dev/PRJ301/tomee/work:/usr/local/tomee/work/
+#            - ~/Java_web_dev/PRJ301/tomee/webapps:/usr/local/tomee/webapps/
+
+        depends_on:
+            - postgres
+
+        restart: on-failure
+
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "http://localhost:${TOMEE_PORT}/health"]
+            interval: 60s
+            timeout: 5s
+            retries: 3
+
+        deploy:
+            mode: global
+
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+networks:
+    prj301:
+        driver: bridge
