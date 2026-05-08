@@ -1,4 +1,4 @@
-package com.ndt.day_26;
+package com.ndt.day_26_27;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,6 +26,6 @@ public class ReadVarFromServlet extends HttpServlet {
         // add value to jsp
         req.setAttribute("counter", counter);
         req.setAttribute("counterColor", counterColor);
-        req.getRequestDispatcher("/day_26/read-var-from-servlet.jsp").forward(req, resp);
+        req.getRequestDispatcher("/day_26_27/read-var-from-servlet.jsp").forward(req, resp);
     }
 }

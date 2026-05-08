@@ -14,9 +14,8 @@
         <li><a href="day-25/demo">Hello World</a>
         <li><a href="day-25/demo-html">Demo HTML</a>
     </ol>
-</div>
 
-<div class="header-list-container">
+
     <h2>Day 26: Demo JSP</h2>
     <ol>
         <li><a href="day-26/demo-jsp">Demo JSP</a>
@@ -27,26 +26,16 @@
 </div>
 
 
-<%--    <div class="header-list-container">--%>
-<%--        <h2>Chap 1: Handling client request: Form data</h2>--%>
-<%--        <ol>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/form_data/servlet-init-method">init() method</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/form_data/FormDataReading.jsp">Form Data Collecting</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/form_data/FormAllDataReading.jsp">Form All Data Reading</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/form_data/ValidateFormData.jsp">Validate Submitted Form Data</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/form_data/JavaBeanIntro.jsp">Intro Java Bean</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/form_data/form-data-with-redisplaying">Redisplaying format data</a>--%>
-<%--        </ol>--%>
-<%--    </div>--%>
-
-<%--    <div class="header-list-container">--%>
-<%--        <h2>Chap 2: Handling client request: Header</h2>--%>
-<%--        <ol>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/req_header/show-request-headers">Show request header</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/req_header/differentiate-user-agent">Differentiate User Agent</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/req_header/servlet_compression.jsp">Servlet Compression Effect</a><br/>--%>
-<%--            <li><a href="servlet_basics/handling_client_req/req_header/build-spreadsheet">Build Excel Spreadsheet</a><br/>--%>
-<%--        </ol>--%>
-<%--    </div>--%>
+<h1>Assignment Solution</h1>
+<div class="header-list-container">
+    <h2>Day 27: Servlet assignment</h2>
+    <ol>
+        <li><a href="./assignment/day_27/q1-input-form.jsp">Q1</a>
+        <li><a href="assignment/day-27/q2">Q2</a>
+        <li><a href="./assignment/day_27/q3-input-form.jsp">Q3</a>
+        <li><a href="./assignment/day_27/q4-input-form.jsp">Q4</a>
+        <li><a href="./assignment/day_27/q5-input-form.jsp">Q5</a>
+    </ol>
+</div>
 </body>
 </html>

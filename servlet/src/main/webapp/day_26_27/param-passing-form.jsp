@@ -11,6 +11,7 @@
     function validateForm() {
         // let username = document.forms[0]["username"].value;
         // let password = document.forms[0]["password"].value;
+
         const form = document.querySelector('form');
         const username = form.querySelector('input[name="username"]');
         const password = form.querySelector('input[name="password"]');
