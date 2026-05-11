@@ -30,24 +30,11 @@ public final class HumanManagementApp {
 
     private final CongTy congTy = CongTy.getInstance();
 
-    private final List<NhanVien> nhanVienLst = new ArrayList<>();
-
-    private final List<TruongPhong> truongPhongLst = new ArrayList<>();
-
-    private final List<GiamDoc> giamDocLst = new ArrayList<>();
-
     private final List<Human> humanLst = new ArrayList<>();
 
 
     public HumanManagementApp() {
         System.out.println("Initializing data pool...");
-        IntStream.range(0, 10).forEach(
-            _ -> {
-                nhanVienLst.add(dataPool.getNhanVien());
-                truongPhongLst.add(dataPool.getTruongPhong());
-                giamDocLst.add(dataPool.getGiamDoc());
-            }
-        );
 
         IntStream.range(0, 10).forEach(
             _ -> {
@@ -57,20 +44,7 @@ public final class HumanManagementApp {
             }
         );
 
-
-        nhanVienLst.forEach(System.out::println);
-        System.out.println();
-        System.out.println();
-
-
-        truongPhongLst.forEach(System.out::println);
-        System.out.println();
-        System.out.println();
-
-        giamDocLst.forEach(System.out::println);
-        System.out.println();
-        System.out.println();
-
+        humanLst.sort(Comparator.comparing(e -> e.getClass().getSimpleName()));
         humanLst.forEach(System.out::println);
     }
 
@@ -165,10 +139,10 @@ public final class HumanManagementApp {
         nv.setTruongPhong(tp);
         tp.quanLy(nv);
 
-        nhanVienLst.forEach(System.out::println);
+        _getHumanByType(NhanVien.class).forEach(System.out::println);
         System.out.println();
         System.out.println();
-        truongPhongLst.forEach(System.out::println);
+        _getHumanByType(TruongPhong.class).forEach(System.out::println);
         System.out.println();
         System.out.println();
     }
@@ -238,7 +212,7 @@ public final class HumanManagementApp {
 
 
     public void findDeptManagerHavingHighestSubordinates() {
-        TruongPhong tp = truongPhongLst.stream().max(Comparator.comparing(TruongPhong::getSoLuongNhanVienQuanLy)).orElse(null);
+        TruongPhong tp = _getHumanByType(TruongPhong.class).stream().max(Comparator.comparing(TruongPhong::getSoLuongNhanVienQuanLy)).orElse(null);
 
         System.out.println("Department manager having highest subordinates:" + tp);
         System.out.println();

@@ -41,7 +41,7 @@ public class NhanVien extends Human {
     public String toString() {
         return "NV{" +
             super.toString() + ", " +
-            "truongPhong=" + truongPhong +
+            "truongPhong=" + truongPhong.getMaSo() +
             '}';
     }
 
@@ -50,10 +50,4 @@ public class NhanVien extends Human {
     public void remove() {
         truongPhong = null;
     }
-
-    // @Override
-    // public void PreRemove() {
-    //     truongPhong.getNhanVienLst().remove(this);
-    //     truongPhong = null;
-    // }
 }

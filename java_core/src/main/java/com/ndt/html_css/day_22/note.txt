@@ -1,0 +1,11 @@
+                                            Cách chia thẻ HTML
+1/ Thẻ phân chia bố cục
+    <div>, etc.
+2/ Thẻ hiển trình bày nội dung (văn bản, hình ảnh, video)
+    <h_i>, <p>, <span>, <ol>, <ul>, etc.
+3/ Thẻ hiển thị hình ảnh
+    <img>, <video>
+4/ Thẻ chuyển trang
+    <a>
+5/ Thẻ nhập liệu
+    <form>
