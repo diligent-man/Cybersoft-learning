@@ -1,0 +1,34 @@
+Cách giải quyết 1 tính năng:
+    1/ Xác định câu query trong db
+    2/ Xác định tham số phục vụ cho câu query
+    3/ Xử lý logic code
+
+Cách truy vấn data từ db
+    1/ Chuẩn bị câu query
+    2/ Mở kết nối CSDL
+    3/ Truyền câu query vào kết nối mới mở và truyền param (nếu có)
+    4/ Thực hiện câu truy vấn
+
+Thực thi câu truy vấn
+    executeQuery: khi query là câu "SELECT"
+    executeUpdate: khi query không là câu "SELECT"
+
+
+Controller:
+    Chỉ định nghĩa đường dẫn (URI), tham số (nếu có), validate tham số (nếu có). Không xử lý logic code
+
+Service:
+    Xử lý logic code cho Controller
+
+Repository:
+    Quản lý query tới các bảng và trả kết quả query cho service
+
+
+Cách đặt tên method trong Repo
+    select -> find
+    where -> by
+        usernmae = "" -> userName
+
+    e.g.
+        "SELECT * FROM users WHERE username = ''"
+        -> findByUsername

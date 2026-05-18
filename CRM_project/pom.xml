@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <version>1.0.0</version>
     <packaging>war</packaging>
-    <artifactId>Cybersoft_Javabootcamp_CRM_project</artifactId>
+    <artifactId>CRM_project</artifactId>
     <groupId>com.ndt.Cybersoft.Javabootcamp</groupId>
     <modelVersion>4.0.0</modelVersion>
 
@@ -110,19 +110,19 @@
         </dependency>
 
         <!-- old JSTL version -->
-        <!-- <dependency> -->
-        <!--     <groupId>jstl</groupId> -->
-        <!--     <artifactId>jstl</artifactId> -->
-        <!--     <version>1.2</version> -->
-        <!--     <scope>compile</scope> -->
-        <!-- </dependency> -->
-
         <dependency>
-            <groupId>jakarta.servlet.jsp.jstl</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>3.0.2</version>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- <dependency> -->
+        <!--     <groupId>jakarta.servlet.jsp.jstl</groupId> -->
+        <!--     <artifactId>jakarta.servlet.jsp.jstl-api</artifactId> -->
+        <!--     <version>3.0.2</version> -->
+        <!--     <scope>compile</scope> -->
+        <!-- </dependency> -->
     </dependencies>
 
     <build>

@@ -74,6 +74,7 @@ ALTER TABLE tasks
 ALTER TABLE tasks
     ADD CONSTRAINT FK_Task_Status FOREIGN KEY (status_id) REFERENCES status (id);
 
+
 -- Sample data
 -- 3 roles
 INSERT INTO roles(name, description)
@@ -108,3 +109,32 @@ VALUES ("Thiết kế giao diện", "2026-05-01", "2026-05-05", 3, 1, 2),
        ("Test API", "2026-05-10", "2026-05-15", 2, 1, 1),
        ("Làm Login Mobile", "2026-05-11", "2026-05-25", 4, 2, 2),
        ("Deploy Website", "2026-05-20", "2026-05-28", 1, 3, 1);
+
+
+ALTER TABLE users ADD COLUMN (
+    first_name VARCHAR(255),
+    last_name VARCHAR(255)
+);
+
+UPDATE users SET first_name = "Nguyen" WHERE id = 1;
+UPDATE users SET first_name = "Nguyen" WHERE id = 2;
+UPDATE users SET first_name = "Nguyen" WHERE id = 3;
+UPDATE users SET first_name = "Nguyen" WHERE id = 4;
+
+UPDATE users SET last_name = "Van A" WHERE id = 1;
+UPDATE users SET last_name = "Van B" WHERE id = 2;
+UPDATE users SET last_name = "Van C" WHERE id = 3;
+UPDATE users SET last_name = "Van D" WHERE id = 4;
+
+
+# Query test
+WITH tmp AS (
+    SELECT id,
+           SUBSTRING_INDEX(fullname, ' ', 1) AS first_name,
+           SUBSTRING_INDEX(fullname, ' ', -1) AS last_name
+    FROM users
+)
+SELECT tmp.*, u.email, r.name
+FROM users u
+         JOIN tmp on tmp.id = u.id
+         JOIN roles r ON r.id = u.role_id;
