@@ -9,23 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <title>Pixel Admin</title>
     <!-- Bootstrap Core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Menu CSS -->
     <link href="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
-    <!-- toast CSS -->
-    <link href="plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
-    <!-- morris CSS -->
-    <link href="plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
     <!-- animation CSS -->
     <link href="css/animate.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
     <!-- color CSS -->
     <link href="css/colors/blue-dark.css" id="theme" rel="stylesheet">
-    <link rel="stylesheet" href="./css/custom.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -35,15 +30,6 @@
 </head>
 
 <body>
-<c:if test="${not empty formMsg}">
-    <script>
-        window.addEventListener("load", function () {
-            // JSTL sẽ render giá trị chuỗi vào đây
-            alert("<c:out value='${formMsg}' />");
-        });
-    </script>
-</c:if>
-
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -62,8 +48,8 @@
                         <img src="plugins/images/pixeladmin-logo.png" alt="home"/>
                     </b>
                     <span class="hidden-xs">
-                            <img src="plugins/images/pixeladmin-text.png" alt="home"/>
-                        </span>
+                                <img src="plugins/images/pixeladmin-text.png" alt="home"/>
+                            </span>
                 </a>
             </div>
             <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
@@ -103,7 +89,8 @@
             <ul class="nav" id="side-menu">
                 <li style="padding: 10px 0 0;">
                     <a href="index.jsp" class="waves-effect"><i class="fa fa-clock-o fa-fw"
-                                                                 aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                                                                aria-hidden="true"></i><span
+                            class="hide-menu">Dashboard</span></a>
                 </li>
                 <li>
                     <a href="user" class="waves-effect"><i class="fa fa-user fa-fw"
@@ -141,103 +128,68 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Dashboard</h4>
+                    <h4 class="page-title">Thêm mới thành viên</h4>
                 </div>
             </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- row -->
-        <div class="row">
-            <!--col -->
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="white-box">
-                    <div class="col-in row">
-                        <div class="col-md-6 col-sm-6 col-xs-6"><i data-icon="E"
-                                                                   class="linea-icon linea-basic"></i>
-                            <h5 class="text-muted vb">CHƯA BẮT ĐẦU</h5>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <h3 class="counter text-right m-t-15 text-danger">23</h3>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span
-                                        class="sr-only">40% Complete (success)</span></div>
+            <!-- /.row -->
+            <!-- .row -->
+            <div class="row">
+                <div class="col-md-2 col-12"></div>
+                <div class="col-md-8 col-xs-12">
+                    <div class="white-box">
+                        <form action="user-add" method="post" class="form-horizontal form-material">
+                            <div class="form-group">
+                                <label class="col-md-12">Full Name</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="fullname" placeholder="Johnathan Doe"
+                                           class="form-control form-control-line"></div>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label for="example-email" class="col-md-12">Email</label>
+                                <div class="col-md-12">
+                                    <input type="email" placeholder="johnathan@admin.com"
+                                           class="form-control form-control-line" name="email"
+                                           id="example-email"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Password</label>
+                                <div class="col-md-12">
+                                    <input type="password" name="password" value="password" class="form-control form-control-line">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Phone No</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="phone" placeholder="123 456 7890"
+                                           class="form-control form-control-line"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-12">Select Role</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control form-control-line">
+                                        <c:forEach items="${roles}" var="role">
+                                            <option value="${role.id}" name="roleId">${role.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-success">Add User</button>
+                                    <a href="user" class="btn btn-primary">Quay lại</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
+                <div class="col-md-2 col-12"></div>
             </div>
-            <!-- /.col -->
-            <!--col -->
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="white-box">
-                    <div class="col-in row">
-                        <div class="col-md-6 col-sm-6 col-xs-6"><i class="linea-icon linea-basic"
-                                                                   data-icon="&#xe01b;"></i>
-                            <h5 class="text-muted vb">ĐANG THỰC HIỆN</h5>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <h3 class="counter text-right m-t-15 text-megna">169</h3>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-megna" role="progressbar" aria-valuenow="40"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span
-                                        class="sr-only">40% Complete (success)</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.col -->
-            <!--col -->
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="white-box">
-                    <div class="col-in row">
-                        <div class="col-md-6 col-sm-6 col-xs-6"><i class="linea-icon linea-basic"
-                                                                   data-icon="&#xe00b;"></i>
-                            <h5 class="text-muted vb">ĐÃ HOÀN THÀNH</h5>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-6">
-                            <h3 class="counter text-right m-t-15 text-primary">157</h3>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="40"
-                                     aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span
-                                        class="sr-only">40% Complete (success)</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-        <!--row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title">Sales Difference</h3>
-                    <ul class="list-inline text-right">
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #dadada;"></i>Site A View</h5>
-                        </li>
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #aec9cb;"></i>Site B View</h5>
-                        </li>
-                    </ul>
-                    <div id="morris-area-chart2" style="height: 370px;"></div>
-                </div>
-            </div>
-        </div>
+        <!-- /.container-fluid -->
+        <footer class="footer text-center"> 2018 &copy; myclass.com</footer>
     </div>
-    <!-- /.container-fluid -->
-    <footer class="footer text-center"> 2018 &copy; myclass.com</footer>
-</div>
-<!-- /#page-wrapper -->
+    <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->
@@ -250,16 +202,8 @@
 <script src="js/jquery.slimscroll.js"></script>
 <!--Wave Effects -->
 <script src="js/waves.js"></script>
-<!--Counter js -->
-<script src="plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
-<script src="plugins/bower_components/counterup/jquery.counterup.min.js"></script>
-<!--Morris JavaScript -->
-<script src="plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="plugins/bower_components/morrisjs/morris.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
-<script src="js/dashboard1.js"></script>
-<script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
 </body>
 
 </html>

@@ -32,3 +32,14 @@ Cách đặt tên method trong Repo
     e.g.
         "SELECT * FROM users WHERE username = ''"
         -> findByUsername
+
+
+Session:
+    data được lưu trên RAM của server
+
+Cookies:
+    data được lưu trên máy của client
+
+
+
+Filter servlet

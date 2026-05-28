@@ -3,7 +3,7 @@ package com.ndt.CRM_project.repo;
 import java.sql.*;
 import java.util.*;
 
-import com.ndt.CRM_project.entity.User;
+import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
 
 
@@ -11,8 +11,8 @@ import com.ndt.CRM_project.utils.MysqlConfig;
  * Quản lý tất cả câu query liên quan tới bảng user
  */
 public class UserRepo {
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
+    public List<UserEntity> findAll() {
+        List<UserEntity> users = new ArrayList<>();
         String query = """
                 SELECT u.id, u.first_name, u.last_name, u.email, r.name AS role_name
                 FROM users u
@@ -24,13 +24,13 @@ public class UserRepo {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String email = rs.getString("email");
-                String role = rs.getString("role_name");
+                UserEntity user = new UserEntity();
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setEmail(rs.getString("email"));
+                user.setRoleName(rs.getString("role_name"));
 
-                User user = new User(id, firstName, lastName, email, role);
                 users.add(user);
             }
         } catch (Exception e) {
@@ -40,12 +40,18 @@ public class UserRepo {
     }
 
 
-    public List<User> findUserByEmailAndPassword(String email, String password) {
-        List<User> users = new ArrayList<>();
+    public List<UserEntity> findByEmailAndPassword(String email, String password) {
+        List<UserEntity> users = new ArrayList<>();
 
         try {
             // evade SQL Injection with "?"
-            String sql = "SELECT id, email, password FROM users WHERE email=? AND password=?";
+            String sql = """
+                SELECT u.id, u.fullname, r.name AS role_name
+                FROM users u
+                JOIN roles r
+                    ON r.id = u.role_id
+                WHERE u.email=? AND u.password=?
+                """;
             Connection conn = MysqlConfig.getConnection();
 
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -59,11 +65,12 @@ public class UserRepo {
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                User user = new User(
-                    rs.getInt("id"),
-                    rs.getString("email"),
-                    rs.getString("password")
+                UserEntity user = new UserEntity(
                 );
+
+                user.setId(rs.getInt("id"));
+                user.setFullname(rs.getString("fullname"));
+                user.setRoleName(rs.getString("role_name"));
 
                 users.add(user);
             }
