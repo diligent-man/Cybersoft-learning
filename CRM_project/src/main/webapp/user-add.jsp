@@ -73,7 +73,7 @@
                             <li><a href="profile.html">Thông tin cá nhân</a></li>
                             <li><a href="#">Thống kê công việc</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Đăng xuất</a></li>
+                            <li><a href="logout">Đăng xuất</a></li>
                         </ul>
                     </div>
                 </li>
@@ -187,7 +187,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2018 &copy; myclass.com</footer>
+        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
     </div>
     <!-- /#page-wrapper -->
 </div>

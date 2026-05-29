@@ -7,7 +7,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
 
 
-
 @WebServlet(name = "logoutController", urlPatterns = {"/logout"})
 public class LogoutController extends HttpServlet {
     private final Set<String> DEFAULT_COOKIES_TO_REMOVE = new HashSet<>(List.of("role", "loginMsg", "remember"));

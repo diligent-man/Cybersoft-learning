@@ -35,12 +35,7 @@
                         <input type="password" class="form-control" name="password" value="${password}">
                     </div>
                     <div class="form-group">
-                        <input
-                            type="checkbox"
-                            name="remember"
-                            class="btn btn-primary"
-                            ${cookie.remember.value == 'on' ? 'checked' : ''}
-                        >Remember me
+                        <input type="checkbox" name="remember" class="btn btn-primary" ${cookie.remember.value == 'on' ? 'checked' : ''}> Ghi nhớ
                     </div>
                     <button type="submit" class="btn btn-primary">Đăng nhập</button>
                 </form>
