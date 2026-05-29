@@ -1,7 +1,7 @@
 package com.ndt.CRM_project.service;
 
-import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.repo.UserRepo;
+import com.ndt.CRM_project.entity.UserEntity;
 
 
 public class LoginService {
@@ -13,11 +13,16 @@ public class LoginService {
         String password,
         String remember
     ) {
-        UserEntity user = userRepo.findByEmailAndPassword(email, password).orElse(null);
+        UserEntity user = userRepo.findByEmail(email).orElse(null);
 
         if (user != null) {
+            if (!user.getPassword().equals(password)) {
+                return null;
+            }
+
+            // TODO: replace by secure token isstead
             if (remember != null) {
-                user.setRemember(Boolean.TRUE);  // TODO: replaace by secure token isstead
+                user.setRemember(Boolean.TRUE);
             }
         }
         return user;

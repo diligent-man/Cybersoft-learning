@@ -39,18 +39,18 @@ public class UserRepo {
         return users;
     }
 
-
-    public Optional<UserEntity> findByEmailAndPassword(String email, String password) {
+    // TODO: make email unique
+    public Optional<UserEntity> findByEmail(String email) {
         List<UserEntity> users = new ArrayList<>();
 
         try {
             // evade SQL Injection with "?"
             String sql = """
-                SELECT u.id, u.fullname, r.name AS role_name
+                SELECT u.id, u.fullname, u.password, r.name AS role_name
                 FROM users u
                 JOIN roles r
                     ON r.id = u.role_id
-                WHERE u.email=? AND u.password=?
+                WHERE u.email=?
                 """;
             Connection conn = MysqlConfig.getConnection();
 
@@ -58,17 +58,16 @@ public class UserRepo {
 
             // parameterIndex starts from 1 from the left
             statement.setString(1, email);
-            statement.setString(2, password);
 
             // convert result set objects to user class
             users = new ArrayList<>();
 
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                UserEntity user = new UserEntity(
-                );
+                UserEntity user = new UserEntity();
 
                 user.setId(rs.getInt("id"));
+                user.setPassword(rs.getString("password"));
                 user.setFullname(rs.getString("fullname"));
                 user.setRoleName(rs.getString("role_name"));
 

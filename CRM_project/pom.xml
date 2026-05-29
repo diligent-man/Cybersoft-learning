@@ -8,7 +8,7 @@
     <groupId>com.ndt.Cybersoft.Javabootcamp</groupId>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Cybersoft_Javabootcamp_CRM_project</name>
+    <name>CRM_project</name>
     <description>Source code of CRM project.</description>
 
     <licenses>

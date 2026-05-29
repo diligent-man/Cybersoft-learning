@@ -7,6 +7,18 @@
 <html lang="en">
 
 <head>
+    <script>
+        function deleteCookie(name) {
+            document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        // ✅ Run on page load — clear some specified cookie for testing
+        window.onload = function () {
+            deleteCookie("loginMsg");
+            console.log("All cookies cleared on page load");
+        };
+    </script>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -106,7 +118,7 @@
             <ul class="nav" id="side-menu">
                 <li style="padding: 10px 0 0;">
                     <a href="/" class="waves-effect"><i class="fa fa-clock-o fa-fw"
-                                                                 aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                                                        aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
                 </li>
                 <li>
                     <a href="user" class="waves-effect"><i class="fa fa-user fa-fw"

@@ -1,4 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.net.URLDecoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +12,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+<c:if test="${not empty cookie.loginMsg.value}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${URLDecoder.decode(cookie.loginMsg.value, StandardCharsets.UTF_8)}' />");
+        });
+    </script>
+</c:if>
 
 <div class="container">
     <div class="row mt-5">
