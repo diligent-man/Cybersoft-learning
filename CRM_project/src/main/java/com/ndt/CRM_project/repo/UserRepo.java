@@ -40,7 +40,7 @@ public class UserRepo {
     }
 
 
-    public List<UserEntity> findByEmailAndPassword(String email, String password) {
+    public Optional<UserEntity> findByEmailAndPassword(String email, String password) {
         List<UserEntity> users = new ArrayList<>();
 
         try {
@@ -78,6 +78,6 @@ public class UserRepo {
             System.out.println(e.getMessage());
         }
 
-        return users;
+        return Optional.ofNullable(users.getFirst());
     }
 }

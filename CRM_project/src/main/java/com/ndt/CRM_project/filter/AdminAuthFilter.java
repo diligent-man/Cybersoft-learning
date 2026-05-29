@@ -1,23 +1,26 @@
 package com.ndt.CRM_project.filter;
 
-import java.io.IOException;
-
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
-
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.util.Objects;
 
-@WebFilter(filterName = "authenticationFilter", urlPatterns = {"/user", "/user-add"})
-public class AuthenticationFilter extends HttpFilter {
+
+@WebFilter(
+    filterName = "adminAuthFilter",
+    urlPatterns = {"/index.jsp"},
+    dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD}
+)
+public class AdminAuthFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        /* Note: doFilter chain chỉ được chạy 1 lần và code sau filter chain sẽ không được chạy
-        * -> response has been commited */
         String role = null;
         Cookie[] cookies = req.getCookies();
 
@@ -26,12 +29,12 @@ public class AuthenticationFilter extends HttpFilter {
                 if (cookie.getName().equals("role"))
                     role = cookie.getValue();
 
-        if (role != null){
-            String path  = req.getServletPath();
+        System.out.println(role);
 
-            if (path.equals("/user-add") && role.equals("admin")){
-                chain.doFilter(req, res);
-            } else if (path.equals("/user")) {
+        if (role != null) {
+            String path = req.getServletPath();
+
+            if (path.equals("/index.jsp") && (role.equals("manager") || role.equals("admin"))) {
                 chain.doFilter(req, res);
             } else {
                 res.sendRedirect(req.getContextPath() + "/login");

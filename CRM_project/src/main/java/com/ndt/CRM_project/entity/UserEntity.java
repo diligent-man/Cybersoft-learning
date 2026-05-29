@@ -8,7 +8,6 @@ import lombok.*;
 @Getter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserEntity {
     private Integer id;
 
@@ -27,4 +26,6 @@ public class UserEntity {
     private Integer roleId;
 
     private String roleName;
+
+    private Boolean remember;
 }

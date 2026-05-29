@@ -27,11 +27,12 @@ public class RoleRepo {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String description = rs.getString("description");
+                RoleEntity role = new RoleEntity();
 
-                RoleEntity role = new RoleEntity(id, name, description);
+                role.setId(rs.getInt("id"));
+                role.setName(rs.getString("name"));
+                role.setDescription(rs.getString("description"));
+
                 roles.add(role);
             }
         } catch (Exception e) {

@@ -9,7 +9,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 
-import com.ndt.CRM_project.service.UserService;
+import com.ndt.CRM_project.entity.UserEntity;
 
 
 @WebServlet(name = "loginController", urlPatterns = "/login")
@@ -42,14 +42,33 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String username = req.getParameter("email");
+        String email = req.getParameter("email");
         String password = req.getParameter("password");
         String remember = req.getParameter("remember");
 
-        String result = loginService.authenticate(username, password, remember, resp);
+        UserEntity user = loginService.authenticate(email, password, remember);
 
+        String msg = "Đăng nhập thất bại";
         HttpSession session = req.getSession();
-        session.setAttribute("formMsg", result);
+
+        if (user != null) {
+            msg = "Đăng nhập thành công";
+            Cookie cRole = new Cookie("role", user.getRoleName());
+
+            if (remember != null && user.getRemember()) {
+                Cookie cEmail = new Cookie("email", email);
+                Cookie cPassword = new Cookie("password", password);
+
+                resp.addCookie(cEmail);
+                resp.addCookie(cPassword);
+            }
+
+            resp.addCookie(cRole);
+        }
+
+        session.setAttribute("formMsg", msg);
+
+        resp.addCookie(new Cookie("remember", remember));
         resp.sendRedirect("/");
     }
 }
