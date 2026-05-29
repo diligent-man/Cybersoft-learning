@@ -29,8 +29,6 @@ public class AdminAuthFilter extends HttpFilter {
                 if (cookie.getName().equals("role"))
                     role = cookie.getValue();
 
-        System.out.println(role);
-
         if (role != null) {
             String path = req.getServletPath();
 

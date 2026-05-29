@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.net.URLDecoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,11 +38,11 @@
 </head>
 
 <body>
-<c:if test="${not empty formMsg}">
+<c:if test="${not empty cookie.loginMsg.value}">
     <script>
         window.addEventListener("load", function () {
             // JSTL sẽ render giá trị chuỗi vào đây
-            alert("<c:out value='${formMsg}' />");
+            alert("<c:out value='${URLDecoder.decode(cookie.loginMsg.value, StandardCharsets.UTF_8)}' />");
         });
     </script>
 </c:if>

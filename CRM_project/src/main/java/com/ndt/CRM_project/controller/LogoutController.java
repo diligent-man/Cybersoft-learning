@@ -31,7 +31,6 @@ public class LogoutController extends HttpServlet {
             boolean removeCredential = Arrays.stream(cookies)
                 .parallel()
                 .anyMatch(cookie -> cookie.getName().equals("remember") && cookie.getValue().isEmpty());
-            System.out.println(removeCredential + " remove");
 
             if (removeCredential) {
                 COOKIES_TO_REMOVE.add("email");
