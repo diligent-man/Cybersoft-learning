@@ -34,10 +34,11 @@ public class UserRepo {
                 users.add(user);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println("UserRepo: " + e.getMessage());
         }
         return users;
     }
+
 
     // TODO: make email unique
     public Optional<UserEntity> findByEmail(String email) {
@@ -45,7 +46,7 @@ public class UserRepo {
 
         try {
             // evade SQL Injection with "?"
-            String sql = """
+            String query = """
                 SELECT u.id, u.fullname, u.password, r.name AS role_name
                 FROM users u
                 JOIN roles r
@@ -54,7 +55,7 @@ public class UserRepo {
                 """;
             Connection conn = MysqlConfig.getConnection();
 
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(query);
 
             // parameterIndex starts from 1 from the left
             statement.setString(1, email);
@@ -74,9 +75,35 @@ public class UserRepo {
                 users.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("UserRepo: " + e.getMessage());
         }
 
         return Optional.ofNullable(users.isEmpty() ? null : users.getFirst());
+    }
+
+
+    public int save(UserEntity user) {
+        int updatedRow = 0;
+
+        String query = """
+            INSERT INTO users(fullname, email, password, phone, role_id) VALUES (?, ?, ?, ?, ?)
+            """;
+
+        try {
+            Connection conn = MysqlConfig.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, user.getFullname());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getPassword());
+            stmt.setString(4, user.getPhone());
+            stmt.setInt(5, user.getRoleId());
+
+            updatedRow = stmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("UserRepo: " + e.getMessage());
+        }
+        return updatedRow;
     }
 }

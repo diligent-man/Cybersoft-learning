@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 
 import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.service.UserService;
+import jakarta.servlet.http.HttpSession;
 
 
 @WebServlet(name = "userController", urlPatterns = {"/user", "/user-add"})
@@ -23,12 +24,15 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
 
-        if (path.equals("/user")) {
-            req.setAttribute("users", userService.getAll());
-            req.getRequestDispatcher("user-table.jsp").forward(req, resp);
-        } else if (path.equals("/user-add")) {
-            req.setAttribute("roles", userService.getAllRoles());
-            req.getRequestDispatcher("user-add.jsp").forward(req, resp);
+        switch (path) {
+            case "/user" -> {
+                req.setAttribute("users", userService.getAll());
+                req.getRequestDispatcher("user-table.jsp").forward(req, resp);
+            }
+            case "/user-add" -> {
+                req.setAttribute("roles", userService.getAllRoles());
+                req.getRequestDispatcher("user-add.jsp").forward(req, resp);
+            }
         }
     }
 
@@ -36,7 +40,10 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
+
         if (path.equals("/user-add")) {
+            String addMsg = "Thêm user thất bại";
+
             UserEntity user = new UserEntity();
 
             user.setFullname(req.getParameter("fullName"));
@@ -45,7 +52,14 @@ public class UserController extends HttpServlet {
             user.setPhone(req.getParameter("phone"));
             user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
 
-            req.getRequestDispatcher("user-add.jsp").forward(req, resp);
+            if (userService.addUser(user)) {
+                addMsg = "Thêm user thành công";
+            }
+
+            // demo for using flash message (a.k.a FlashAttribute in Spring)
+            HttpSession session = req.getSession();
+            session.setAttribute("addMsg", addMsg);
+            resp.sendRedirect(req.getContextPath() + "/user-add");
         }
     }
 }

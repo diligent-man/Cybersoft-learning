@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,6 +31,16 @@
 </head>
 
 <body>
+<c:if test="${not empty sessionScope.addMsg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${sessionScope.addMsg}' />");
+        });
+    </script>
+
+    <c:remove var="addMsg" scope="session" />
+</c:if>
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -141,20 +152,21 @@
                             <div class="form-group">
                                 <label class="col-md-12">Full Name</label>
                                 <div class="col-md-12">
-                                    <input type="text" name="fullname" placeholder="Johnathan Doe"
+                                    <input type="text" name="fullName" placeholder="Nguyen Van A"
                                            class="form-control form-control-line"></div>
                             </div>
                             <div class="form-group">
                                 <label for="example-email" class="col-md-12">Email</label>
                                 <div class="col-md-12">
-                                    <input type="email" placeholder="johnathan@admin.com"
+                                    <input type="email" placeholder="nva@gmail.com"
                                            class="form-control form-control-line" name="email"
                                            id="example-email"></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Password</label>
                                 <div class="col-md-12">
-                                    <input type="password" name="password" value="password" class="form-control form-control-line">
+                                    <input type="password" name="password" placeholder="password"
+                                           class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -166,9 +178,9 @@
                             <div class="form-group">
                                 <label class="col-sm-12">Select Role</label>
                                 <div class="col-sm-12">
-                                    <select class="form-control form-control-line">
+                                    <select class="form-control form-control-line" name="roleId">
                                         <c:forEach items="${roles}" var="role">
-                                            <option value="${role.id}" name="roleId">${role.name}</option>
+                                            <option value="${role.id}">${role.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

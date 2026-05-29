@@ -23,7 +23,13 @@ public class UserService {
         return userRepo.findAll();
     }
 
+
     public List<RoleEntity> getAllRoles() {
         return roleRepo.findAll();
+    }
+
+
+    public boolean addUser(UserEntity user) {
+        return userRepo.save(user) > 0;
     }
 }

@@ -13,19 +13,19 @@ public class UserEntity {
 
     private String fullname;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String phone;
-
     private String email;
 
     private String password;
 
+    private String phone;
+
     private Integer roleId;
 
     private String roleName;
+
+    private String firstName;
+
+    private String lastName;
 
     private Boolean remember;
 }
