@@ -13,14 +13,16 @@ public class LoginService {
         String password,
         String remember
     ) {
-        UserEntity user = userRepo.findByEmail(email).orElse(null);
+        if (email.isEmpty() || password.isEmpty())
+            return null;
 
+        UserEntity user = userRepo.findByEmail(email).orElse(null);
         if (user != null) {
             if (!user.getPassword().equals(password)) {
                 return null;
             }
 
-            // TODO: replace by secure token isstead
+            // TODO: replace by secure token instead
             if (remember != null) {
                 user.setRemember(Boolean.TRUE);
             }

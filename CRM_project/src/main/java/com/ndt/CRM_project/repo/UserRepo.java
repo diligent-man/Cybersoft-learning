@@ -77,6 +77,6 @@ public class UserRepo {
             System.out.println(e.getMessage());
         }
 
-        return Optional.ofNullable(users.getFirst());
+        return Optional.ofNullable(users.isEmpty() ? null : users.getFirst());
     }
 }

@@ -1,5 +1,9 @@
 package com.ndt.CRM_project.filter;
 
+import java.util.*;
+import java.io.IOException;
+
+
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,8 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.servlet.annotation.WebFilter;
 
-import java.io.IOException;
-
 
 @WebFilter(
     filterName = "adminAuthFilter",
@@ -20,6 +22,9 @@ import java.io.IOException;
     dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD}
 )
 public class AdminAuthFilter extends HttpFilter {
+    private final Set<String> ALLOWED_ROLES = new HashSet<>(List.of("manager", "admin"));
+
+
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         String role = null;
@@ -33,7 +38,7 @@ public class AdminAuthFilter extends HttpFilter {
         if (role != null) {
             String path = req.getServletPath();
 
-            if (path.equals("/index.jsp") && (role.equals("manager") || role.equals("admin"))) {
+            if (path.equals("/index.jsp") && (ALLOWED_ROLES.contains(role))) {
                 chain.doFilter(req, res);
             } else {
                 res.sendRedirect(req.getContextPath() + "/login");
