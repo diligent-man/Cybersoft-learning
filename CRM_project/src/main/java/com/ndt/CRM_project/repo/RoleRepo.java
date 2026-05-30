@@ -1,11 +1,11 @@
 package com.ndt.CRM_project.repo;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 
 import com.ndt.CRM_project.entity.RoleEntity;
@@ -36,7 +36,7 @@ public class RoleRepo {
                 roles.add(role);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            System.out.println("RoleRepo: " + e.getMessage());
         }
 
         return roles;

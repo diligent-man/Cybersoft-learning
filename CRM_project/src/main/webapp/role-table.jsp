@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,7 +92,7 @@
             <ul class="nav" id="side-menu">
                 <li style="padding: 10px 0 0;">
                     <a href="/" class="waves-effect"><i class="fa fa-clock-o fa-fw"
-                                                                aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                                                        aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
                 </li>
                 <li>
                     <a href="user" class="waves-effect"><i class="fa fa-user fa-fw"
@@ -99,8 +100,8 @@
                             class="hide-menu">Thành viên</span></a>
                 </li>
                 <li>
-                    <a href="role" class="waves-effect"><i class="fa fa-modx fa-fw"
-                                                                     aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
+                    <a href="role-table.html" class="waves-effect"><i class="fa fa-modx fa-fw"
+                                                                      aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
                     <a href="groupwork.html" class="waves-effect"><i class="fa fa-table fa-fw"
@@ -129,10 +130,10 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Danh sách thành viên</h4>
+                    <h4 class="page-title">Danh sách quyền</h4>
                 </div>
                 <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12 text-right">
-                    <a href="user-add" class="btn btn-sm btn-success">Thêm mới</a>
+                    <a href="role-add" class="btn btn-sm btn-success">Thêm mới</a>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -145,25 +146,20 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Username</th>
-                                    <th>Role</th>
-                                    <th>#</th>
+                                    <th>Tên Quyền</th>
+                                    <th>Mô Tả</th>
+                                    <th>Hành Động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${users}" var="user">
+                                <c:forEach items="${roles}" var="role">
                                     <tr>
-                                        <td>${user.id}</td>
-                                        <td>${user.firstName}</td>
-                                        <td>${user.lastName}</td>
-                                        <td>${user.email}</td>
-                                        <td>${user.roleName}</td>
+                                        <td>${role.id}</td>
+                                        <td>${role.name}</td>
+                                        <td>${role.description}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-primary">Sửa</a>
                                             <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                            <a href="user-details.html" class="btn btn-sm btn-info">Xem</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -176,7 +172,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
+        <footer class="footer text-center"> 2026 &copy; myclass.com</footer>
     </div>
     <!-- /#page-wrapper -->
 </div>
@@ -200,4 +196,5 @@
     });
 </script>
 </body>
+
 </html>

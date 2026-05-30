@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +43,7 @@
                         <i class="fa fa-bars"></i>
                     </a>
                     <div class="top-left-part">
-                        <a class="logo" href="index.jsp">
+                        <a class="logo" href="/">
                             <b>
                                 <img src="plugins/images/pixeladmin-logo.png" alt="home" />
                             </b>
@@ -70,7 +73,7 @@
                                     <li><a href="profile.html">Thông tin cá nhân</a></li>
                                     <li><a href="#">Thống kê công việc</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#">Đăng xuất</a></li>
+                                    <li><a href="logout">Đăng xuất</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -85,7 +88,7 @@
             <div class="sidebar-nav navbar-collapse slimscrollsidebar">
                 <ul class="nav" id="side-menu">
                     <li style="padding: 10px 0 0;">
-                        <a href="index.jsp" class="waves-effect"><i class="fa fa-clock-o fa-fw"
+                        <a href="/" class="waves-effect"><i class="fa fa-clock-o fa-fw"
                                                                     aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
                     </li>
                     <li>
@@ -93,8 +96,8 @@
                                                                          aria-hidden="true"></i><span class="hide-menu">Thành viên</span></a>
                     </li>
                     <li>
-                        <a href="role-table.html" class="waves-effect"><i class="fa fa-modx fa-fw"
-                                aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
+                        <a href="role" class="waves-effect"><i class="fa fa-modx fa-fw"
+                                                                         aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
                     </li>
                     <li>
                         <a href="groupwork.html" class="waves-effect"><i class="fa fa-table fa-fw"
@@ -147,7 +150,7 @@
                                 <div class="form-group">
                                     <div class="col-sm-12">
                                         <button type="submit" class="btn btn-success">Add Role</button>
-                                        <a href="role-table.html" class="btn btn-primary">Quay lại</a>
+                                        <a href="role-table.jsp" class="btn btn-primary">Quay lại</a>
                                     </div>
                                 </div>
                             </form>
@@ -158,7 +161,7 @@
                 <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
-            <footer class="footer text-center"> 2016 &copy; myclass.com </footer>
+            <footer class="footer text-center"> 2026 &copy; myclass.com </footer>
         </div>
         <!-- /#page-wrapper -->
     </div>

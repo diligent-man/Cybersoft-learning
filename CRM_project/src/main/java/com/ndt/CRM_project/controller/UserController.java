@@ -4,20 +4,24 @@ import java.io.IOException;
 
 
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 
+
+import com.ndt.CRM_project.service.RoleService;
 import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.service.UserService;
-import jakarta.servlet.http.HttpSession;
 
 
 @WebServlet(name = "userController", urlPatterns = {"/user", "/user-add"})
 public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
+
+    private final RoleService roleService = new RoleService();
 
 
     @Override
@@ -30,7 +34,7 @@ public class UserController extends HttpServlet {
                 req.getRequestDispatcher("user-table.jsp").forward(req, resp);
             }
             case "/user-add" -> {
-                req.setAttribute("roles", userService.getAllRoles());
+                req.setAttribute("roles", roleService.getAll());
                 req.getRequestDispatcher("user-add.jsp").forward(req, resp);
             }
         }
@@ -38,7 +42,7 @@ public class UserController extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String path = req.getServletPath();
 
         if (path.equals("/user-add")) {
