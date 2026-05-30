@@ -16,7 +16,7 @@ public class RoleService {
     }
 
 
-    // public boolean addRole(RoleEntity obj) {
-    //     return roleRepo.save(obj) > 0;
-    // }
+    public boolean addRole(RoleEntity obj) {
+        return roleRepo.save(obj) > 0;
+    }
 }

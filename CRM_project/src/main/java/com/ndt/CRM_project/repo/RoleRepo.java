@@ -41,4 +41,25 @@ public class RoleRepo {
 
         return roles;
     }
+
+    public int save(RoleEntity obj) {
+        int updatedRow = 0;
+
+        String query = """
+            INSERT INTO roles(name, description) VALUES (?, ?)
+            """;
+
+        try {
+            Connection conn = MysqlConfig.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, obj.getName());
+            stmt.setString(2, obj.getDescription());
+
+            updatedRow = stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("RoleRepo: " + e.getMessage());
+        }
+        return updatedRow;
+    }
 }

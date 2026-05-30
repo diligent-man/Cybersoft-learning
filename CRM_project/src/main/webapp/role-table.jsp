@@ -100,8 +100,9 @@
                             class="hide-menu">Thành viên</span></a>
                 </li>
                 <li>
-                    <a href="role-table.html" class="waves-effect"><i class="fa fa-modx fa-fw"
-                                                                      aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
+                    <a href="role" class="waves-effect"><i class="fa fa-modx fa-fw"
+                                                           aria-hidden="true"></i><span
+                            class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
                     <a href="groupwork.html" class="waves-effect"><i class="fa fa-table fa-fw"

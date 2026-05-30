@@ -91,7 +91,7 @@
             <ul class="nav" id="side-menu">
                 <li style="padding: 10px 0 0;">
                     <a href="/" class="waves-effect"><i class="fa fa-clock-o fa-fw"
-                                                                aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                                                        aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
                 </li>
                 <li>
                     <a href="user" class="waves-effect"><i class="fa fa-user fa-fw"
@@ -100,7 +100,8 @@
                 </li>
                 <li>
                     <a href="role" class="waves-effect"><i class="fa fa-modx fa-fw"
-                                                                     aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
+                                                           aria-hidden="true"></i><span
+                            class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
                     <a href="groupwork.html" class="waves-effect"><i class="fa fa-table fa-fw"

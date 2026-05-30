@@ -2,6 +2,7 @@ package com.ndt.CRM_project.controller;
 
 import java.io.IOException;
 
+import com.ndt.CRM_project.entity.RoleEntity;
 import com.ndt.CRM_project.service.RoleService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,29 +35,26 @@ public class RoleController extends HttpServlet {
     }
 
 
-    // @Override
-    // protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    //     String path = req.getServletPath();
-    //
-    //     if (path.equals("/role-add")) {
-    //         String addMsg = "Thêm user thất bại";
-    //
-    //         UserEntity user = new UserEntity();
-    //
-    //         user.setFullname(req.getParameter("fullName"));
-    //         user.setEmail(req.getParameter("email"));
-    //         user.setPassword(req.getParameter("password"));
-    //         user.setPhone(req.getParameter("phone"));
-    //         user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
-    //
-    //         if (userService.addUser(user)) {
-    //             addMsg = "Thêm user thành công";
-    //         }
-    //
-    //         // demo for using flash message (a.k.a FlashAttribute in Spring)
-    //         HttpSession session = req.getSession();
-    //         session.setAttribute("addMsg", addMsg);
-    //         resp.sendRedirect(req.getContextPath() + "/user-add");
-    //     }
-    // }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String path = req.getServletPath();
+
+        if (path.equals("/role-add")) {
+            String addMsg = "Thêm role thất bại";
+
+            RoleEntity obj = new RoleEntity();
+
+            obj.setName(req.getParameter("name"));
+            obj.setDescription(req.getParameter("description"));
+
+            if (roleService.addRole(obj)) {
+                addMsg = "Thêm role thành công";
+            }
+
+            // demo for using flash message (a.k.a FlashAttribute in Spring)
+            HttpSession session = req.getSession();
+            session.setAttribute("addMsg", addMsg);
+            resp.sendRedirect(req.getContextPath() + "/role-add");
+        }
+    }
 }
