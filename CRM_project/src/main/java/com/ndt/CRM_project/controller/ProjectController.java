@@ -19,7 +19,7 @@ import com.ndt.CRM_project.service.ProjectService;
 
 @WebServlet(name = "groupworkController", urlPatterns = {"/project", "/project-add"})
 public class ProjectController extends HttpServlet {
-    private final ProjectService groupworkService = new ProjectService();
+    private final ProjectService projectService = new ProjectService();
 
 
     @Override
@@ -28,7 +28,7 @@ public class ProjectController extends HttpServlet {
 
         switch (path) {
             case "/project" -> {
-                req.setAttribute("groupworks", groupworkService.getAll());
+                req.setAttribute("projects", projectService.getAll());
                 req.getRequestDispatcher("project.jsp").forward(req, resp);
             }
 
@@ -52,7 +52,7 @@ public class ProjectController extends HttpServlet {
             obj.setStartDate(LocalDate.parse(req.getParameter("startDate")));
             obj.setEndDate(LocalDate.parse(req.getParameter("endDate")));
 
-            if (groupworkService.addGroupwork(obj)) {
+            if (projectService.addProject(obj)) {
                 addMsg = "Thêm project thành công";
             }
 

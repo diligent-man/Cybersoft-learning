@@ -2,12 +2,8 @@ package com.ndt.CRM_project.repo;
 
 import java.sql.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 
 import com.ndt.CRM_project.utils.MysqlConfig;
@@ -22,7 +18,6 @@ public class ProjectRepo {
         List<ProjectEntity> objLst = new ArrayList<>();
 
         String query = "SELECT * FROM projects";
-        DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("vi", "VN"));
 
         try {
             Connection conn = MysqlConfig.getConnection();
@@ -34,8 +29,8 @@ public class ProjectRepo {
 
                 obj.setId(rs.getInt("id"));
                 obj.setName(rs.getString("name"));
-                obj.setStartDate(LocalDate.parse(rs.getString("start_date"), parseFormatter));
-                obj.setEndDate(LocalDate.parse(rs.getString("end_date"), parseFormatter));
+                obj.setStartDate(rs.getString("start_date"));
+                obj.setEndDate(rs.getString("end_date"));
 
                 objLst.add(obj);
             }
@@ -64,7 +59,7 @@ public class ProjectRepo {
 
             updatedRow = stmt.executeUpdate();
         } catch (Exception e) {
-            System.out.println("GroupworkRepo: " + e.getMessage());
+            System.out.println("ProjectRepo: " + e.getMessage());
         }
         return updatedRow;
     }

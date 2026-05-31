@@ -8,15 +8,15 @@ import com.ndt.CRM_project.entity.ProjectEntity;
 
 
 public class ProjectService {
-    private final ProjectRepo groupworkRepo = new ProjectRepo();
+    private final ProjectRepo projectRepo = new ProjectRepo();
 
 
     public List<ProjectEntity> getAll() {
-        return groupworkRepo.findAll();
+        return projectRepo.findAll();
     }
 
 
-    public boolean addGroupwork(ProjectEntity obj) {
-        return groupworkRepo.save(obj) > 0;
+    public boolean addProject(ProjectEntity obj) {
+        return projectRepo.save(obj) > 0;
     }
 }

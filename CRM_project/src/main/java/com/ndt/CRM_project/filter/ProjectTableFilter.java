@@ -18,8 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 
 @WebFilter(
-    filterName = "groupworkTableFilter",
-    urlPatterns = {"/groupwrok", "/groupwrok-add"}
+    filterName = "projectTableFilter",
+    urlPatterns = {"/project", "/project-add"}
 )
 public class ProjectTableFilter extends HttpFilter {
     private final Set<String> ALLOWED_VIEW_ROLES = new HashSet<>(List.of("manager", "admin"));
