@@ -16,14 +16,12 @@
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Menu CSS -->
     <link href="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <!-- animation CSS -->
     <link href="css/animate.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
     <!-- color CSS -->
     <link href="css/colors/blue-dark.css" id="theme" rel="stylesheet">
-    <link rel="stylesheet" href="./css/custom.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -33,6 +31,15 @@
 </head>
 
 <body>
+<c:if test="${not empty sessionScope.addMsg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${sessionScope.addMsg}' />");
+        });
+    </script>
+
+    <c:remove var="addMsg" scope="session"/>
+</c:if>
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -46,7 +53,7 @@
                 <i class="fa fa-bars"></i>
             </a>
             <div class="top-left-part">
-                <a class="logo" href="/">
+                <a class="logo" href="index.jsp">
                     <b>
                         <img src="plugins/images/pixeladmin-logo.png" alt="home"/>
                     </b>
@@ -106,12 +113,13 @@
                 </li>
                 <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                    aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
+                                                                aria-hidden="true"></i><span
+                            class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task.html" class="waves-effect"><i class="fa fa-table fa-fw"
                                                                 aria-hidden="true"></i><span
-                            class="hide-menu">Công việc</span></a>
+                            class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
@@ -131,49 +139,56 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Danh sách quyền</h4>
+                    <h4 class="page-title">Thêm mới dự án</h4>
                 </div>
-                <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12 text-right">
-                    <a href="role-add" class="btn btn-sm btn-success">Thêm mới</a>
-                </div>
-                <!-- /.col-lg-12 -->
             </div>
-            <!-- /row -->
+            <!-- /.row -->
+            <!-- .row -->
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-md-2 col-12"></div>
+                <div class="col-md-8 col-xs-12">
                     <div class="white-box">
-                        <div class="table-responsive">
-                            <table class="table" id="example">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên Quyền</th>
-                                    <th>Mô Tả</th>
-                                    <th>Hành Động</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${roles}" var="role">
-                                    <tr>
-                                        <td>${role.id}</td>
-                                        <td>${role.name}</td>
-                                        <td>${role.description}</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                        <form class="form-horizontal form-material" method="post" action="project-add">
+                            <div class="form-group">
+                                <label class="col-md-12">Tên dự án</label>
+                                <div class="col-md-12">
+                                    <input type="text" placeholder="Tên công việc"
+                                           class="form-control form-control-line"
+                                           name="name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Ngày bắt đầu</label>
+                                <div class="col-md-12">
+                                    <%-- placeholder="dd/MM/yyyy"  --%>
+                                    <input type="date" value="2026-05-31"
+                                           class="form-control form-control-line"
+                                           name="startDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Ngày kết thúc</label>
+                                <div class="col-md-12">
+                                    <input type="date" value="2026-05-31"
+                                           class="form-control form-control-line"
+                                           name="endDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-success">Lưu lại</button>
+                                    <a href="project" class="btn btn-primary">Quay lại</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
+                <div class="col-md-2 col-12"></div>
             </div>
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2026 &copy; myclass.com</footer>
+        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
     </div>
     <!-- /#page-wrapper -->
 </div>
@@ -186,16 +201,10 @@
 <script src="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
 <script src="js/jquery.slimscroll.js"></script>
-<script src="js/jquery.dataTables.js"></script>
 <!--Wave Effects -->
 <script src="js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-</script>
 </body>
 
 </html>

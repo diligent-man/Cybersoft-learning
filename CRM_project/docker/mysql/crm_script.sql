@@ -8,7 +8,7 @@ USE
     crm;
 
 DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS jobs;
+DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS status;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS roles;
@@ -19,6 +19,7 @@ CREATE TABLE roles
     id          INT AUTO_INCREMENT,
     name        VARCHAR(50) NOT NULL,
     description VARCHAR(100),
+
     CONSTRAINT PK_Role PRIMARY KEY (id)
 );
 
@@ -31,6 +32,7 @@ CREATE TABLE users
     avatar   VARCHAR(100),
     phone    VARCHAR(11),
     role_id  INT                NOT NULL,
+
     CONSTRAINT PK_User PRIMARY KEY (id)
 );
 
@@ -39,16 +41,18 @@ CREATE TABLE status
     id          INT AUTO_INCREMENT,
     name        VARCHAR(50) NOT NULL,
     description VARCHAR(100),
+
     CONSTRAINT PK_Status PRIMARY KEY (id)
 );
 
-CREATE TABLE jobs
+CREATE TABLE projects
 (
     id         INT AUTO_INCREMENT,
     name       VARCHAR(50) NOT NULL,
-    start_date DATE,
+    start_date DATE        NOT NULL,
     end_date   DATE,
-    CONSTRAINT PK_Job PRIMARY KEY (id)
+
+    CONSTRAINT PK_Project PRIMARY KEY (id)
 );
 
 CREATE TABLE tasks
@@ -58,7 +62,7 @@ CREATE TABLE tasks
     start_date DATE,
     end_date   DATE,
     user_id    INT         NOT NULL,
-    job_id     INT         NOT NULL,
+    project_id INT         NOT NULL,
     status_id  INT         NOT NULL,
 
     CONSTRAINT PK_Task PRIMARY KEY (id)
@@ -70,8 +74,10 @@ ALTER TABLE users
 
 ALTER TABLE tasks
     ADD CONSTRAINT FK_Task_User FOREIGN KEY (user_id) REFERENCES users (id);
+
 ALTER TABLE tasks
-    ADD CONSTRAINT FK_Task_Job FOREIGN KEY (job_id) REFERENCES jobs (id);
+    ADD CONSTRAINT FK_Task_Project FOREIGN KEY (project_id) REFERENCES projects (id);
+
 ALTER TABLE tasks
     ADD CONSTRAINT FK_Task_Status FOREIGN KEY (status_id) REFERENCES status (id);
 
@@ -85,13 +91,13 @@ VALUES ("admin", "quản trị hệ thống"),
 
 -- 4 users
 INSERT INTO users(email, password, fullname, avatar, role_id)
-VALUES ("nva@gmail.com", "123456", "Nguyen Van A", "admin1.png", 1),
-       ("nvb@gmail.com", "111111", "Nguyen Van B", "manager1.png", 2),
-       ("nvc@gmail.com", "222222", "Nguyen Van C", "manager2.png", 2),
-       ("nvd@gmail.com", "333333", "Nguyen Van D", "employee1.png", 3);
+VALUES ("nva@gmail.com", "1", "Nguyen Van A", "admin1.png", 1),
+       ("nvb@gmail.com", "2", "Nguyen Van B", "manager1.png", 2),
+       ("nvc@gmail.com", "3", "Nguyen Van C", "manager2.png", 2),
+       ("nvd@gmail.com", "4", "Nguyen Van D", "employee1.png", 3);
 
 -- 3 jobs
-INSERT INTO jobs(name, start_date, end_date)
+INSERT INTO projects(name, start_date, end_date)
 VALUES ("Website CRM", "2026-05-01", "2026-06-01"),
        ("Mobile App", "2026-05-10", "2026-07-01"),
        ("Landing Page", "2026-05-15", "2026-05-30");
@@ -104,7 +110,7 @@ VALUES ("Chưa thực hiện"),
 
 
 -- 6 tasks
-INSERT INTO tasks(name, start_date, end_date, user_id, job_id, status_id)
+INSERT INTO tasks(name, start_date, end_date, user_id, project_id, status_id)
 VALUES ("Thiết kế giao diện", "2026-05-01", "2026-05-05", 3, 1, 2),
        ("Code Backend", "2026-05-02", "2026-05-20", 1, 1, 2),
        ("Test API", "2026-05-10", "2026-05-15", 2, 1, 1),
@@ -121,12 +127,15 @@ ALTER TABLE users
 UPDATE users
 SET last_name = "Nguyen"
 WHERE id = 1;
+
 UPDATE users
 SET last_name = "Nguyen"
 WHERE id = 2;
+
 UPDATE users
 SET last_name = "Nguyen"
 WHERE id = 3;
+
 UPDATE users
 SET last_name = "Nguyen"
 WHERE id = 4;
@@ -150,8 +159,8 @@ WHERE id = 4;
 
 # Query test
 WITH tmp AS (SELECT id,
-                    SUBSTRING_INDEX(fullname, ' ', -2)  AS first_name,
-                    SUBSTRING_INDEX(fullname, ' ', 1) AS last_name
+                    SUBSTRING_INDEX(fullname, ' ', -2) AS first_name,
+                    SUBSTRING_INDEX(fullname, ' ', 1)  AS last_name
              FROM users)
 SELECT tmp.*, u.email, r.name
 FROM users u

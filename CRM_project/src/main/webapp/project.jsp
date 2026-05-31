@@ -46,7 +46,7 @@
                 <i class="fa fa-bars"></i>
             </a>
             <div class="top-left-part">
-                <a class="logo" href="/">
+                <a class="logo" href="index.jsp">
                     <b>
                         <img src="plugins/images/pixeladmin-logo.png" alt="home"/>
                     </b>
@@ -106,7 +106,8 @@
                 </li>
                 <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                    aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
+                                                                aria-hidden="true"></i><span
+                            class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task.html" class="waves-effect"><i class="fa fa-table fa-fw"
@@ -131,10 +132,10 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Danh sách quyền</h4>
+                    <h4 class="page-title">Danh sách dự án</h4>
                 </div>
                 <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12 text-right">
-                    <a href="role-add" class="btn btn-sm btn-success">Thêm mới</a>
+                    <a href="project-add" class="btn btn-sm btn-success">Thêm mới</a>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -147,20 +148,23 @@
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên Quyền</th>
-                                    <th>Mô Tả</th>
+                                    <th>Tên Dự Án</th>
+                                    <th>Ngày Bắt Đầu</th>
+                                    <th>Ngày Kết Thúc</th>
                                     <th>Hành Động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${roles}" var="role">
+                                <c:forEach items="${projects}" var="project">
                                     <tr>
-                                        <td>${role.id}</td>
-                                        <td>${role.name}</td>
-                                        <td>${role.description}</td>
+                                        <td>${project.id}</td>
+                                        <td>${project.name}</td>
+                                        <td>${project.formattedStartDate}</td>
+                                        <td>${project.formattedEndDate}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-primary">Sửa</a>
                                             <a href="#" class="btn btn-sm btn-danger">Xóa</a>
+                                            <a href="project-details.html" class="btn btn-sm btn-info">Xem</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -173,7 +177,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2026 &copy; myclass.com</footer>
+        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
     </div>
     <!-- /#page-wrapper -->
 </div>
@@ -186,7 +190,7 @@
 <script src="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
 <script src="js/jquery.slimscroll.js"></script>
-<script src="js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <!--Wave Effects -->
 <script src="js/waves.js"></script>
 <!-- Custom Theme JavaScript -->

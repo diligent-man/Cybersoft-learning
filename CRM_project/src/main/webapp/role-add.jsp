@@ -112,8 +112,8 @@
                             class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
-                    <a href="groupwork.html" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                     aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
+                    <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                                    aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task.html" class="waves-effect"><i class="fa fa-table fa-fw"
@@ -165,7 +165,7 @@
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <button type="submit" class="btn btn-success">Add Role</button>
-                                    <a href="role-table.jsp" class="btn btn-primary">Quay lại</a>
+                                    <a href="role" class="btn btn-primary">Quay lại</a>
                                 </div>
                             </div>
                         </form>
