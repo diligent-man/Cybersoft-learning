@@ -5,6 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class RoleEntity {
     private int id;

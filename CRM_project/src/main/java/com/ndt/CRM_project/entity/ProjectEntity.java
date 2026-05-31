@@ -10,6 +10,7 @@ import lombok.*;
 
 
 @Getter
+@ToString
 @NoArgsConstructor
 public class ProjectEntity {
     @Setter
@@ -39,7 +40,7 @@ public class ProjectEntity {
 
 
     public void setEndDate(String endDate) {
-        this.startDate = convertStringToLocalDate(endDate);
+        this.endDate = convertStringToLocalDate(endDate);
     }
 
 

@@ -35,7 +35,7 @@ public class ProjectRepo {
                 objLst.add(obj);
             }
         } catch (Exception e) {
-            System.out.println("RoleRepo: " + e.getMessage());
+            System.out.println("ProjectRepo: " + e.getMessage());
         }
 
         return objLst;

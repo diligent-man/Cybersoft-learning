@@ -45,9 +45,9 @@ public class ProjectTableFilter extends HttpFilter {
 
             if (path.equals("/") && ALLOWED_VIEW_ROLES.contains(role)) {
                 chain.doFilter(req, res);
-            } else if (path.equals("/user") && ALLOWED_VIEW_ROLES.contains(role)) {
+            } else if (path.equals("/project") && ALLOWED_VIEW_ROLES.contains(role)) {
                 chain.doFilter(req, res);
-            } else if (path.equals("/user-add") && ALLOWED_MOD_ROLES.contains(role)) {
+            } else if (path.equals("/project-add") && ALLOWED_MOD_ROLES.contains(role)) {
                 chain.doFilter(req, res);
             } else {
                 res.sendRedirect(req.getContextPath() + "/login");
