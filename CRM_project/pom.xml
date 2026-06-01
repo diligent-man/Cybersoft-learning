@@ -26,21 +26,21 @@
 
         <junit.version>6.0.0</junit.version>
         <lombok.version>1.18.42</lombok.version>
-        <jakarta.version>11.0.0</jakarta.version>
+        <jakarta.version>10.0.0</jakarta.version>
     </properties>
 
     <dependencies>
         <!-- Java EE -->
+        <!-- https://jakarta.ee/specifications/webprofile/11/apidocs/ -->
         <dependency>
-            <!-- https://jakarta.ee/specifications/webprofile/11/apidocs/ -->
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-web-api</artifactId>
             <version>${jakarta.version}</version>
             <scope>provided</scope>
         </dependency>
 
+        <!-- https://jakarta.ee/specifications/coreprofile/11/apidocs/ -->
         <dependency>
-            <!-- https://jakarta.ee/specifications/coreprofile/11/apidocs/ -->
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-core-api</artifactId>
             <version>${jakarta.version}</version>
@@ -110,24 +110,43 @@
         </dependency>
 
         <!-- old JSTL version -->
+        <!-- <dependency> -->
+        <!--     <groupId>jstl</groupId> -->
+        <!--     <artifactId>jstl</artifactId> -->
+        <!--     <version>1.2</version> -->
+        <!--     <scope>compile</scope> -->
+        <!-- </dependency> -->
+
+        <!-- new JSTL version -->
+        <!-- TODO: Fix -->
         <dependency>
-            <groupId>jstl</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.2</version>
             <scope>compile</scope>
         </dependency>
 
-        <!-- <dependency> -->
-        <!--     <groupId>jakarta.servlet.jsp.jstl</groupId> -->
-        <!--     <artifactId>jakarta.servlet.jsp.jstl-api</artifactId> -->
-        <!--     <version>3.0.2</version> -->
-        <!--     <scope>compile</scope> -->
-        <!-- </dependency> -->
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>10.1.54</version>
+            <scope>compile</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
         <directory>target</directory>
-        <sourceDirectory>src/main</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -135,8 +154,8 @@
                 <version>3.14.0</version>
                 <configuration>
                     <!-- JRE version  -->
-                    <source>25</source>
-                    <target>25</target>
+                    <source>21</source>
+                    <target>21</target>
 
                     <!-- Maven compiler >= 3.6 -->
                     <annotationProcessorPaths>

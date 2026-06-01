@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,8 +117,8 @@
                                                                     aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
-                    <a href="task.html" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                aria-hidden="true"></i><span
+                    <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                               aria-hidden="true"></i><span
                             class="hide-menu">Công việc</span></a>
                 </li>
                 <li>

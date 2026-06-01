@@ -1,34 +1,81 @@
-// package com.ndt.CRM_project.entity;
-//
-// import lombok.Getter;
-// import lombok.NoArgsConstructor;
-// import lombok.Setter;
-//
-// import java.time.LocalDate;
-// import java.time.format.DateTimeFormatter;
-//
-//
-// @Getter
-// @Setter
-// @NoArgsConstructor
-// public class TaskEntity {
-//     private Integer id;
-//
-//     private String name;
-//
-//     private LocalDate startDate;
-//
-//     private LocalDate endDate;
-//
-//
-//     public String getFormattedStartDate() {
-//         return startDate != null ?
-//             startDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "";
-//     }
-//
-//
-//     public String getFormattedEndDate() {
-//         return endDate != null ?
-//             endDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "";
-//     }
-// }
+package com.ndt.CRM_project.entity;
+
+import java.util.Locale;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+
+import lombok.*;
+
+
+@Getter
+@NoArgsConstructor
+public class TaskEntity {
+    @Setter
+    private Integer id;
+
+    @Setter
+    private String name;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    @Setter
+    private Integer userId;
+
+    @Setter
+    private String userFullname;
+
+    @Setter
+    private Integer projectId;
+
+    @Setter
+    private String projectName;
+
+    @Setter
+    private Integer statusId;
+
+    @Setter
+    private String statusName;
+
+
+    @Getter(AccessLevel.NONE)
+    private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    @Getter(AccessLevel.NONE)
+    private final DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("vi", "VN"));
+
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+
+    public void setStartDate(String startDate) {
+        this.startDate = LocalDate.parse(startDate, parseFormatter);
+    }
+
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+
+    public void setEndDate(String endDate) {
+        this.endDate = LocalDate.parse(endDate, parseFormatter);
+    }
+
+
+    public String getFormattedStartDate() {
+        return startDate != null ?
+            startDate.format(displayFormatter) : "";
+    }
+
+
+    public String getFormattedEndDate() {
+        return endDate != null ?
+            endDate.format(displayFormatter) : "";
+    }
+}

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +41,7 @@
 
     <c:remove var="addMsg" scope="session"/>
 </c:if>
+<jsp:useBean id="nowDate" class="java.util.Date" />
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -53,7 +55,7 @@
                 <i class="fa fa-bars"></i>
             </a>
             <div class="top-left-part">
-                <a class="logo" href="index.jsp">
+                <a class="logo" href="/">
                     <b>
                         <img src="plugins/images/pixeladmin-logo.png" alt="home"/>
                     </b>
@@ -117,8 +119,8 @@
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
-                    <a href="task.html" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                aria-hidden="true"></i><span
+                    <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                               aria-hidden="true"></i><span
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
@@ -160,8 +162,7 @@
                             <div class="form-group">
                                 <label class="col-md-12">Ngày bắt đầu</label>
                                 <div class="col-md-12">
-                                    <%-- placeholder="dd/MM/yyyy"  --%>
-                                    <input type="date" value="2026-05-31"
+                                    <input type="date" value="<fmt:formatDate value='${nowDate}' pattern='yyyy-MM-dd'/>"
                                            class="form-control form-control-line"
                                            name="startDate">
                                 </div>
@@ -169,7 +170,7 @@
                             <div class="form-group">
                                 <label class="col-md-12">Ngày kết thúc</label>
                                 <div class="col-md-12">
-                                    <input type="date" value="2026-05-31"
+                                    <input type="date" value="<fmt:formatDate value='${nowDate}' pattern='yyyy-MM-dd'/>"
                                            class="form-control form-control-line"
                                            name="endDate">
                                 </div>

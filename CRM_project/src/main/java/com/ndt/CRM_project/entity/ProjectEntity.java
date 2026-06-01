@@ -23,6 +23,12 @@ public class ProjectEntity {
 
     private LocalDate endDate;
 
+    @Getter(AccessLevel.NONE)
+    private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    @Getter(AccessLevel.NONE)
+    private final DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("vi", "VN"));
+
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
@@ -30,7 +36,7 @@ public class ProjectEntity {
 
 
     public void setStartDate(String startDate) {
-        this.startDate = convertStringToLocalDate(startDate);
+        this.startDate = LocalDate.parse(startDate, parseFormatter);
     }
 
 
@@ -40,24 +46,18 @@ public class ProjectEntity {
 
 
     public void setEndDate(String endDate) {
-        this.endDate = convertStringToLocalDate(endDate);
-    }
-
-
-    public LocalDate convertStringToLocalDate(String dateStr) {
-        DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("vi", "VN"));
-        return LocalDate.parse(dateStr, parseFormatter);
+        this.endDate = LocalDate.parse(endDate, parseFormatter);
     }
 
 
     public String getFormattedStartDate() {
         return startDate != null ?
-            startDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "";
+            startDate.format(displayFormatter) : "";
     }
 
 
     public String getFormattedEndDate() {
         return endDate != null ?
-            endDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "";
+            endDate.format(displayFormatter) : "";
     }
 }

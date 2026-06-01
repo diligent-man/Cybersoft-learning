@@ -166,3 +166,13 @@ SELECT tmp.*, u.email, r.name
 FROM users u
          JOIN tmp on tmp.id = u.id
          JOIN roles r ON r.id = u.role_id;
+
+
+SELECT t.id, t.name, t.start_date, t.end_date,
+       prj.name AS 'project_name',
+       st.name AS 'status_name',
+       u.fullname AS 'user_name'
+FROM tasks t
+         JOIN projects prj ON t.project_id = prj.id
+         JOIN status st ON t.status_id = st.id
+         JOIN users u ON t.user_id = u.id

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@
                 <i class="fa fa-bars"></i>
             </a>
             <div class="top-left-part">
-                <a class="logo" href="index.jsp">
+                <a class="logo" href="/">
                     <b>
                         <img src="plugins/images/pixeladmin-logo.png" alt="home"/>
                     </b>
@@ -110,8 +110,8 @@
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
-                    <a href="task.html" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                aria-hidden="true"></i><span
+                    <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                               aria-hidden="true"></i><span
                             class="hide-menu">Công việc</span></a>
                 </li>
                 <li>
