@@ -20,13 +20,14 @@
     </licenses>
 
     <properties>
-        <maven.compiler.target>25</maven.compiler.target>
-        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <junit.version>6.0.0</junit.version>
         <lombok.version>1.18.42</lombok.version>
-        <jakarta.version>10.0.0</jakarta.version>
+        <jakarta.version>11.0.0</jakarta.version>
+        <tomee.version>10.1.5</tomee.version>
     </properties>
 
     <dependencies>
@@ -118,35 +119,25 @@
         <!-- </dependency> -->
 
         <!-- new JSTL version -->
-        <!-- TODO: Fix -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Scope of this must be 'runtime' cuz it a specific implementation of JSTL -->
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.1</version>
             <scope>runtime</scope>
         </dependency>
-
-        <dependency>
-            <groupId>jakarta.servlet.jsp.jstl</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>3.0.2</version>
-            <scope>compile</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jasper</artifactId>
-            <version>10.1.54</version>
-            <scope>compile</scope>
-        </dependency>
-
-
     </dependencies>
 
     <build>
         <directory>target</directory>
-        <sourceDirectory>src/main/java</sourceDirectory>
+        <sourceDirectory>src/main</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -172,6 +163,28 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomee.maven</groupId>
+                <artifactId>tomee-maven-plugin</artifactId>
+                <version>${tomee.version}</version>
+                <configuration>
+                    <debug>false</debug>
+                    <context>ROOT</context>
+                    <tomeeHttpPort>8080</tomeeHttpPort>
+                    <tomeeClassifier>plume</tomeeClassifier>
+                    <config>${project.basedir}/src/main/tomee/conf</config>
+
+                    <!-- if you want to update each time you build with mvn compile -->
+                    <synchronization>
+                        <extensions>
+                            <extension>.class</extension>
+                            <extension>.jsp</extension>
+                        </extensions>
+                    </synchronization>
+                    <reloadOnUpdate>false</reloadOnUpdate>
+                </configuration>
             </plugin>
         </plugins>
     </build>

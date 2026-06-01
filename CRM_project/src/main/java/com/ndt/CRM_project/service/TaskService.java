@@ -1,6 +1,8 @@
 package com.ndt.CRM_project.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 import com.ndt.CRM_project.entity.ProjectEntity;
@@ -21,4 +23,11 @@ public class TaskService {
     // public boolean addTask(ProjectEntity obj) {
     //     return projectRepo.save(obj) > 0;
     // }
+
+    public Map<String, List<TaskEntity>> getTaskByStatus (){
+        List<TaskEntity> tasks = taskRepo.findAll();
+        return tasks.stream().collect(
+            Collectors.groupingBy(TaskEntity::getStatusName)
+        );
+    }
 }

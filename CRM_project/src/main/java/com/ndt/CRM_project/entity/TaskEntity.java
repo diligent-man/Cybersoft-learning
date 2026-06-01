@@ -40,6 +40,9 @@ public class TaskEntity {
     @Setter
     private String statusName;
 
+    @Setter
+    private String statusColor;
+
 
     @Getter(AccessLevel.NONE)
     private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

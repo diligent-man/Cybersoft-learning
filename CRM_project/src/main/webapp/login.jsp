@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page import="java.net.URLDecoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 
@@ -35,7 +35,8 @@
                         <input type="password" class="form-control" name="password" value="${password}">
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" name="remember" class="btn btn-primary" ${cookie.remember.value == 'on' ? 'checked' : ''}> Ghi nhớ
+                        <input type="checkbox" name="remember"
+                               class="btn btn-primary" ${cookie.remember.value == 'on' ? 'checked' : ''}> Ghi nhớ
                     </div>
                     <button type="submit" class="btn btn-primary">Đăng nhập</button>
                 </form>

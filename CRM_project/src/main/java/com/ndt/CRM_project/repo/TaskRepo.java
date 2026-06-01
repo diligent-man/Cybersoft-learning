@@ -21,7 +21,7 @@ public class TaskRepo {
         String query = """
                 SELECT t.id, t.name, t.start_date, t.end_date,
                        prj.name AS 'project_name',
-                       st.name AS 'status_name',
+                       st.name AS 'status_name', st.color AS 'status_color',
                        u.fullname AS 'user_name'
                 FROM tasks t
                     JOIN projects prj ON t.project_id = prj.id
@@ -43,6 +43,7 @@ public class TaskRepo {
                 obj.setEndDate(rs.getString("end_date"));
                 obj.setProjectName(rs.getString("project_name"));
                 obj.setStatusName(rs.getString("status_name"));
+                obj.setStatusColor(rs.getString("status_color"));
                 obj.setUserFullname(rs.getString("user_name"));
 
                 objLst.add(obj);

@@ -41,7 +41,7 @@ CREATE TABLE status
     id          INT AUTO_INCREMENT,
     name        VARCHAR(50) NOT NULL,
     description VARCHAR(100),
-
+    color       VARCHAR(30) NOT NULL,
     CONSTRAINT PK_Status PRIMARY KEY (id)
 );
 
@@ -103,10 +103,10 @@ VALUES ("Website CRM", "2026-05-01", "2026-06-01"),
        ("Landing Page", "2026-05-15", "2026-05-30");
 
 -- 3 status
-INSERT INTO status(name)
-VALUES ("Chưa thực hiện"),
-       ("Đang thực hiện"),
-       ("Đang thực hiện");
+INSERT INTO status(name, color)
+VALUES ("Chưa bắt đầu", "text-danger"),
+       ("Đang thực hiện", "text-megna"),
+       ("Đã hoàn thành", "text-primary");
 
 
 -- 6 tasks
@@ -168,11 +168,23 @@ FROM users u
          JOIN roles r ON r.id = u.role_id;
 
 
-SELECT t.id, t.name, t.start_date, t.end_date,
-       prj.name AS 'project_name',
-       st.name AS 'status_name',
+SELECT t.id,
+       t.name,
+       t.start_date,
+       t.end_date,
+       prj.name   AS 'project_name',
+       st.name    AS 'status_name',
        u.fullname AS 'user_name'
 FROM tasks t
          JOIN projects prj ON t.project_id = prj.id
          JOIN status st ON t.status_id = st.id
-         JOIN users u ON t.user_id = u.id
+         JOIN users u ON t.user_id = u.id;
+
+
+SELECT st.name, COUNT(t.status_id)
+FROM status st
+         LEFT JOIN tasks t ON t.status_id = st.id
+GROUP BY t.status_id, st.name;
+
+select * from status;
+select * from tasks;

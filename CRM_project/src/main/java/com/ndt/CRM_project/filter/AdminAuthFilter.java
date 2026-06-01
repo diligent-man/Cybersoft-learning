@@ -4,8 +4,8 @@ import java.util.*;
 import java.io.IOException;
 
 
-import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletException;
 
 import jakarta.servlet.http.Cookie;
@@ -18,8 +18,8 @@ import jakarta.servlet.annotation.WebFilter;
 
 @WebFilter(
     filterName = "adminAuthFilter",
-    urlPatterns = {"/index.jsp"},
-    dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD}
+    urlPatterns = {"/index.*"},
+    dispatcherTypes = {DispatcherType.REQUEST}  // activate on REQUEST http only
 )
 public class AdminAuthFilter extends HttpFilter {
     private final Set<String> ALLOWED_ROLES = new HashSet<>(List.of("manager", "admin"));
@@ -36,9 +36,7 @@ public class AdminAuthFilter extends HttpFilter {
                     role = cookie.getValue();
 
         if (role != null) {
-            String path = req.getServletPath();
-
-            if (path.equals("/index.jsp") && (ALLOWED_ROLES.contains(role))) {
+            if (ALLOWED_ROLES.contains(role)) {
                 chain.doFilter(req, res);
             } else {
                 res.sendRedirect(req.getContextPath() + "/login");
