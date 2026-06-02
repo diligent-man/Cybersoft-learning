@@ -18,7 +18,7 @@ import jakarta.servlet.annotation.WebFilter;
 
 @WebFilter(
     filterName = "adminAuthFilter",
-    urlPatterns = {"/index.*"},
+    urlPatterns = {"", "/", "/index"},
     dispatcherTypes = {DispatcherType.REQUEST}  // activate on REQUEST http only
 )
 public class AdminAuthFilter extends HttpFilter {

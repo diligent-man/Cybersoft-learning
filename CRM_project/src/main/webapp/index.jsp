@@ -26,23 +26,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/plugins/images/favicon.png">
     <title>Pixel Admin</title>
     <!-- Bootstrap Core CSS -->
-    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Menu CSS -->
-    <link href="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
     <!-- toast CSS -->
-    <link href="plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
     <!-- morris CSS -->
-    <link href="plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
     <!-- animation CSS -->
-    <link href="css/animate.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <!-- color CSS -->
-    <link href="css/colors/blue-dark.css" id="theme" rel="stylesheet">
-    <link rel="stylesheet" href="./css/custom.css">
+    <link href="${pageContext.request.contextPath}/css/colors/blue-dark.css" id="theme" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -50,7 +51,6 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
 <c:if test="${not empty cookie.loginMsg.value}">
     <script>
@@ -61,7 +61,8 @@
     </script>
 </c:if>
 
-<!-- Preloader -->
+
+<%--<!-- Preloader -->--%>
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
 </div>
@@ -158,91 +159,46 @@
         </div>
     </div>
 
-    <!-- Left navbar-header end -->
-    <!-- Page Content -->
-    <div id="page-wrapper">
-        <div class="container-fluid">
-            <div class="row bg-title">
-                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Dashboard</h4>
-                </div>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
+    <%--    <!-- Left navbar-header end -->--%>
+    <%--    <!-- Page Content -->--%>
+    <%--    <div id="page-wrapper">--%>
+    <%--        <div class="container-fluid">--%>
+    <%--            <div class="row bg-title">--%>
+    <%--                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">--%>
+    <%--                    <h4 class="page-title">Dashboard</h4>--%>
+    <%--                </div>--%>
+    <%--            </div>--%>
+    <%--            <!-- /.col-lg-12 -->--%>
+    <%--        </div>--%>
+    <%--        <!-- /.container-fluid -->--%>
 
-        <!-- row -->
-        <div class="row">
-            <c:forEach items="${taskStatusStats}" var="stats">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="white-box">
-                        <div class="col-in row">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <i data-icon="E" class="linea-icon linea-basic"></i>
-                                <h5 class="text-muted vb">${stats.name}</h5>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 <c:out value='${stats.color}'/>"> ${stats.numTask}</h3>
-                            </div>
-                            <div class=" col-md-12 col-sm-12 col-xs-12">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40"
-                                         aria-valuemin="0" aria-valuemax="100"
-                                         style="width: <c:out value='${stats.numTask / totalTask * 100}'/>%">
-                                        <span class="sr-only">40% Complete (success)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </div>
 
-        <!-- /.row -->
-        <!--row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title">Sales Difference</h3>
-                    <ul class="list-inline text-right">
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #dadada;"></i>Site A View</h5>
-                        </li>
-                        <li>
-                            <h5><i class="fa fa-circle m-r-5" style="color: #aec9cb;"></i>Site B View</h5>
-                        </li>
-                    </ul>
-                    <div id="morris-area-chart2" style="height: 370px;"></div>
-                </div>
-            </div>
-        </div>
+    <%--    </div>--%>
+    <%--    <footer class="footer text-center"> 2016 &copy; myclass.com</footer>--%>
+    <%--</div>--%>
+    <%--<!-- /#page-wrapper -->--%>
+    <%--</div>--%>
+    <%--<!-- /#wrapper -->--%>
 
-    <!-- /.container-fluid -->
-    <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
-    </div>
-    <!-- /#page-wrapper -->
-</div>
-<!-- /#wrapper -->
-
-<!-- jQuery -->
-<script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Menu Plugin JavaScript -->
-<script src="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
-<!--slimscroll JavaScript -->
-<script src="js/jquery.slimscroll.js"></script>
-<!--Wave Effects -->
-<script src="js/waves.js"></script>
-<!--Counter js -->
-<script src="plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
-<script src="plugins/bower_components/counterup/jquery.counterup.min.js"></script>
-<!--Morris JavaScript -->
-<script src="plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="plugins/bower_components/morrisjs/morris.js"></script>
-<!-- Custom Theme JavaScript -->
-<script src="js/custom.min.js"></script>
-<script src="js/dashboard1.js"></script>
-<script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+    <!-- jQuery -->
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="${pageContext.request.contextPath}/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="${pageContext.request.contextPath}/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="${pageContext.request.contextPath}/js/waves.js"></script>
+    <!--Counter js -->
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+    <!--Morris JavaScript -->
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/raphael/raphael-min.js"></script>
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/morrisjs/morris.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="${pageContext.request.contextPath}/js/custom.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/dashboard1.js"></script>
+    <script src="${pageContext.request.contextPath}/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
 </body>
 </html>
