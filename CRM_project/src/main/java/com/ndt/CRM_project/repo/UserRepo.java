@@ -14,7 +14,7 @@ public class UserRepo {
     public List<UserEntity> findAll() {
         List<UserEntity> users = new ArrayList<>();
         String query = """
-                SELECT u.id, u.first_name, u.last_name, u.email, r.name AS role_name
+                SELECT u.id, u.fullname, u.first_name, u.last_name, u.email, r.name AS role_name
                 FROM users u
                 JOIN roles r ON u.role_id = r.id
             """;
@@ -27,6 +27,7 @@ public class UserRepo {
                 while (rs.next()) {
                     UserEntity user = new UserEntity();
                     user.setId(rs.getInt("id"));
+                    user.setFullname(rs.getString("fullname"));
                     user.setFirstName(rs.getString("first_name"));
                     user.setLastName(rs.getString("last_name"));
                     user.setEmail(rs.getString("email"));
