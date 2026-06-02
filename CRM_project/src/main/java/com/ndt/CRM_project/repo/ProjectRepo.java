@@ -19,23 +19,26 @@ public class ProjectRepo {
 
         String query = "SELECT * FROM projects";
 
-        try {
-            Connection conn = MysqlConfig.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                ProjectEntity obj = new ProjectEntity();
+                while (rs.next()) {
+                    ProjectEntity obj = new ProjectEntity();
 
-                obj.setId(rs.getInt("id"));
-                obj.setName(rs.getString("name"));
-                obj.setStartDate(rs.getString("start_date"));
-                obj.setEndDate(rs.getString("end_date"));
+                    obj.setId(rs.getInt("id"));
+                    obj.setName(rs.getString("name"));
+                    obj.setStartDate(rs.getString("start_date"));
+                    obj.setEndDate(rs.getString("end_date"));
 
-                objLst.add(obj);
+                    objLst.add(obj);
+                }
+            } catch (SQLException e) {
+                System.out.println("ProjectRepo: " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println("ProjectRepo: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
 
         return objLst;
@@ -49,17 +52,20 @@ public class ProjectRepo {
             INSERT INTO projects(name, start_date, end_date) VALUES (?, ?, ?)
             """;
 
-        try {
-            Connection conn = MysqlConfig.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
 
-            stmt.setString(1, obj.getName());
-            stmt.setDate(2, Date.valueOf(obj.getStartDate()));
-            stmt.setDate(3, Date.valueOf(obj.getEndDate()));
+                stmt.setString(1, obj.getName());
+                stmt.setDate(2, Date.valueOf(obj.getStartDate()));
+                stmt.setDate(3, Date.valueOf(obj.getEndDate()));
 
-            updatedRow = stmt.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("ProjectRepo: " + e.getMessage());
+                updatedRow = stmt.executeUpdate();
+            } catch (Exception e) {
+                System.out.println("ProjectRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
         return updatedRow;
     }

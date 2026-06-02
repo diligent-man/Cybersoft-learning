@@ -18,7 +18,11 @@ import jakarta.servlet.annotation.WebFilter;
 
 @WebFilter(
     filterName = "adminAuthFilter",
-    urlPatterns = {"", "/", "/index"},
+    urlPatterns = {
+        "", "/",
+        "/index", "/index.jsp", "/index.html",
+        "/dashboard", "/home"
+    },
     dispatcherTypes = {DispatcherType.REQUEST}  // activate on REQUEST http only
 )
 public class AdminAuthFilter extends HttpFilter {
@@ -37,7 +41,13 @@ public class AdminAuthFilter extends HttpFilter {
 
         if (role != null) {
             if (ALLOWED_ROLES.contains(role)) {
-                chain.doFilter(req, res);
+                String path = req.getServletPath();
+
+                if (path.startsWith("/index.")) {
+                    res.sendRedirect(req.getContextPath() + "/");
+                } else {
+                    chain.doFilter(req, res);
+                }
             } else {
                 res.sendRedirect(req.getContextPath() + "/login");
             }

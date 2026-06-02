@@ -2,14 +2,13 @@ package com.ndt.CRM_project.repo;
 
 import java.sql.*;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
-import com.ndt.CRM_project.dto.TaskStatusCount;
 import com.ndt.CRM_project.entity.TaskEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
+import com.ndt.CRM_project.dto.TaskStatusCount;
 
 
 /**
@@ -29,28 +28,30 @@ public class TaskRepo {
                     JOIN status st ON t.status_id = st.id
                     JOIN users u ON t.user_id = u.id
             """;
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
 
-        try {
-            Connection conn = MysqlConfig.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    TaskEntity obj = new TaskEntity();
 
-            while (rs.next()) {
-                TaskEntity obj = new TaskEntity();
+                    obj.setId(rs.getInt("id"));
+                    obj.setName(rs.getString("name"));
+                    obj.setStartDate(rs.getString("start_date"));
+                    obj.setEndDate(rs.getString("end_date"));
+                    obj.setProjectName(rs.getString("project_name"));
+                    obj.setStatusName(rs.getString("status_name"));
+                    obj.setStatusColor(rs.getString("status_color"));
+                    obj.setUserFullname(rs.getString("user_name"));
 
-                obj.setId(rs.getInt("id"));
-                obj.setName(rs.getString("name"));
-                obj.setStartDate(rs.getString("start_date"));
-                obj.setEndDate(rs.getString("end_date"));
-                obj.setProjectName(rs.getString("project_name"));
-                obj.setStatusName(rs.getString("status_name"));
-                obj.setStatusColor(rs.getString("status_color"));
-                obj.setUserFullname(rs.getString("user_name"));
-
-                objLst.add(obj);
+                    objLst.add(obj);
+                }
+            } catch (SQLException e) {
+                System.out.println("TaskRepo: " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println("TaskRepo: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
         return objLst;
     }
@@ -66,22 +67,25 @@ public class TaskRepo {
                 GROUP BY t.status_id, st.name, st.color;
             """;
 
-        try {
-            Connection conn = MysqlConfig.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                TaskStatusCount obj = new TaskStatusCount();
+                while (rs.next()) {
+                    TaskStatusCount obj = new TaskStatusCount();
 
-                obj.setName(rs.getString("name"));
-                obj.setColor(rs.getString("color"));
-                obj.setNumTask(rs.getLong("num_task"));
+                    obj.setName(rs.getString("name"));
+                    obj.setColor(rs.getString("color"));
+                    obj.setNumTask(rs.getLong("num_task"));
 
-                objLst.add(obj);
+                    objLst.add(obj);
+                }
+            } catch (SQLException e) {
+                System.out.println("TaskRepo: " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println("TaskRepo: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
         return objLst;
     }
