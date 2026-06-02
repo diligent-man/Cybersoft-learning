@@ -1,6 +1,7 @@
 package com.ndt.CRM_project.controller;
 
 
+import com.ndt.CRM_project.dto.TaskStatusCount;
 import com.ndt.CRM_project.entity.TaskEntity;
 import com.ndt.CRM_project.service.TaskService;
 import jakarta.servlet.ServletException;
@@ -23,23 +24,22 @@ public class DashboardController extends HttpServlet {
 
     private Long totalTask;
 
-    private Map<String, List<TaskEntity>> taskStats = taskService.getTaskByStatus();
+    private final List<TaskStatusCount> taskStatusStats = taskService.getTaskByStatus();
 
 
     @Override
     public void init() throws ServletException {
-        taskStats = taskService.getTaskByStatus();
-        totalTask = taskStats.values().parallelStream().mapToLong(List::size).sum();
-
-
-        System.out.println(totalTask);
-        System.out.println(taskStats);
+        totalTask = taskStatusStats
+            .parallelStream()
+            .map(TaskStatusCount::getNumTask)
+            .reduce(Long::sum)
+            .orElse(1L);
     }
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("taskStats", taskStats);
+        req.setAttribute("taskStatusStats", taskStatusStats);
         req.setAttribute("totalTask", totalTask);
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }

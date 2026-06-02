@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <%@ page import="java.net.URLDecoder" %>
@@ -8,7 +8,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <script>
         function deleteCookie(name) {
@@ -27,7 +26,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <title>Pixel Admin</title>
     <!-- Bootstrap Core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -66,6 +65,7 @@
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
 </div>
+
 <div id="wrapper">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top m-b-0">
@@ -74,16 +74,16 @@
                data-target=".navbar-collapse">
                 <i class="fa fa-bars"></i>
             </a>
+
             <div class="top-left-part">
                 <a class="logo" href="/">
-                    <b>
-                        <img src="plugins/images/pixeladmin-logo.png" alt="home"/>
-                    </b>
+                    <b><img src="plugins/images/pixeladmin-logo.png" alt="home"/></b>
                     <span class="hidden-xs">
-                            <img src="plugins/images/pixeladmin-text.png" alt="home"/>
-                        </span>
+                        <img src="plugins/images/pixeladmin-text.png" alt="home"/>
+                    </span>
                 </a>
             </div>
+
             <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
                 <li>
                     <form role="search" class="app-search hidden-xs">
@@ -94,6 +94,7 @@
                     </form>
                 </li>
             </ul>
+
             <ul class="nav navbar-top-links navbar-right pull-right">
                 <li>
                     <div class="dropdown">
@@ -115,6 +116,7 @@
         <!-- /.navbar-top-links -->
         <!-- /.navbar-static-side -->
     </nav>
+
     <!-- Left navbar-header -->
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse slimscrollsidebar">
@@ -155,6 +157,7 @@
             </ul>
         </div>
     </div>
+
     <!-- Left navbar-header end -->
     <!-- Page Content -->
     <div id="page-wrapper">
@@ -166,24 +169,25 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+
         <!-- row -->
         <div class="row">
-            <c:forEach items="${taskStats}" var="taskStatEntry">
+            <c:forEach items="${taskStatusStats}" var="stats">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="white-box">
                         <div class="col-in row">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <i data-icon="E" class="linea-icon linea-basic"></i>
-                                <h5 class="text-muted vb">${taskStatEntry.key}</h5>
+                                <h5 class="text-muted vb">${stats.name}</h5>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 <c:out value='${taskStatEntry.value[0].statusColor}'/>"> ${fn:length(taskStatEntry.value)}</h3>
+                                <h3 class="counter text-right m-t-15 <c:out value='${stats.color}'/>"> ${stats.numTask}</h3>
                             </div>
                             <div class=" col-md-12 col-sm-12 col-xs-12">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40"
                                          aria-valuemin="0" aria-valuemax="100"
-                                         style="width: <c:out value='${fn:length(taskStatEntry.value) / totalTask * 100}'/>%">
+                                         style="width: <c:out value='${stats.numTask / totalTask * 100}'/>%">
                                         <span class="sr-only">40% Complete (success)</span>
                                     </div>
                                 </div>
@@ -192,60 +196,8 @@
                     </div>
                 </div>
             </c:forEach>
-
-
-            <!--col -->
-
-
-            <!-- /.col -->
-            <!--col -->
-            <%--            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">--%>
-            <%--                <div class="white-box">--%>
-            <%--                    <div class="col-in row">--%>
-            <%--                        <div class="col-md-6 col-sm-6 col-xs-6"><i class="linea-icon linea-basic"--%>
-            <%--                                                                   data-icon="&#xe01b;"></i>--%>
-            <%--                            <h5 class="text-muted vb">ĐANG THỰC HIỆN</h5>--%>
-            <%--                        </div>--%>
-            <%--                        <div class="col-md-6 col-sm-6 col-xs-6">--%>
-            <%--                            <h3 class="counter text-right m-t-15 text-megna">169</h3>--%>
-            <%--                        </div>--%>
-            <%--                        <div class="col-md-12 col-sm-12 col-xs-12">--%>
-            <%--                            <div class="progress">--%>
-            <%--                                <div class="progress-bar progress-bar-megna" role="progressbar" aria-valuenow="40"--%>
-            <%--                                     aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span--%>
-            <%--                                        class="sr-only">40% Complete (success)</span></div>--%>
-            <%--                            </div>--%>
-            <%--                        </div>--%>
-            <%--                    </div>--%>
-            <%--                </div>--%>
-            <%--            </div>--%>
-
-
-            <%--            <!-- /.col -->--%>
-            <%--            <!--col -->--%>
-
-            <%--            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">--%>
-            <%--                <div class="white-box">--%>
-            <%--                    <div class="col-in row">--%>
-            <%--                        <div class="col-md-6 col-sm-6 col-xs-6"><i class="linea-icon linea-basic"--%>
-            <%--                                                                   data-icon="&#xe00b;"></i>--%>
-            <%--                            <h5 class="text-muted vb">ĐÃ HOÀN THÀNH</h5>--%>
-            <%--                        </div>--%>
-            <%--                        <div class="col-md-6 col-sm-6 col-xs-6">--%>
-            <%--                            <h3 class="counter text-right m-t-15 text-primary">157</h3>--%>
-            <%--                        </div>--%>
-            <%--                        <div class="col-md-12 col-sm-12 col-xs-12">--%>
-            <%--                            <div class="progress">--%>
-            <%--                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="40"--%>
-            <%--                                     aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span--%>
-            <%--                                        class="sr-only">40% Complete (success)</span></div>--%>
-            <%--                            </div>--%>
-            <%--                        </div>--%>
-            <%--                    </div>--%>
-            <%--                </div>--%>
-            <%--            </div>--%>
-            <!-- /.col -->
         </div>
+
         <!-- /.row -->
         <!--row -->
         <div class="row">
@@ -264,13 +216,14 @@
                 </div>
             </div>
         </div>
-    </div>
+
     <!-- /.container-fluid -->
     <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
-</div>
-<!-- /#page-wrapper -->
+    </div>
+    <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
+
 <!-- jQuery -->
 <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
@@ -292,5 +245,4 @@
 <script src="js/dashboard1.js"></script>
 <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
 </body>
-
 </html>

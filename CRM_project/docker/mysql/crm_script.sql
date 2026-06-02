@@ -181,10 +181,10 @@ FROM tasks t
          JOIN users u ON t.user_id = u.id;
 
 
-SELECT st.name, COUNT(t.status_id)
-FROM status st
-         LEFT JOIN tasks t ON t.status_id = st.id
-GROUP BY t.status_id, st.name;
+SELECT st.name, st.color, COUNT(t.status_id) AS 'num_task'
+FROM tasks t
+    RIGHT JOIN status st ON t.status_id = st.id
+GROUP BY t.status_id, st.name, st.color;
 
 select * from status;
 select * from tasks;

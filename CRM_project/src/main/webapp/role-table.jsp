@@ -37,6 +37,7 @@
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
 </div>
+
 <div id="wrapper">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top m-b-0">
@@ -176,7 +177,9 @@
         <footer class="footer text-center"> 2026 &copy; myclass.com</footer>
     </div>
     <!-- /#page-wrapper -->
+    <%--   TODO: fix --%>
 </div>
+
 <!-- /#wrapper -->
 <!-- jQuery -->
 <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
@@ -197,5 +200,4 @@
     });
 </script>
 </body>
-
 </html>

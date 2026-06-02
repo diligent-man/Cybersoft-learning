@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ndt.CRM_project.dto.TaskStatusCount;
 import com.ndt.CRM_project.entity.TaskEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
 
@@ -51,10 +52,39 @@ public class TaskRepo {
         } catch (Exception e) {
             System.out.println("TaskRepo: " + e.getMessage());
         }
-
         return objLst;
     }
 
+
+    public List<TaskStatusCount> findTaskByStatus() {
+        List<TaskStatusCount> objLst = new ArrayList<>();
+
+        String query = """
+                SELECT st.name, st.color, COUNT(t.status_id) AS 'num_task'
+                FROM tasks t
+                    RIGHT JOIN status st ON t.status_id = st.id
+                GROUP BY t.status_id, st.name, st.color;
+            """;
+
+        try {
+            Connection conn = MysqlConfig.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                TaskStatusCount obj = new TaskStatusCount();
+
+                obj.setName(rs.getString("name"));
+                obj.setColor(rs.getString("color"));
+                obj.setNumTask(rs.getLong("num_task"));
+
+                objLst.add(obj);
+            }
+        } catch (Exception e) {
+            System.out.println("TaskRepo: " + e.getMessage());
+        }
+        return objLst;
+    }
 
     // public int save(ProjectEntity obj) {
     //     int updatedRow = 0;
