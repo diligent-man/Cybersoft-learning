@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.ndt.CRM_project.dto.UserTaskStatusCount;
 import com.ndt.CRM_project.entity.TaskEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
 import com.ndt.CRM_project.dto.TaskStatusCount;
@@ -89,6 +90,53 @@ public class TaskRepo {
         }
         return objLst;
     }
+
+
+    public List<UserTaskStatusCount> findTaskByStatus(Integer userId) {
+        List<UserTaskStatusCount> objLst = new ArrayList<>();
+
+        String query = """
+                SELECT u.id, u.fullname, u.email,
+                       st.name AS 'status_name',
+                       st.color,
+                       COUNT(t.status_id)               AS 'num_task',
+                       GROUP_CONCAT(t.id ORDER BY t.id) AS task_ids
+                FROM tasks t
+                         RIGHT JOIN status st ON t.status_id = st.id
+                         JOIN users u ON t.user_id = u.id
+                WHERE t.user_id = ?
+                GROUP BY t.status_id, st.name, st.color;
+            """;
+
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setInt(1, userId);
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    UserTaskStatusCount obj = new UserTaskStatusCount();
+
+                    obj.setUserId(rs.getInt("id"));
+                    obj.setFullName(rs.getString("fullname"));
+                    obj.setEmail(rs.getString("email"));
+                    obj.setStatusName(rs.getString("status_name"));
+                    obj.setColor(rs.getString("color"));
+                    obj.setNumTask(rs.getInt("num_task"));
+                    obj.setTaskIds(rs.getString("task_ids"));
+
+                    objLst.add(obj);
+                }
+            } catch (SQLException e) {
+                System.out.println("TaskRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+        }
+        return objLst;
+    }
+
 
     // public int save(ProjectEntity obj) {
     //     int updatedRow = 0;

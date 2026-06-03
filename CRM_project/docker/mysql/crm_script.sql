@@ -113,6 +113,7 @@ VALUES ("Chưa bắt đầu", "text-danger"),
 INSERT INTO tasks(name, start_date, end_date, user_id, project_id, status_id)
 VALUES ("Thiết kế giao diện", "2026-05-01", "2026-05-05", 3, 1, 2),
        ("Code Backend", "2026-05-02", "2026-05-20", 1, 1, 2),
+       ("Code Frontend", "2026-06-02", "2026-07-20", 1, 1, 2),
        ("Test API", "2026-05-10", "2026-05-15", 2, 1, 1),
        ("Làm Login Mobile", "2026-05-11", "2026-05-25", 4, 2, 2),
        ("Deploy Website", "2026-05-20", "2026-05-28", 1, 3, 1);
@@ -183,9 +184,31 @@ FROM tasks t
 
 SELECT st.name, st.color, COUNT(t.status_id) AS 'num_task'
 FROM tasks t
-    RIGHT JOIN status st ON t.status_id = st.id
+         RIGHT JOIN status st ON t.status_id = st.id
 GROUP BY t.status_id, st.name, st.color;
 
-select * from status;
-select * from tasks;
-select * from users
+
+SELECT u.id, u.fullname, u.email,
+       st.name AS 'status_name',
+       st.color,
+       COUNT(t.status_id)               AS 'num_task',
+       GROUP_CONCAT(t.id ORDER BY t.id) AS task_ids
+FROM tasks t
+         RIGHT JOIN status st ON t.status_id = st.id
+         JOIN users u ON t.user_id = u.id
+
+WHERE t.user_id = 1
+GROUP BY t.status_id, st.name, st.color;
+
+
+select *
+from status;
+
+select *
+from tasks;
+
+select *
+from users
+
+
+

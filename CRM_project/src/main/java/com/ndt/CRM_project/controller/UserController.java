@@ -1,8 +1,12 @@
 package com.ndt.CRM_project.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
+import com.ndt.CRM_project.dto.UserTaskStatusCount;
+import com.ndt.CRM_project.service.TaskService;
 import jakarta.servlet.http.*;
 
 import jakarta.servlet.ServletException;
@@ -14,11 +18,13 @@ import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.service.UserService;
 
 
-@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update"})
+@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update", "/user-details"})
 public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
 
     private final RoleService roleService = new RoleService();
+
+    private final TaskService taskService = new TaskService();
 
 
     @Override
@@ -101,6 +107,15 @@ public class UserController extends HttpServlet {
                     session.setAttribute("roles", roleService.getAll());
                     resp.sendRedirect(req.getContextPath() + "/user-add");
                 }
+            }
+
+            case "/user-details" -> {
+                Integer userId = Integer.parseInt(req.getParameter("userId"));
+
+                List<UserTaskStatusCount> userTaskStatusCountLst = taskService.getTaskByStatus(userId);
+
+                System.out.println(userTaskStatusCountLst);
+
             }
         }
     }

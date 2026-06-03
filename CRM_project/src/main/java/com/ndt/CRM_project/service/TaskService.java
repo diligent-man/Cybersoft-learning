@@ -3,6 +3,7 @@ package com.ndt.CRM_project.service;
 import java.util.List;
 
 
+import com.ndt.CRM_project.dto.UserTaskStatusCount;
 import com.ndt.CRM_project.repo.TaskRepo;
 import com.ndt.CRM_project.entity.TaskEntity;
 import com.ndt.CRM_project.dto.TaskStatusCount;
@@ -24,5 +25,9 @@ public class TaskService {
 
     public List<TaskStatusCount> getTaskByStatus() {
         return taskRepo.findTaskByStatus();
+    }
+
+    public List<UserTaskStatusCount> getTaskByStatus(Integer userId) {
+        return taskRepo.findTaskByStatus(userId);
     }
 }

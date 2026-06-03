@@ -14,9 +14,11 @@ public class UserService {
         return userRepo.findAll();
     }
 
+
     public UserEntity getUserById(Integer id) {
-         return userRepo.findById(id).orElse(null);
+        return userRepo.findById(id).orElse(null);
     }
+
 
     public boolean save(UserEntity user) {
         return userRepo.save(user) > 0;

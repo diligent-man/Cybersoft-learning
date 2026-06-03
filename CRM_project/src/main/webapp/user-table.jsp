@@ -171,8 +171,13 @@
                                                 <input type="hidden" name="userId" value="${user.id}"/>
                                                 <button type="submit" class="btn btn-sm btn-primary">Sửa</button>
                                             </form>
+
                                             <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                            <a href="user-details.jsp" class="btn btn-sm btn-info">Xem</a>
+
+                                            <form action="user-details" method="post" style="display:inline;">
+                                                <input type="hidden" name="userId" value="${user.id}"/>
+                                                <button type="submit" class="btn btn-sm btn-primary">Xem</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </c:forEach>
