@@ -3,10 +3,7 @@ package com.ndt.CRM_project.controller;
 import java.io.IOException;
 
 
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,7 +14,7 @@ import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.service.UserService;
 
 
-@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add"})
+@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update"})
 public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
 
@@ -34,6 +31,12 @@ public class UserController extends HttpServlet {
                 req.getRequestDispatcher("user-table.jsp").forward(req, resp);
             }
             case "/user-add" -> {
+                HttpSession session = req.getSession(false);
+                if (session != null) {
+                    req.setAttribute("user", session.getAttribute("user"));
+                    session.removeAttribute("user");
+                }
+
                 req.setAttribute("roles", roleService.getAll());
                 req.getRequestDispatcher("user-add.jsp").forward(req, resp);
             }
@@ -42,28 +45,64 @@ public class UserController extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String path = req.getServletPath();
 
-        if (path.equals("/user-add")) {
-            String addMsg = "Thêm user thất bại";
+        switch (path) {
+            case "/user-add" -> {
+                String addMsg = "Thêm user thất bại";
 
-            UserEntity user = new UserEntity();
+                UserEntity user = new UserEntity();
 
-            user.setFullname(req.getParameter("fullName"));
-            user.setEmail(req.getParameter("email"));
-            user.setPassword(req.getParameter("password"));
-            user.setPhone(req.getParameter("phone"));
-            user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
+                user.setFullName(req.getParameter("fullName"));
+                user.setEmail(req.getParameter("email"));
+                user.setPassword(req.getParameter("password"));
+                user.setPhone(req.getParameter("phone"));
+                user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
 
-            if (userService.addUser(user)) {
-                addMsg = "Thêm user thành công";
+                if (userService.save(user)) {
+                    addMsg = "Thêm user thành công";
+                }
+
+                // demo for using flash message (a.k.a FlashAttribute in Spring)
+                HttpSession session = req.getSession();
+                session.setAttribute("addMsg", addMsg);
+                resp.sendRedirect(req.getContextPath() + "/user-add");
             }
 
-            // demo for using flash message (a.k.a FlashAttribute in Spring)
-            HttpSession session = req.getSession();
-            session.setAttribute("addMsg", addMsg);
-            resp.sendRedirect(req.getContextPath() + "/user-add");
+            case "/user-update" -> {
+                String isEdited = req.getParameter("isEdited");
+                Integer userId = Integer.parseInt(req.getParameter("userId"));
+
+                if (isEdited == null) {
+                    UserEntity user = userService.getUserById(userId);
+
+                    req.setAttribute("user", user);
+                    req.setAttribute("roles", roleService.getAll());
+                    req.getRequestDispatcher("user-add.jsp").forward(req, resp);
+                } else {
+                    String addMsg = "Cập nhật user thất bại";
+                    UserEntity user = new UserEntity();
+
+                    user.setId(Integer.parseInt(req.getParameter("userId")));
+                    user.setFullName(req.getParameter("fullName"));
+                    user.setEmail(req.getParameter("email"));
+                    user.setPassword(req.getParameter("password"));
+                    user.setPhone(req.getParameter("phone"));
+                    user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
+
+                    if (userService.update(user)) {
+                        addMsg = "Cập nhật user thành công";
+                    }
+
+                    HttpSession session = req.getSession();
+                    session.setAttribute("user", user);
+                    session.setAttribute("addMsg", addMsg);
+                    session.setAttribute("roles", roleService.getAll());
+                    resp.sendRedirect(req.getContextPath() + "/user-add");
+                }
+            }
         }
     }
 }
+

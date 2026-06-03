@@ -1,8 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <%@ page import="java.net.URLDecoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 
+<jsp:useBean id="now" class="java.util.Date"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +46,10 @@
             </div>
         </div>
     </div>
+
+    <footer class="footer text-center">
+        <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+    </footer>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

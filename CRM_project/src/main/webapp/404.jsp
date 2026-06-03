@@ -1,5 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<jsp:useBean id="now" class="java.util.Date"/>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +44,9 @@
             <p class="text-muted m-t-30 m-b-30">YOU SEEM TO BE TRYING TO FIND HIS WAY HOME</p>
             <a href='<c:url value="/" />' class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Về trang
                 chủ</a></div>
-        <footer class="footer text-center">2026 © Pixel Admin.</footer>
+        <footer class="footer text-center">
+            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+        </footer>
     </div>
 </section>
 <!-- jQuery -->

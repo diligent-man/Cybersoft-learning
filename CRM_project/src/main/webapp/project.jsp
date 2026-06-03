@@ -115,8 +115,8 @@
                             class="hide-menu">Công việc</span></a>
                 </li>
                 <li>
-                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
-                                                                 aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                    <a href="blank.jsp" class="waves-effect"><i class="fa fa-columns fa-fw"
+                                                                aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
                 </li>
                 <li>
                     <a href="404.jsp" class="waves-effect"><i class="fa fa-info-circle fa-fw"
@@ -164,7 +164,7 @@
                                         <td>
                                             <a href="#" class="btn btn-sm btn-primary">Sửa</a>
                                             <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                            <a href="project-details.html" class="btn btn-sm btn-info">Xem</a>
+                                            <a href="project-details.jsp" class="btn btn-sm btn-info">Xem</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

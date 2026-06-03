@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
+<jsp:useBean id="now" class="java.util.Date"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,15 +34,28 @@
 </head>
 
 <body>
-<c:if test="${not empty sessionScope.addMsg}">
+<c:if test="${not empty addMsg}">
     <script>
         window.addEventListener("load", function () {
-            alert("<c:out value='${sessionScope.addMsg}' />");
+            alert("<c:out value='${addMsg}' />");
         });
     </script>
 
-    <c:remove var="addMsg" scope="session" />
+    <c:remove var="addMsg" scope="session"/>
+
 </c:if>
+
+<c:choose>
+    <c:when test="${user != null}">
+        <c:set var="pageTitle" value="Cập nhật thành viên"/>
+        <c:set var="addBttn" value="Update user"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="pageTitle" value="Thêm mới thành viên"/>
+        <c:set var="addBttn" value="Add user"/>
+    </c:otherwise>
+</c:choose>
+
 
 <!-- Preloader -->
 <div class="preloader">
@@ -100,7 +116,7 @@
             <ul class="nav" id="side-menu">
                 <li style="padding: 10px 0 0;">
                     <a href="/" class="waves-effect"><i class="fa fa-clock-o fa-fw"
-                                                                aria-hidden="true"></i><span
+                                                        aria-hidden="true"></i><span
                             class="hide-menu">Dashboard</span></a>
                 </li>
                 <li>
@@ -110,20 +126,22 @@
                 </li>
                 <li>
                     <a href="role" class="waves-effect"><i class="fa fa-modx fa-fw"
-                                                                     aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
+                                                           aria-hidden="true"></i><span
+                            class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                    aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
+                                                              aria-hidden="true"></i><span
+                            class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                               aria-hidden="true"></i><span
+                                                           aria-hidden="true"></i><span
                             class="hide-menu">Công việc</span></a>
                 </li>
                 <li>
-                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
-                                                                 aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                    <a href="blank.jsp" class="waves-effect"><i class="fa fa-columns fa-fw"
+                                                                aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
                 </li>
                 <li>
                     <a href="404.jsp" class="waves-effect"><i class="fa fa-info-circle fa-fw"
@@ -139,7 +157,8 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Thêm mới thành viên</h4>
+                    <%--                    <h4 class="page-title">Thêm mới thành viên</h4>--%>
+                    <h4 class="page-title">${pageTitle}</h4>
                 </div>
             </div>
             <!-- /.row -->
@@ -148,31 +167,50 @@
                 <div class="col-md-2 col-12"></div>
                 <div class="col-md-8 col-xs-12">
                     <div class="white-box">
-                        <form action="user-add" method="post" class="form-horizontal form-material">
+                        <form action="${user != null ? 'user-update' : 'user-add'}" method="post"
+                              class="form-horizontal form-material">
+                            <c:choose>
+                                <c:when test="${user != null}">
+                                    <input type="hidden" name="userId" value="${user != null ? user.id : ''}"/>
+                                    <input type="hidden" name="isEdited" value="true"/>
+                                </c:when>
+                            </c:choose>
+
+
                             <div class="form-group">
                                 <label class="col-md-12">Full Name</label>
                                 <div class="col-md-12">
-                                    <input type="text" name="fullName" placeholder="Nguyen Van A"
-                                           class="form-control form-control-line"></div>
+                                    <input type="text" name="fullName"
+                                           placeholder="Nguyen Van A"
+                                           value="${user != null ? user.fullName : ''}"
+                                           class="form-control form-control-line"
+                                    ></div>
                             </div>
                             <div class="form-group">
                                 <label for="example-email" class="col-md-12">Email</label>
                                 <div class="col-md-12">
-                                    <input type="email" placeholder="nva@gmail.com"
-                                           class="form-control form-control-line" name="email"
-                                           id="example-email"></div>
+                                    <input type="email" name="email"
+                                           placeholder="nva@gmail.com"
+                                           value="${user != null ? user.email : ''}"
+                                           class="form-control form-control-line"
+                                           id="example-email"
+                                    ></div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Password</label>
                                 <div class="col-md-12">
-                                    <input type="password" name="password" placeholder="password"
+                                    <input type="password" name="password"
+                                           placeholder="password"
+                                           value="${user != null ? user.password : ''}"
                                            class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Phone No</label>
                                 <div class="col-md-12">
-                                    <input type="text" name="phone" placeholder="123 456 7890"
+                                    <input type="text" name="phone"
+                                           placeholder="123 456 7890"
+                                           value="${user != null ? user.phone : ''}"
                                            class="form-control form-control-line"></div>
                             </div>
                             <div class="form-group">
@@ -187,7 +225,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-success">Add User</button>
+                                    <button type="submit" class="btn btn-success">${addBttn}</button>
                                     <a href="user" class="btn btn-primary">Quay lại</a>
                                 </div>
                             </div>
@@ -199,7 +237,9 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
+        <footer class="footer text-center">
+            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+        </footer>
     </div>
     <!-- /#page-wrapper -->
 </div>

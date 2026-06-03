@@ -124,8 +124,8 @@
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
-                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
-                                                                 aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                    <a href="blank.jsp" class="waves-effect"><i class="fa fa-columns fa-fw"
+                                                                aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
                 </li>
                 <li>
                     <a href="404.jsp" class="waves-effect"><i class="fa fa-info-circle fa-fw"

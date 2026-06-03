@@ -14,7 +14,7 @@ public class UserEntity {
     private Integer id;
 
     @Getter
-    private String fullname;
+    private String fullName;
 
     @Getter
     private String email;
@@ -40,11 +40,11 @@ public class UserEntity {
 
 
     public String getFirstName() {
-        if (fullname != null){
+        if (fullName != null){
             if (firstName != null){
                 return firstName;
             } else {
-                String[] nameComponents = fullname.split(" ");
+                String[] nameComponents = fullName.split(" ");
                 return String.join(" ", Arrays.copyOfRange(nameComponents, 1, nameComponents.length));
             }
         }
@@ -53,11 +53,11 @@ public class UserEntity {
 
 
     public String getLastName() {
-        if (fullname != null){
-            if (firstName != null){
-                return firstName;
+        if (fullName != null){
+            if (lastName != null){
+                return lastName;
             } else {
-                String[] nameComponents = fullname.split(" ");
+                String[] nameComponents = fullName.split(" ");
                 return nameComponents[0];
             }
         }

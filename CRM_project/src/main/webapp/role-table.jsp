@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<jsp:useBean id="now" class="java.util.Date"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -107,16 +110,17 @@
                 </li>
                 <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                    aria-hidden="true"></i><span class="hide-menu">Dự án</span></a>
+                                                              aria-hidden="true"></i><span
+                            class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                               aria-hidden="true"></i><span
+                                                           aria-hidden="true"></i><span
                             class="hide-menu">Công việc</span></a>
                 </li>
                 <li>
-                    <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
-                                                                 aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                    <a href="blank.jsp" class="waves-effect"><i class="fa fa-columns fa-fw"
+                                                                aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
                 </li>
                 <li>
                     <a href="404.jsp" class="waves-effect"><i class="fa fa-info-circle fa-fw"
@@ -174,10 +178,11 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2026 &copy; myclass.com</footer>
+        <footer class="footer text-center">
+            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+        </footer>
     </div>
     <!-- /#page-wrapper -->
-    <%--   TODO: fix --%>
 </div>
 
 <!-- /#wrapper -->

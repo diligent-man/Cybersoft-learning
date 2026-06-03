@@ -188,3 +188,4 @@ GROUP BY t.status_id, st.name, st.color;
 
 select * from status;
 select * from tasks;
+select * from users
