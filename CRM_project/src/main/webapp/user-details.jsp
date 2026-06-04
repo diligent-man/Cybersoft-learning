@@ -157,75 +157,30 @@
                 <div class="col-md-8 col-xs-12">
                     <!-- BEGIN THỐNG KÊ -->
                     <div class="row">
-                        <!--col -->
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <div class="white-box">
-                                <div class="col-in row">
-                                    <div class="col-xs-12">
-                                        <h3 class="counter text-right m-t-15 text-danger">20%</h3>
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <i data-icon="E" class="linea-icon linea-basic"></i>
-                                        <h5 class="text-muted vb text-center">CHƯA BẮT ĐẦU</h5>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-danger" role="progressbar"
-                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                 style="width: 20%"></div>
+                        <c:forEach items="${statusLst}" var="status">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="white-box">
+                                    <div class="col-in row">
+                                        <div class="col-xs-12">
+                                            <h3 class="counter text-right m-t-15 <c:out value='${userTaskStatusStats.taskColorMap[status]}'/>">${userTaskStatusStats.taskStatusRateMap[status]}%</h3>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <i data-icon="E" class="linea-icon linea-basic"></i>
+                                            <h5 class="text-muted vb text-center">${status}</h5>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar"
+                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width: ${userTaskStatusStats.taskStatusRateMap[status]}%"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.col -->
-                        <!--col -->
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <div class="white-box">
-                                <div class="col-in row">
-                                    <div class="col-xs-12">
-                                        <h3 class="counter text-right m-t-15 text-megna">50%</h3>
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <i class="linea-icon linea-basic" data-icon="&#xe01b;"></i>
-                                        <h5 class="text-muted vb text-center">ĐANG THỰC HIỆN</h5>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-megna" role="progressbar"
-                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                 style="width: 50%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <!--col -->
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <div class="white-box">
-                                <div class="col-in row">
-                                    <div class="col-xs-12">
-                                        <h3 class="counter text-right m-t-15 text-primary">30%</h3>
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <i class="linea-icon linea-basic" data-icon="&#xe00b;"></i>
-                                        <h5 class="text-muted vb text-center">HOÀN THÀNH</h5>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-primary" role="progressbar"
-                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                 style="width: 30%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.col -->
+                        </c:forEach>
                     </div>
                     <!-- END THỐNG KÊ -->
-
                 </div>
             </div>
             <br/>
@@ -233,98 +188,50 @@
             <!-- BEGIN DANH SÁCH CÔNG VIỆC -->
             <h4>DANH SÁCH CÔNG VIỆC</h4>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="white-box">
-                        <h3 class="box-title">Chưa thực hiện</h3>
-                        <div class="message-center">
-                            <a href="#">
-                                <div class="mail-contnet">
-                                    <h5>Phân tích hệ thống</h5>
-                                    <span class="mail-desc"></span>
-                                    <span class="time">Bắt đầu: 05/07/2020</span>
-                                    <span class="time">Kết thúc: 17/07/2020</span>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="mail-contnet">
-                                    <h5>Thiết kế database</h5>
-                                    <span class="mail-desc"></span>
-                                    <span class="time">Bắt đầu: 05/07/2020</span>
-                                    <span class="time">Kết thúc: 17/07/2020</span>
-                                </div>
-                            </a>
+                <c:forEach items="${statusLst}" var="status">
+                    <div class="col-md-4">
+                        <div class="white-box">
+                            <h3 class="box-title">Chưa thực hiện</h3>
+                            <div class="message-center">
+                                <c:forEach items="${userTaskStatusStats.taskStatusDetailMap[status]}" var="taskDetail">
+                                    <a href="#">
+                                        <div class="mail-contnet">
+                                            <h5>${taskDetail.taskName}</h5>
+                                            <span class="mail-desc"></span>
+                                            <span class="time">Bắt đầu: ${taskDetail.formattedStartDate}</span>
+                                            <span class="time">Kết thúc: ${taskDetail.formattedEndDate}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="white-box">
-                        <h3 class="box-title">Đang thực hiện</h3>
-                        <div class="message-center">
-                            <a href="#">
-                                <div class="mail-contnet">
-                                    <h5>Phân tích hệ thống</h5>
-                                    <span class="mail-desc"></span>
-                                    <span class="time">Bắt đầu: 05/07/2020</span>
-                                    <span class="time">Kết thúc: 17/07/2020</span>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="mail-contnet">
-                                    <h5>Thiết kế database</h5>
-                                    <span class="mail-desc"></span>
-                                    <span class="time">Bắt đầu: 05/07/2020</span>
-                                    <span class="time">Kết thúc: 17/07/2020</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="white-box">
-                        <h3 class="box-title">Đã hoàn thành</h3>
-                        <div class="message-center">
-                            <a href="#">
-                                <div class="mail-contnet">
-                                    <h5>Phân tích hệ thống</h5>
-                                    <span class="mail-desc"></span>
-                                    <span class="time">Bắt đầu: 05/07/2020</span>
-                                    <span class="time">Kết thúc: 17/07/2020</span>
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="mail-contnet">
-                                    <h5>Thiết kế database</h5>
-                                    <span class="mail-desc"></span>
-                                    <span class="time">Bắt đầu: 05/07/2020</span>
-                                    <span class="time">Kết thúc: 17/07/2020</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                </c:forEach>
+                <!-- END DANH SÁCH CÔNG VIỆC -->
             </div>
-            <!-- END DANH SÁCH CÔNG VIỆC -->
+            <!-- /.container-fluid -->
+
+            <footer class="footer text-center">
+                <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            </footer>
         </div>
-        <!-- /.container-fluid -->
-        <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
-        </footer>
+        <!-- /#page-wrapper -->
     </div>
-    <!-- /#page-wrapper -->
-</div>
-<!-- /#wrapper -->
-<!-- jQuery -->
-<script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Menu Plugin JavaScript -->
-<script src="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
-<!--slimscroll JavaScript -->
-<script src="js/jquery.slimscroll.js"></script>
-<!--Wave Effects -->
-<script src="js/waves.js"></script>
-<!-- Custom Theme JavaScript -->
-<script src="js/custom.min.js"></script>
+
+
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="js/custom.min.js"></script>
 </body>
 
 </html>

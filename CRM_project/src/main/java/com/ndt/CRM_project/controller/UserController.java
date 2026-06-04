@@ -114,6 +114,7 @@ public class UserController extends HttpServlet {
 
                 System.out.println(userTaskStatusStats);
 
+                req.setAttribute("statusLst", userTaskStatusStats.getTaskStatusMap().keySet());
                 req.setAttribute("userTaskStatusStats", userTaskStatusStats);
                 req.getRequestDispatcher("user-details.jsp").forward(req, resp);
             }

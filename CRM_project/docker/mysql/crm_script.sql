@@ -185,19 +185,26 @@ FROM tasks t
 SELECT u.id,
        u.fullname,
        u.email,
-       st.name AS 'status_name',
+       st.name                  AS 'status_name',
        st.color,
+       SUM(COUNT(t.id)) OVER () AS total_tasks,
+       SUM(COUNT(t.id)) OVER (
+           PARTITION BY st.id
+           )                    AS 'total_tasks_by_status',
+       IFNULL(
+               (COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0)) * 100,
+               0.00
+       )                        AS 'task_status_rate',
        IF(COUNT(t.id) = 0, JSON_ARRAY(),
           JSON_ARRAYAGG(
                   JSON_OBJECT(
-                          'id',         t.id,
-                          'name',       t.name,
+                          'task_id', t.id,
+                          'task_name', t.name,
                           'start_date', t.start_date,
-                          'end_date',   t.end_date,
-                          'project_id', t.project_id
+                          'end_date', t.end_date
                   )
           )
-       ) AS task_details
+       )                        AS task_details
 FROM users u
          CROSS JOIN status st
          LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
