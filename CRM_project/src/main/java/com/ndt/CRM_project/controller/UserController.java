@@ -114,8 +114,14 @@ public class UserController extends HttpServlet {
 
                 List<UserTaskStatusCount> userTaskStatusCountLst = taskService.getTaskByStatus(userId);
 
-                System.out.println(userTaskStatusCountLst);
+                // [
+                // UserTaskStatusCount(userId=1, fullName=Nguyen Van A, email=nva@gmail.com, statusName=Ch?a b?t ??u, color=text-danger, num_task=null, numTask=1, taskIds=[5]),
+                // UserTaskStatusCount(userId=1, fullName=Nguyen Van A, email=nva@gmail.com, statusName=?ang th?c hi?n, color=text-megna, num_task=null, numTask=1, taskIds=[2])
+                // ]
 
+                System.out.println(userTaskStatusCountLst);
+                req.setAttribute("userTaskStatus", );
+                req.getRequestDispatcher("user-details.jsp").forward(req, resp);
             }
         }
     }

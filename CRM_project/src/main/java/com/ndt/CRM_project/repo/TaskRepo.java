@@ -121,7 +121,7 @@ public class TaskRepo {
                     obj.setUserId(rs.getInt("id"));
                     obj.setFullName(rs.getString("fullname"));
                     obj.setEmail(rs.getString("email"));
-                    obj.setStatusName(rs.getString("status_name"));
+                    obj.setStatusTaskMap(rs.getString("status_name"));
                     obj.setColor(rs.getString("color"));
                     obj.setNumTask(rs.getInt("num_task"));
                     obj.setTaskIds(rs.getString("task_ids"));

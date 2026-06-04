@@ -2,6 +2,7 @@ package com.ndt.CRM_project.dto;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.*;
@@ -21,13 +22,10 @@ public class UserTaskStatusCount {
     private String email;
 
     @Setter
-    private String statusName;
+    private Map<String, UserStatusTaskDetail> statusTaskMap;
 
     @Setter
     private String color;
-
-    @Setter
-    private Integer num_task;
 
     @Setter
     private Integer numTask;

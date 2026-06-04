@@ -18,6 +18,9 @@ public class UserStatusTaskDetail {
     @Setter
     private String statusName;
 
+    @Setter
+    private String statusColor;
+
     private LocalDate startDate;
 
     private LocalDate endDate;
