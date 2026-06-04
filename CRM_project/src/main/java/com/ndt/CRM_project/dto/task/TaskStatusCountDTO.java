@@ -1,4 +1,4 @@
-package com.ndt.CRM_project.dto;
+package com.ndt.CRM_project.dto.task;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor
-public class TaskStatusCount {
+public class TaskStatusCountDTO {
     private String name;
 
     private String color;

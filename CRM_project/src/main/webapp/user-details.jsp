@@ -146,8 +146,8 @@
                                 <div class="user-content">
                                     <a href="javascript:void(0)"><img src="plugins/images/users/genu.jpg"
                                                                       class="thumb-lg img-circle" alt="img"></a>
-                                    <h4 class="text-white">Nguyễn Văn Tèo</h4>
-                                    <h5 class="text-white">info.teo@gmail.com</h5>
+                                    <h4 class="text-white">${userTaskStatusStats.fullName}</h4>
+                                    <h5 class="text-white">${userTaskStatusStats.email}</h5>
                                 </div>
                             </div>
                         </div>

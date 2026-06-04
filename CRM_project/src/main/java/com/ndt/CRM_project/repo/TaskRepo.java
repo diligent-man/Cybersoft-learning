@@ -5,17 +5,26 @@ import java.sql.PreparedStatement;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
-import com.ndt.CRM_project.dto.UserTaskStatusCount;
+
+import com.ndt.CRM_project.dto.task.UserTaskStatusDetailDTO;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+
+
+import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 import com.ndt.CRM_project.entity.TaskEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
-import com.ndt.CRM_project.dto.TaskStatusCount;
+import com.ndt.CRM_project.dto.task.TaskStatusCountDTO;
 
 
 /**
  * Quản lý tất cả câu query liên quan tới bảng role
  */
 public class TaskRepo {
+    private final ObjectMapper mapper = new ObjectMapper();
+
     public List<TaskEntity> findAll() {
         List<TaskEntity> objLst = new ArrayList<>();
 
@@ -58,8 +67,8 @@ public class TaskRepo {
     }
 
 
-    public List<TaskStatusCount> findTaskByStatus() {
-        List<TaskStatusCount> objLst = new ArrayList<>();
+    public List<TaskStatusCountDTO> findTaskByUserStatus() {
+        List<TaskStatusCountDTO> objLst = new ArrayList<>();
 
         String query = """
                 SELECT st.name, st.color, COUNT(t.status_id) AS 'num_task'
@@ -74,7 +83,7 @@ public class TaskRepo {
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    TaskStatusCount obj = new TaskStatusCount();
+                    TaskStatusCountDTO obj = new TaskStatusCountDTO();
 
                     obj.setName(rs.getString("name"));
                     obj.setColor(rs.getString("color"));
@@ -92,20 +101,30 @@ public class TaskRepo {
     }
 
 
-    public List<UserTaskStatusCount> findTaskByStatus(Integer userId) {
-        List<UserTaskStatusCount> objLst = new ArrayList<>();
+    public Optional<UserTaskStatusStatsDTO> findTaskByUserStatus(Integer userId) {
+        UserTaskStatusStatsDTO obj = null;
 
         String query = """
-                SELECT u.id, u.fullname, u.email,
-                       st.name AS 'status_name',
-                       st.color,
-                       COUNT(t.status_id)               AS 'num_task',
-                       GROUP_CONCAT(t.id ORDER BY t.id) AS task_ids
-                FROM tasks t
-                         RIGHT JOIN status st ON t.status_id = st.id
-                         JOIN users u ON t.user_id = u.id
-                WHERE t.user_id = ?
-                GROUP BY t.status_id, st.name, st.color;
+            SELECT u.id,
+                   u.fullname,
+                   u.email,
+                   st.name AS 'status_name',
+                   st.color AS 'status_color',
+                   IF(COUNT(t.id) = 0, JSON_ARRAY(),
+                      JSON_ARRAYAGG(
+                              JSON_OBJECT(
+                                      'task_id',         t.id,
+                                      'task_name',       t.name,
+                                      'start_date', t.start_date,
+                                      'end_date',   t.end_date
+                              )
+                      )
+                   ) AS task_details
+            FROM users u
+                     CROSS JOIN status st
+                     LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
+            WHERE u.id = ?
+            GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
             """;
 
         try (Connection conn = MysqlConfig.getConnection()) {
@@ -116,17 +135,24 @@ public class TaskRepo {
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    UserTaskStatusCount obj = new UserTaskStatusCount();
+                    if (obj == null) {
+                        obj = new UserTaskStatusStatsDTO();
 
-                    obj.setUserId(rs.getInt("id"));
-                    obj.setFullName(rs.getString("fullname"));
-                    obj.setEmail(rs.getString("email"));
-                    obj.setStatusTaskMap(rs.getString("status_name"));
-                    obj.setColor(rs.getString("color"));
-                    obj.setNumTask(rs.getInt("num_task"));
-                    obj.setTaskIds(rs.getString("task_ids"));
+                        obj.setUserId(rs.getInt("id"));
+                        obj.setFullName(rs.getString("fullname"));
+                        obj.setEmail(rs.getString("email"));
+                    }
 
-                    objLst.add(obj);
+                    String statusName = rs.getString("status_name");
+
+                    String statusColor = rs.getString("status_color");
+                    obj.getTaskColorMap().put(statusName, statusColor);
+
+                    String taskDetailsJson = rs.getString("task_details");
+                    List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(taskDetailsJson, new TypeReference<>(){});
+
+                    obj.getTaskStatusDetailMap().put(statusName, userTaskDetailsList);
+
                 }
             } catch (SQLException e) {
                 System.out.println("TaskRepo: " + e.getMessage());
@@ -134,7 +160,7 @@ public class TaskRepo {
         } catch (SQLException e) {
             System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
-        return objLst;
+        return Optional.ofNullable(obj);
     }
 
 

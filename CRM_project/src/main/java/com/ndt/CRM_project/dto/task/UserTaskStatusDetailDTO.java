@@ -1,34 +1,39 @@
-package com.ndt.CRM_project.dto;
+package com.ndt.CRM_project.dto.task;
+
+import java.util.Locale;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 
 import lombok.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Getter
 @ToString
 @NoArgsConstructor
-public class UserStatusTaskDetail {
+public class UserTaskStatusDetailDTO {
     @Setter
+    @JsonProperty("task_id")
+    private Integer taskId;
+
+    @Setter
+    @JsonProperty("task_name")
     private String taskName;
 
-    @Setter
-    private String statusName;
-
-    @Setter
-    private String statusColor;
-
+    @JsonProperty("start_date")
     private LocalDate startDate;
 
+    @JsonProperty("end_date")
     private LocalDate endDate;
 
-
+    @ToString.Exclude
     @Getter(AccessLevel.NONE)
     private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    @ToString.Exclude
     @Getter(AccessLevel.NONE)
     private final DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("vi", "VN"));
 

@@ -182,23 +182,28 @@ FROM tasks t
          JOIN users u ON t.user_id = u.id;
 
 
-SELECT st.name, st.color, COUNT(t.status_id) AS 'num_task'
-FROM tasks t
-         RIGHT JOIN status st ON t.status_id = st.id
-GROUP BY t.status_id, st.name, st.color;
-
-
-SELECT u.id, u.fullname, u.email,
+SELECT u.id,
+       u.fullname,
+       u.email,
        st.name AS 'status_name',
        st.color,
-       COUNT(t.status_id)               AS 'num_task',
-       GROUP_CONCAT(t.id ORDER BY t.id) AS task_ids
-FROM tasks t
-         RIGHT JOIN status st ON t.status_id = st.id
-         JOIN users u ON t.user_id = u.id
+       IF(COUNT(t.id) = 0, JSON_ARRAY(),
+          JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                          'id',         t.id,
+                          'name',       t.name,
+                          'start_date', t.start_date,
+                          'end_date',   t.end_date,
+                          'project_id', t.project_id
+                  )
+          )
+       ) AS task_details
+FROM users u
+         CROSS JOIN status st
+         LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
+WHERE u.id = 1
+GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
 
-WHERE t.user_id = 1
-GROUP BY t.status_id, st.name, st.color;
 
 
 select *

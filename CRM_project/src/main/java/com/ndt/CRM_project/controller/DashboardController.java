@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-import com.ndt.CRM_project.dto.TaskStatusCount;
+import com.ndt.CRM_project.dto.task.TaskStatusCountDTO;
 import com.ndt.CRM_project.service.TaskService;
 
 
@@ -29,14 +29,14 @@ public class DashboardController extends HttpServlet {
 
     private Long totalTask;
 
-    private final List<TaskStatusCount> taskStatusStats = taskService.getTaskByStatus();
+    private final List<TaskStatusCountDTO> taskStatusStats = taskService.getTaskByUserStatus();
 
 
     @Override
     public void init() throws ServletException {
         totalTask = taskStatusStats
             .parallelStream()
-            .map(TaskStatusCount::getNumTask)
+            .map(TaskStatusCountDTO::getNumTask)
             .reduce(Long::sum)
             .orElse(1L);
     }

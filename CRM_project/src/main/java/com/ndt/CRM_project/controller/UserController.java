@@ -1,11 +1,9 @@
 package com.ndt.CRM_project.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
-import com.ndt.CRM_project.dto.UserTaskStatusCount;
+import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 import com.ndt.CRM_project.service.TaskService;
 import jakarta.servlet.http.*;
 
@@ -112,18 +110,13 @@ public class UserController extends HttpServlet {
             case "/user-details" -> {
                 Integer userId = Integer.parseInt(req.getParameter("userId"));
 
-                List<UserTaskStatusCount> userTaskStatusCountLst = taskService.getTaskByStatus(userId);
+                UserTaskStatusStatsDTO userTaskStatusStats = taskService.getTaskByUserStatus(userId);
 
-                // [
-                // UserTaskStatusCount(userId=1, fullName=Nguyen Van A, email=nva@gmail.com, statusName=Ch?a b?t ??u, color=text-danger, num_task=null, numTask=1, taskIds=[5]),
-                // UserTaskStatusCount(userId=1, fullName=Nguyen Van A, email=nva@gmail.com, statusName=?ang th?c hi?n, color=text-megna, num_task=null, numTask=1, taskIds=[2])
-                // ]
+                System.out.println(userTaskStatusStats);
 
-                System.out.println(userTaskStatusCountLst);
-                req.setAttribute("userTaskStatus", );
+                req.setAttribute("userTaskStatusStats", userTaskStatusStats);
                 req.getRequestDispatcher("user-details.jsp").forward(req, resp);
             }
         }
     }
 }
-
