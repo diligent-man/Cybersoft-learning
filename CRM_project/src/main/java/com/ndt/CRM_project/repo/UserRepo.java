@@ -3,6 +3,7 @@ package com.ndt.CRM_project.repo;
 import java.sql.*;
 import java.util.*;
 
+
 import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
 
@@ -45,7 +46,54 @@ public class UserRepo {
     }
 
 
-    // TODO: make email unique
+    public List<UserEntity> findByOffset(int page, int pageSize) {
+        // page 1 → offset 0, page 2 → offset 10
+        int offset = (page - 1) * pageSize;
+
+        String query = """
+                SELECT u.id, u.fullname,
+                       u.first_name, u.last_name,
+                       u.email,
+                       r.name AS role_name
+                FROM users u
+                    JOIN roles r ON u.role_id = r.id
+                LIMIT ?
+                OFFSET ?
+            """;
+
+        List<UserEntity> users = new ArrayList<>();
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setInt(1, pageSize);
+                stmt.setInt(2, offset);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    UserEntity u = new UserEntity();
+
+                    u.setId(rs.getInt("id"));
+                    u.setFullName(rs.getString("fullname"));
+                    u.setFirstName(rs.getString("first_name"));
+                    u.setLastName(rs.getString("last_name"));
+                    u.setEmail(rs.getString("email"));
+                    u.setRoleName(rs.getString("role_name"));
+
+                    users.add(u);
+                }
+            } catch (SQLException e) {
+                System.out.println("UserRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+        }
+        return users;
+    }
+
+
+    // TODO: make email unique from db design
     public Optional<UserEntity> findByEmail(String email) {
         // evade SQL Injection with "?"
         String query = """
@@ -89,7 +137,7 @@ public class UserRepo {
     }
 
 
-    public Optional<UserEntity> findById(Integer id) {
+    public Optional<UserEntity> findById(int id) {
         // evade SQL Injection with "?"
         String query = """
             SELECT u.id, u.fullname, u.email, u.password, u.phone, r.name AS role_name
@@ -192,5 +240,31 @@ public class UserRepo {
             System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
         return updatedRow;
+    }
+
+
+    public int deleteById(Integer id) {
+        int removedRow = 0;
+
+        String query = """
+            DELETE
+            FROM users
+            WHERE id = ?
+            """;
+
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setInt(1, id);
+                removedRow = stmt.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("UserRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+        }
+        return removedRow;
     }
 }

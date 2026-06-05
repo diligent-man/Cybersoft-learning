@@ -36,6 +36,16 @@
 </head>
 
 <body>
+<c:if test="${not empty sessionScope.msg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${msg}' />");
+        });
+    </script>
+
+    <c:remove var="msg" scope="session"/>
+</c:if>
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -130,6 +140,7 @@
         </div>
     </div>
     <!-- Left navbar-header end -->
+
     <!-- Page Content -->
     <div id="page-wrapper">
         <div class="container-fluid">
@@ -155,10 +166,12 @@
                                     <th>Last Name</th>
                                     <th>Username</th>
                                     <th>Role</th>
-                                    <th>#</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
+
                                 <tbody>
+                                <%--           Intentionally left blank for using server-side pagination            --%>
                                 <c:forEach items="${users}" var="user">
                                     <tr>
                                         <td>${user.id}</td>
@@ -167,17 +180,15 @@
                                         <td>${user.email}</td>
                                         <td>${user.roleName}</td>
                                         <td>
-                                            <form action="user-update" method="post" style="display:inline;">
+                                            <a href="user-update?userId=${user.id}" class="btn btn-primary btn-sm">Sửa</a>
+
+                                            <form action="user-delete" method="post" style="display:inline;"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa user này không?');">
                                                 <input type="hidden" name="userId" value="${user.id}"/>
-                                                <button type="submit" class="btn btn-sm btn-primary">Sửa</button>
+                                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
                                             </form>
 
-                                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-
-                                            <form action="user-details" method="post" style="display:inline;">
-                                                <input type="hidden" name="userId" value="${user.id}"/>
-                                                <button type="submit" class="btn btn-sm btn-primary">Xem</button>
-                                            </form>
+                                            <a href="user-details?userId=${user.id}" class="btn btn-info btn-sm">Xem</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -190,6 +201,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+
         <footer class="footer text-center">
             <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
         </footer>
@@ -205,15 +217,114 @@
 <script src="plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 <!--slimscroll JavaScript -->
 <script src="js/jquery.slimscroll.js"></script>
-<script src="js/jquery.dataTables.js"></script>
+<%--<script src="js/jquery.dataTables.js"></script>--%>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <!--Wave Effects -->
 <script src="js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
+
 <script>
+    <%--  This is appropriate for small number of users only (client-side handling)  --%>
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            pageLength: 10,
+
+            lengthMenu: [10, 25, 50, 100],
+
+            language: {
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                infoEmpty: "Hiển thị 0 đến 0 của 0 mục",
+                search: "Search:",
+                paginate: {
+                    previous: "Previous",
+                    next: "Next"
+                },
+                zeroRecords: "Không tìm thấy kết quả"
+            }
+        });
     });
+
+    <%--
+        This is appropriate for large number of users only (server-side handling).
+        However, this require server return JSON instead of JSP page !
+        Check it out later
+    --%>
+<%--    $(document).ready(function () {--%>
+<%--        $('#example').DataTable({--%>
+<%--            serverSide: true,--%>
+<%--            searching: true,--%>
+<%--            ordering: true,--%>
+
+<%--            ajax: {--%>
+<%--                url: "user-fetch",--%>
+<%--                type: "GET",--%>
+<%--                data: function (params) {--%>
+<%--                    return {--%>
+<%--                        page: (params.start / params.length) + 1,--%>
+<%--                        pageSize: params.length--%>
+<%--                    };--%>
+<%--                },--%>
+
+<%--                // remap PageDTO fields to what DataTables expects--%>
+<%--                dataFilter: function (response) {--%>
+<%--                    let json = jQuery.parseJSON(response);--%>
+<%--                    return JSON.stringify(json);--%>
+<%--                }--%>
+<%--            },--%>
+
+<%--            columns: [--%>
+<%--                {--%>
+<%--                    data: null,--%>
+<%--                    render: function (data, type, row, meta) {--%>
+<%--                        return meta.settings._iDisplayStart + meta.row + 1; // STT--%>
+<%--                    }--%>
+<%--                },--%>
+<%--                {data: "firstName"},--%>
+<%--                {data: "lastName"},--%>
+<%--                {data: "email"},--%>
+<%--                {data: "roleName"},--%>
+<%--                {--%>
+<%--                    data: null,--%>
+<%--                    orderable: false,--%>
+<%--                    render: function (data, type, row) {--%>
+<%--                        return `--%>
+<%--                        <form action="user-update" method="get" style="display:inline;">--%>
+<%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
+<%--                            <button type="submit" class="btn btn-sm btn-primary">Sửa</button>--%>
+<%--                        </form>--%>
+
+<%--                        <form action="user-delete" method="post" style="display:inline;"--%>
+<%--                              onsubmit="return confirm('Bạn có chắc muốn xóa?')">--%>
+<%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
+<%--                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>--%>
+<%--                        </form>--%>
+
+<%--                        <form action="user-details" method="post" style="display:inline;">--%>
+<%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
+<%--                            <button type="submit" class="btn btn-sm btn-info">Xem</button>--%>
+<%--                        </form>--%>
+<%--                    `;--%>
+<%--                    }--%>
+<%--                }--%>
+<%--            ],--%>
+
+<%--            lengthMenu: [10, 25, 50, 100],--%>
+<%--            pageLength: 10,--%>
+<%--            language: {--%>
+<%--                lengthMenu: "Hiển thị _MENU_ mục",--%>
+
+<%--                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",--%>
+<%--                infoEmpty:  "Hiển thị 0 đến 0 của 0 mục",--%>
+
+<%--                search: "Search:",--%>
+
+<%--                paginate: {previous: "Previous", next: "Next"},--%>
+<%--                zeroRecords: "Không tìm thấy kết quả"--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
 </script>
 </body>
 </html>

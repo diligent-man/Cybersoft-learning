@@ -2,6 +2,7 @@ package com.ndt.CRM_project.service;
 
 import java.util.List;
 
+
 import com.ndt.CRM_project.repo.UserRepo;
 import com.ndt.CRM_project.entity.UserEntity;
 
@@ -14,8 +15,11 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public List<UserEntity> getUsersPaged(int page, int pageSize){
+        return userRepo.findByOffset(page, pageSize);
+    }
 
-    public UserEntity getUserById(Integer id) {
+    public UserEntity getUserById(int id) {
         return userRepo.findById(id).orElse(null);
     }
 
@@ -27,5 +31,9 @@ public class UserService {
 
     public boolean update(UserEntity user) {
         return userRepo.update(user) > 0;
+    }
+
+    public boolean delete(Integer id) {
+        return userRepo.deleteById(id) > 0;
     }
 }

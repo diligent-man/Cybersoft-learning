@@ -40,8 +40,8 @@ public class UserEntity {
 
 
     public String getFirstName() {
-        if (fullName != null){
-            if (firstName != null){
+        if (fullName != null) {
+            if (firstName != null) {
                 return firstName;
             } else {
                 String[] nameComponents = fullName.split(" ");
@@ -53,8 +53,8 @@ public class UserEntity {
 
 
     public String getLastName() {
-        if (fullName != null){
-            if (lastName != null){
+        if (fullName != null) {
+            if (lastName != null) {
                 return lastName;
             } else {
                 String[] nameComponents = fullName.split(" ");

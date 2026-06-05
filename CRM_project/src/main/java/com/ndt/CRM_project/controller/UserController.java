@@ -3,20 +3,25 @@ package com.ndt.CRM_project.controller;
 import java.io.IOException;
 
 
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
-import com.ndt.CRM_project.service.TaskService;
 import jakarta.servlet.http.*;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 
 
-import com.ndt.CRM_project.service.RoleService;
 import com.ndt.CRM_project.entity.UserEntity;
+
+import com.ndt.CRM_project.dto.paging.PageDTO;
+
+import com.ndt.CRM_project.service.RoleService;
 import com.ndt.CRM_project.service.UserService;
+import com.ndt.CRM_project.service.TaskService;
+
+import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
+import tools.jackson.databind.ObjectMapper;
 
 
-@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update", "/user-details"})
+@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update", "/user-details", "/user-fetch", "/user-delete"})
 public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
 
@@ -31,9 +36,10 @@ public class UserController extends HttpServlet {
 
         switch (path) {
             case "/user" -> {
-                req.setAttribute("users", userService.getAll());
+                req.setAttribute("users", userService.getAll());  // for server-side rendering only
                 req.getRequestDispatcher("user-table.jsp").forward(req, resp);
             }
+
             case "/user-add" -> {
                 HttpSession session = req.getSession(false);
                 if (session != null) {
@@ -44,6 +50,61 @@ public class UserController extends HttpServlet {
                 req.setAttribute("roles", roleService.getAll());
                 req.getRequestDispatcher("user-add.jsp").forward(req, resp);
             }
+
+
+            case "/user-update" -> {
+                int userId = Integer.parseInt(req.getParameter("userId"));
+                UserEntity user = userService.getUserById(userId);
+
+                req.setAttribute("user", user);
+                req.setAttribute("roles", roleService.getAll());
+                req.getRequestDispatcher("user-add.jsp").forward(req, resp);
+            }
+
+            case "/user-details" -> {
+                int userId = Integer.parseInt(req.getParameter("userId"));
+                UserTaskStatusStatsDTO userTaskStatusStats = taskService.getTaskByUserStatus(userId);
+
+                req.setAttribute("statusLst", userTaskStatusStats.getTaskStatusMap().keySet());
+                req.setAttribute("userTaskStatusStats", userTaskStatusStats);
+                req.getRequestDispatcher("user-details.jsp").forward(req, resp);
+            }
+
+            // case "/fetch-user" -> {
+            //     int page = 1;
+            //     int pageSize = 10;
+            //
+            //     try {
+            //         String pageParam = req.getParameter("page");
+            //         String pageSizeParam = req.getParameter("pageSize");
+            //
+            //         if (pageParam != null)
+            //             page = Integer.parseInt(pageParam);
+            //
+            //         if (pageSizeParam != null)
+            //             pageSize = Integer.parseInt(pageSizeParam);
+            //     } catch (NumberFormatException e) {
+            //         //
+            //     }
+            //
+            //     List<Integer> allowedSizes = List.of(10, 25, 50, 100);
+            //     if (!allowedSizes.contains(pageSize))
+            //         pageSize = 10;
+            //
+            //
+            //     List<UserEntity> users = userService.getUsersPaged(page, pageSize);
+            //     int totalItems = userService.getAll().size();
+            //     // int totalItems = userService.countAllUsers();
+            //
+            //     PageDTO<UserEntity> pageDTO = new PageDTO<>(users, page, pageSize, totalItems);
+            //
+            //     ObjectMapper mapper = new ObjectMapper();
+            //     String json = mapper.writeValueAsString(pageDTO);
+            //
+            //     resp.setContentType("application/json");
+            //     resp.setCharacterEncoding("UTF-8");
+            //     resp.getWriter().write(json);
+            // }
         }
     }
 
@@ -75,48 +136,43 @@ public class UserController extends HttpServlet {
             }
 
             case "/user-update" -> {
-                String isEdited = req.getParameter("isEdited");
-                Integer userId = Integer.parseInt(req.getParameter("userId"));
+                String msg = "Cập nhật user thất bại";
+                UserEntity user = new UserEntity();
 
-                if (isEdited == null) {
-                    UserEntity user = userService.getUserById(userId);
+                user.setId(Integer.parseInt(req.getParameter("userId")));
+                user.setFullName(req.getParameter("fullName"));
+                user.setEmail(req.getParameter("email"));
+                user.setPassword(req.getParameter("password"));
+                user.setPhone(req.getParameter("phone"));
+                user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
 
-                    req.setAttribute("user", user);
-                    req.setAttribute("roles", roleService.getAll());
-                    req.getRequestDispatcher("user-add.jsp").forward(req, resp);
-                } else {
-                    String addMsg = "Cập nhật user thất bại";
-                    UserEntity user = new UserEntity();
-
-                    user.setId(Integer.parseInt(req.getParameter("userId")));
-                    user.setFullName(req.getParameter("fullName"));
-                    user.setEmail(req.getParameter("email"));
-                    user.setPassword(req.getParameter("password"));
-                    user.setPhone(req.getParameter("phone"));
-                    user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
-
-                    if (userService.update(user)) {
-                        addMsg = "Cập nhật user thành công";
-                    }
-
-                    HttpSession session = req.getSession();
-                    session.setAttribute("user", user);
-                    session.setAttribute("addMsg", addMsg);
-                    session.setAttribute("roles", roleService.getAll());
-                    resp.sendRedirect(req.getContextPath() + "/user-add");
+                if (userService.update(user)) {
+                    msg = "Cập nhật user thành công";
                 }
+
+                HttpSession session = req.getSession();
+
+                // due to redirect to /user-add, add these 2s more for loading data
+                // session.setAttribute("user", user);
+                // session.setAttribute("roles", roleService.getAll());
+
+                session.setAttribute("msg", msg);
+                // resp.sendRedirect(req.getContextPath() + "/user-add");
+                resp.sendRedirect(req.getContextPath() + "/user");
             }
 
-            case "/user-details" -> {
+            case "/user-delete" -> {
+                // TODO: add on delete cascade ?
+                String msg = "Xóa user thất bại";
+
                 Integer userId = Integer.parseInt(req.getParameter("userId"));
 
-                UserTaskStatusStatsDTO userTaskStatusStats = taskService.getTaskByUserStatus(userId);
+                if (userService.delete(userId))
+                    msg = "Xóa user thành công";
 
-                System.out.println(userTaskStatusStats);
-
-                req.setAttribute("statusLst", userTaskStatusStats.getTaskStatusMap().keySet());
-                req.setAttribute("userTaskStatusStats", userTaskStatusStats);
-                req.getRequestDispatcher("user-details.jsp").forward(req, resp);
+                HttpSession session = req.getSession();
+                session.setAttribute("msg", msg);
+                resp.sendRedirect(req.getContextPath() + "/user");
             }
         }
     }
