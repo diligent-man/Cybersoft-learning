@@ -180,7 +180,8 @@
                                         <td>${user.email}</td>
                                         <td>${user.roleName}</td>
                                         <td>
-                                            <a href="user-update?userId=${user.id}" class="btn btn-primary btn-sm">Sửa</a>
+                                            <a href="user-update?userId=${user.id}"
+                                               class="btn btn-primary btn-sm">Sửa</a>
 
                                             <form action="user-delete" method="post" style="display:inline;"
                                                   onsubmit="return confirm('Bạn có chắc muốn xóa user này không?');">
@@ -251,80 +252,80 @@
         However, this require server return JSON instead of JSP page !
         Check it out later
     --%>
-<%--    $(document).ready(function () {--%>
-<%--        $('#example').DataTable({--%>
-<%--            serverSide: true,--%>
-<%--            searching: true,--%>
-<%--            ordering: true,--%>
+    <%--    $(document).ready(function () {--%>
+    <%--        $('#example').DataTable({--%>
+    <%--            serverSide: true,--%>
+    <%--            searching: true,--%>
+    <%--            ordering: true,--%>
 
-<%--            ajax: {--%>
-<%--                url: "user-fetch",--%>
-<%--                type: "GET",--%>
-<%--                data: function (params) {--%>
-<%--                    return {--%>
-<%--                        page: (params.start / params.length) + 1,--%>
-<%--                        pageSize: params.length--%>
-<%--                    };--%>
-<%--                },--%>
+    <%--            ajax: {--%>
+    <%--                url: "user-fetch",--%>
+    <%--                type: "GET",--%>
+    <%--                data: function (params) {--%>
+    <%--                    return {--%>
+    <%--                        page: (params.start / params.length) + 1,--%>
+    <%--                        pageSize: params.length--%>
+    <%--                    };--%>
+    <%--                },--%>
 
-<%--                // remap PageDTO fields to what DataTables expects--%>
-<%--                dataFilter: function (response) {--%>
-<%--                    let json = jQuery.parseJSON(response);--%>
-<%--                    return JSON.stringify(json);--%>
-<%--                }--%>
-<%--            },--%>
+    <%--                // remap PageDTO fields to what DataTables expects--%>
+    <%--                dataFilter: function (response) {--%>
+    <%--                    let json = jQuery.parseJSON(response);--%>
+    <%--                    return JSON.stringify(json);--%>
+    <%--                }--%>
+    <%--            },--%>
 
-<%--            columns: [--%>
-<%--                {--%>
-<%--                    data: null,--%>
-<%--                    render: function (data, type, row, meta) {--%>
-<%--                        return meta.settings._iDisplayStart + meta.row + 1; // STT--%>
-<%--                    }--%>
-<%--                },--%>
-<%--                {data: "firstName"},--%>
-<%--                {data: "lastName"},--%>
-<%--                {data: "email"},--%>
-<%--                {data: "roleName"},--%>
-<%--                {--%>
-<%--                    data: null,--%>
-<%--                    orderable: false,--%>
-<%--                    render: function (data, type, row) {--%>
-<%--                        return `--%>
-<%--                        <form action="user-update" method="get" style="display:inline;">--%>
-<%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
-<%--                            <button type="submit" class="btn btn-sm btn-primary">Sửa</button>--%>
-<%--                        </form>--%>
+    <%--            columns: [--%>
+    <%--                {--%>
+    <%--                    data: null,--%>
+    <%--                    render: function (data, type, row, meta) {--%>
+    <%--                        return meta.settings._iDisplayStart + meta.row + 1; // STT--%>
+    <%--                    }--%>
+    <%--                },--%>
+    <%--                {data: "firstName"},--%>
+    <%--                {data: "lastName"},--%>
+    <%--                {data: "email"},--%>
+    <%--                {data: "roleName"},--%>
+    <%--                {--%>
+    <%--                    data: null,--%>
+    <%--                    orderable: false,--%>
+    <%--                    render: function (data, type, row) {--%>
+    <%--                        return `--%>
+    <%--                        <form action="user-update" method="get" style="display:inline;">--%>
+    <%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
+    <%--                            <button type="submit" class="btn btn-sm btn-primary">Sửa</button>--%>
+    <%--                        </form>--%>
 
-<%--                        <form action="user-delete" method="post" style="display:inline;"--%>
-<%--                              onsubmit="return confirm('Bạn có chắc muốn xóa?')">--%>
-<%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
-<%--                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>--%>
-<%--                        </form>--%>
+    <%--                        <form action="user-delete" method="post" style="display:inline;"--%>
+    <%--                              onsubmit="return confirm('Bạn có chắc muốn xóa?')">--%>
+    <%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
+    <%--                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>--%>
+    <%--                        </form>--%>
 
-<%--                        <form action="user-details" method="post" style="display:inline;">--%>
-<%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
-<%--                            <button type="submit" class="btn btn-sm btn-info">Xem</button>--%>
-<%--                        </form>--%>
-<%--                    `;--%>
-<%--                    }--%>
-<%--                }--%>
-<%--            ],--%>
+    <%--                        <form action="user-details" method="post" style="display:inline;">--%>
+    <%--                            <input type="hidden" name="userId" value="${row.id}"/>--%>
+    <%--                            <button type="submit" class="btn btn-sm btn-info">Xem</button>--%>
+    <%--                        </form>--%>
+    <%--                    `;--%>
+    <%--                    }--%>
+    <%--                }--%>
+    <%--            ],--%>
 
-<%--            lengthMenu: [10, 25, 50, 100],--%>
-<%--            pageLength: 10,--%>
-<%--            language: {--%>
-<%--                lengthMenu: "Hiển thị _MENU_ mục",--%>
+    <%--            lengthMenu: [10, 25, 50, 100],--%>
+    <%--            pageLength: 10,--%>
+    <%--            language: {--%>
+    <%--                lengthMenu: "Hiển thị _MENU_ mục",--%>
 
-<%--                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",--%>
-<%--                infoEmpty:  "Hiển thị 0 đến 0 của 0 mục",--%>
+    <%--                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",--%>
+    <%--                infoEmpty:  "Hiển thị 0 đến 0 của 0 mục",--%>
 
-<%--                search: "Search:",--%>
+    <%--                search: "Search:",--%>
 
-<%--                paginate: {previous: "Previous", next: "Next"},--%>
-<%--                zeroRecords: "Không tìm thấy kết quả"--%>
-<%--            }--%>
-<%--        });--%>
-<%--    });--%>
+    <%--                paginate: {previous: "Previous", next: "Next"},--%>
+    <%--                zeroRecords: "Không tìm thấy kết quả"--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    });--%>
 </script>
 </body>
 </html>

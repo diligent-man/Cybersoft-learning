@@ -261,7 +261,6 @@ WHERE u.id = 1
 GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
 
 
-
 select *
 from status;
 
