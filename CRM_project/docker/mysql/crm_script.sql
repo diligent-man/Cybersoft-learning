@@ -191,19 +191,19 @@ SET last_name = "Nguyen"
 WHERE id = 4;
 
 UPDATE users
-SET first_name = "Van A"
+SET first_name = "Van Mot"
 WHERE id = 1;
 
 UPDATE users
-SET first_name = "Van B"
+SET first_name = "Van Hai"
 WHERE id = 2;
 
 UPDATE users
-SET first_name = "Van C"
+SET first_name = "Van Ba"
 WHERE id = 3;
 
 UPDATE users
-SET first_name = "Van D"
+SET first_name = "Van Tu"
 WHERE id = 4;
 
 

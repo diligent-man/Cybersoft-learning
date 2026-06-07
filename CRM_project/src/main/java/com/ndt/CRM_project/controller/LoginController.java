@@ -52,10 +52,10 @@ public class LoginController extends HttpServlet {
 
         UserEntity user = loginService.authenticate(email, password, remember);
 
-        String loginMsg = "Đăng nhập thất bại";
+        String loginMsg = "Đăng nhập thất bại.";
 
         if (user != null) {
-            loginMsg = "Đăng nhập thành công";
+            loginMsg = "Đăng nhập thành công.";
             Cookie cRole = new Cookie("role", user.getRoleName());
 
             resp.addCookie(cRole);

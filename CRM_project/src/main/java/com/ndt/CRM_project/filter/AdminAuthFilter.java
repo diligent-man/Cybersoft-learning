@@ -1,5 +1,8 @@
 package com.ndt.CRM_project.filter;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.IOException;
 
@@ -49,6 +52,17 @@ public class AdminAuthFilter extends HttpFilter {
                     chain.doFilter(req, res);
                 }
             } else {
+                for (Cookie cookie : cookies)
+                    if (cookie.getName().equals("loginMsg")) {
+                        String loginMsg = URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8);
+
+                        cookie.setValue(URLEncoder.encode(
+                            loginMsg.concat(String.format(" Tuy nhiên role (%s) này không được phép vào !", role)),
+                            StandardCharsets.UTF_8)
+                        );
+                        res.addCookie(cookie);
+                        break;
+                    }
                 res.sendRedirect(req.getContextPath() + "/login");
             }
         } else {
