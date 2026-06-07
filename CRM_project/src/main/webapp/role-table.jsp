@@ -36,6 +36,16 @@
 </head>
 
 <body>
+<c:if test="${not empty sessionScope.msg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${sessionScope.msg}' />");
+        });
+    </script>
+
+    <c:remove var="msg" scope="session"/>
+</c:if>
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -164,8 +174,14 @@
                                         <td>${role.name}</td>
                                         <td>${role.description}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
+                                            <a href="role-update?roleId=${role.id}"
+                                               class="btn btn-primary btn-sm">Sửa</a>
+
+                                            <form action="role-delete" method="post" style="display:inline;"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa role này không?');">
+                                                <input type="hidden" name="userId" value="${role.id}"/>
+                                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </c:forEach>

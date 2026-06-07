@@ -34,14 +34,14 @@
 </head>
 
 <body>
-<c:if test="${not empty addMsg}">
+<c:if test="${not empty sessionScope.msg}">
     <script>
         window.addEventListener("load", function () {
-            alert("<c:out value='${addMsg}' />");
+            alert("<c:out value='${sessionScope.msg}' />");
         });
     </script>
 
-    <c:remove var="addMsg" scope="session"/>
+    <c:remove var="msg" scope="session"/>
 
 </c:if>
 
@@ -172,7 +172,6 @@
                             <c:choose>
                                 <c:when test="${user != null}">
                                     <input type="hidden" name="userId" value="${user != null ? user.id : ''}"/>
-                                    <input type="hidden" name="isEdited" value="true"/>
                                 </c:when>
                             </c:choose>
 
@@ -257,5 +256,4 @@
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
 </body>
-
 </html>

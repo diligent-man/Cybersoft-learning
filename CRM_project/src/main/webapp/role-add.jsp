@@ -33,15 +33,28 @@
 </head>
 
 <body>
-<c:if test="${not empty sessionScope.addMsg}">
+<c:if test="${not empty sessionScope.msg}">
     <script>
         window.addEventListener("load", function () {
-            alert("<c:out value='${sessionScope.addMsg}' />");
+            alert("<c:out value='${sessionScope.msg}' />");
         });
     </script>
 
-    <c:remove var="addMsg" scope="session"/>
+    <c:remove var="msg" scope="session"/>
+
 </c:if>
+
+<c:choose>
+    <c:when test="${role != null}">
+        <c:set var="pageTitle" value="Cập nhật quyền"/>
+        <c:set var="addBttn" value="Update role"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="pageTitle" value="Thêm mới quyền"/>
+        <c:set var="addBttn" value="Add role"/>
+    </c:otherwise>
+</c:choose>
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -141,7 +154,8 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Thêm mới quyền</h4>
+                    <%--                    <h4 class="page-title">Thêm mới quyền</h4>--%>
+                    <h4 class="page-title">${pageTitle}</h4>
                 </div>
             </div>
             <!-- /.row -->
@@ -150,25 +164,38 @@
                 <div class="col-md-2 col-12"></div>
                 <div class="col-md-8 col-xs-12">
                     <div class="white-box">
-                        <form class="form-horizontal form-material" method="post" action="role-add">
+                        <form action="${role != null ? 'role-update' : 'role-add'}" method="post"
+                              class="form-horizontal form-material">
+                            <c:choose>
+                                <c:when test="${role != null}">
+                                    <input type="hidden" name="id" value="${role != null ? role.id : ''}"/>
+                                </c:when>
+                            </c:choose>
+
                             <div class="form-group">
                                 <label class="col-md-12">Tên quyền</label>
                                 <div class="col-md-12">
-                                    <input type="text" placeholder="Tên quyền"
-                                           class="form-control form-control-line" name="name"/>
+                                    <input type="text" name="name"
+                                           placeholder="Tên quyền"
+                                           value="${role != null ? role.name : ''}"
+                                           class="form-control form-control-line"
+                                    />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Mô tả</label>
                                 <div class="col-md-12">
-                                    <input type="text" placeholder="Mô tả" class="form-control form-control-line"
-                                           name="description"/>
+                                    <input type="text" name="description"
+                                           placeholder="Mô tả"
+                                           value="${role != null ? role.description : ''}"
+                                           class="form-control form-control-line"
+                                    />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-success">Add Role</button>
-                                    <a href="role" class="btn btn-primary">Quay lại</a>
+                                    <button type="submit" class="btn btn-success">${addBttn}</button>
+                                    <a href="role" class="btn btn-primary">Back</a>
                                 </div>
                             </div>
                         </form>
@@ -199,5 +226,4 @@
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
 </body>
-
 </html>

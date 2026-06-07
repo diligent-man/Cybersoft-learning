@@ -15,9 +15,11 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public List<UserEntity> getUsersPaged(int page, int pageSize){
+
+    public List<UserEntity> getUsersPaged(int page, int pageSize) {
         return userRepo.findByOffset(page, pageSize);
     }
+
 
     public UserEntity getUserById(int id) {
         return userRepo.findById(id).orElse(null);
@@ -32,6 +34,7 @@ public class UserService {
     public boolean update(UserEntity user) {
         return userRepo.update(user) > 0;
     }
+
 
     public boolean delete(Integer id) {
         return userRepo.deleteById(id) > 0;

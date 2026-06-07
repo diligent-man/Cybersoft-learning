@@ -39,7 +39,7 @@
 <c:if test="${not empty sessionScope.msg}">
     <script>
         window.addEventListener("load", function () {
-            alert("<c:out value='${msg}' />");
+            alert("<c:out value='${sessionScope.msg}' />");
         });
     </script>
 

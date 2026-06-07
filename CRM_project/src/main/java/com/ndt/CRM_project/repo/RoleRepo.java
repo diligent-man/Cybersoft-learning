@@ -7,12 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
-import com.mysql.cj.jdbc.exceptions.ConnectionFeatureNotAvailableException;
 import com.ndt.CRM_project.entity.RoleEntity;
+import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
 import jakarta.ejb.ApplicationException;
+
+import javax.management.relation.Role;
 
 
 /**
@@ -20,7 +23,7 @@ import jakarta.ejb.ApplicationException;
  */
 public class RoleRepo {
     public List<RoleEntity> findAll() {
-        List<RoleEntity> roles = new ArrayList<>();
+        List<RoleEntity> objLst = new ArrayList<>();
 
         String query = "SELECT * FROM roles";
 
@@ -30,13 +33,13 @@ public class RoleRepo {
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    RoleEntity role = new RoleEntity();
+                    RoleEntity obj = new RoleEntity();
 
-                    role.setId(rs.getInt("id"));
-                    role.setName(rs.getString("name"));
-                    role.setDescription(rs.getString("description"));
+                    obj.setId(rs.getInt("id"));
+                    obj.setName(rs.getString("name"));
+                    obj.setDescription(rs.getString("description"));
 
-                    roles.add(role);
+                    objLst.add(obj);
                 }
             } catch (SQLException e) {
                 System.out.println("RoleRepo: " + e.getMessage());
@@ -44,7 +47,44 @@ public class RoleRepo {
         } catch (SQLException e) {
             System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
-        return roles;
+        return objLst;
+    }
+
+
+    public Optional<RoleEntity> findById(int id) {
+        String query = """
+            SELECT *
+            FROM roles
+            WHERE id=?
+            """;
+
+        List<RoleEntity> objLst = new ArrayList<>();
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setInt(1, id);
+
+                objLst = new ArrayList<>();
+
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    RoleEntity obj = new RoleEntity();
+
+                    obj.setId(Integer.parseInt(rs.getString("id")));
+                    obj.setName(rs.getString("name"));
+                    obj.setDescription(rs.getString("description"));
+
+                    objLst.add(obj);
+                }
+            } catch (SQLException e) {
+                System.out.println("RoleRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+        }
+
+        return Optional.ofNullable(objLst.isEmpty() ? null : objLst.getFirst());
     }
 
 
@@ -64,6 +104,35 @@ public class RoleRepo {
 
                 updatedRow = stmt.executeUpdate();
             } catch (SQLException e) {
+                System.out.println("RoleRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+        }
+        return updatedRow;
+    }
+
+
+    public int update(RoleEntity obj) {
+        int updatedRow = 0;
+
+        String query = """
+            UPDATE roles
+            SET name = ?, description = ?
+            WHERE id = ?
+            """;
+
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setString(1, obj.getName());
+                stmt.setString(2, obj.getDescription());
+                stmt.setInt(3, obj.getId());
+
+                updatedRow = stmt.executeUpdate();
+
+            } catch (Exception e) {
                 System.out.println("RoleRepo: " + e.getMessage());
             }
         } catch (SQLException e) {

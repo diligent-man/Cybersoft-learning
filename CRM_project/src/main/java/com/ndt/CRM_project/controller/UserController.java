@@ -4,9 +4,10 @@ import java.io.IOException;
 
 
 import jakarta.servlet.http.*;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+
+import tools.jackson.databind.ObjectMapper;
 
 
 import com.ndt.CRM_project.entity.UserEntity;
@@ -18,7 +19,6 @@ import com.ndt.CRM_project.service.UserService;
 import com.ndt.CRM_project.service.TaskService;
 
 import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
-import tools.jackson.databind.ObjectMapper;
 
 
 @WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update", "/user-details", "/user-fetch", "/user-delete"})
@@ -54,9 +54,9 @@ public class UserController extends HttpServlet {
 
             case "/user-update" -> {
                 int userId = Integer.parseInt(req.getParameter("userId"));
-                UserEntity user = userService.getUserById(userId);
+                UserEntity obj = userService.getUserById(userId);
 
-                req.setAttribute("user", user);
+                req.setAttribute("user", obj);
                 req.setAttribute("roles", roleService.getAll());
                 req.getRequestDispatcher("user-add.jsp").forward(req, resp);
             }
@@ -115,7 +115,7 @@ public class UserController extends HttpServlet {
 
         switch (path) {
             case "/user-add" -> {
-                String addMsg = "Thêm user thất bại";
+                String msg = "Thêm user thất bại";
 
                 UserEntity user = new UserEntity();
 
@@ -126,27 +126,27 @@ public class UserController extends HttpServlet {
                 user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
 
                 if (userService.save(user)) {
-                    addMsg = "Thêm user thành công";
+                    msg = "Thêm user thành công";
                 }
 
                 // demo for using flash message (a.k.a FlashAttribute in Spring)
                 HttpSession session = req.getSession();
-                session.setAttribute("addMsg", addMsg);
+                session.setAttribute("msg", msg);
                 resp.sendRedirect(req.getContextPath() + "/user-add");
             }
 
             case "/user-update" -> {
                 String msg = "Cập nhật user thất bại";
-                UserEntity user = new UserEntity();
+                UserEntity obj = new UserEntity();
 
-                user.setId(Integer.parseInt(req.getParameter("userId")));
-                user.setFullName(req.getParameter("fullName"));
-                user.setEmail(req.getParameter("email"));
-                user.setPassword(req.getParameter("password"));
-                user.setPhone(req.getParameter("phone"));
-                user.setRoleId(Integer.parseInt(req.getParameter("roleId")));
+                obj.setId(Integer.parseInt(req.getParameter("userId")));
+                obj.setFullName(req.getParameter("fullName"));
+                obj.setEmail(req.getParameter("email"));
+                obj.setPassword(req.getParameter("password"));
+                obj.setPhone(req.getParameter("phone"));
+                obj.setRoleId(Integer.parseInt(req.getParameter("roleId")));
 
-                if (userService.update(user)) {
+                if (userService.update(obj)) {
                     msg = "Cập nhật user thành công";
                 }
 
@@ -155,9 +155,9 @@ public class UserController extends HttpServlet {
                 // due to redirect to /user-add, add these 2s more for loading data
                 // session.setAttribute("user", user);
                 // session.setAttribute("roles", roleService.getAll());
+                // resp.sendRedirect(req.getContextPath() + "/user-add");
 
                 session.setAttribute("msg", msg);
-                // resp.sendRedirect(req.getContextPath() + "/user-add");
                 resp.sendRedirect(req.getContextPath() + "/user");
             }
 

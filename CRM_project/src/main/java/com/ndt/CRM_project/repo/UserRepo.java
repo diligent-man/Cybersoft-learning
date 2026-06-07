@@ -93,7 +93,6 @@ public class UserRepo {
     }
 
 
-    // TODO: make email unique from db design
     public Optional<UserEntity> findByEmail(String email) {
         // evade SQL Injection with "?"
         String query = """
@@ -147,7 +146,7 @@ public class UserRepo {
             WHERE u.id=?
             """;
 
-        List<UserEntity> users = new ArrayList<>();
+        List<UserEntity> objLst = new ArrayList<>();
         try (Connection conn = MysqlConfig.getConnection()) {
             try {
                 PreparedStatement statement = conn.prepareStatement(query);
@@ -156,20 +155,20 @@ public class UserRepo {
                 statement.setInt(1, id);
 
                 // convert result set objects to user class
-                users = new ArrayList<>();
+                objLst = new ArrayList<>();
 
                 ResultSet rs = statement.executeQuery();
                 while (rs.next()) {
-                    UserEntity user = new UserEntity();
+                    UserEntity obj = new UserEntity();
 
-                    user.setId(rs.getInt("id"));
-                    user.setFullName(rs.getString("fullname"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setPhone(rs.getString("phone"));
-                    user.setRoleName(rs.getString("role_name"));
+                    obj.setId(rs.getInt("id"));
+                    obj.setFullName(rs.getString("fullname"));
+                    obj.setEmail(rs.getString("email"));
+                    obj.setPassword(rs.getString("password"));
+                    obj.setPhone(rs.getString("phone"));
+                    obj.setRoleName(rs.getString("role_name"));
 
-                    users.add(user);
+                    objLst.add(obj);
                 }
             } catch (SQLException e) {
                 System.out.println("UserRepo: " + e.getMessage());
@@ -178,7 +177,7 @@ public class UserRepo {
             System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
         }
 
-        return Optional.ofNullable(users.isEmpty() ? null : users.getFirst());
+        return Optional.ofNullable(objLst.isEmpty() ? null : objLst.getFirst());
     }
 
 
