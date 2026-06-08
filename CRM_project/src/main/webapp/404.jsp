@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:useBean id="now" class="java.util.Date"/>
+<jsp:useBean id="nowDate" class="java.util.Date"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +45,7 @@
             <a href='<c:url value="/" />' class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Về trang
                 chủ</a></div>
         <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
         </footer>
     </div>
 </section>

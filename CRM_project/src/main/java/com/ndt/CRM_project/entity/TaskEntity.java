@@ -26,7 +26,7 @@ public class TaskEntity {
     private Integer userId;
 
     @Setter
-    private String userFullname;
+    private String userFullName;
 
     @Setter
     private Integer projectId;
@@ -80,5 +80,15 @@ public class TaskEntity {
     public String getFormattedEndDate() {
         return endDate != null ?
             endDate.format(displayFormatter) : "";
+    }
+
+
+    public String getParsedStartDate() {
+        return startDate != null ? startDate.format(parseFormatter) : "";
+    }
+
+
+    public String getParsedEndDate() {
+        return endDate != null ? endDate.format(parseFormatter) : "";
     }
 }

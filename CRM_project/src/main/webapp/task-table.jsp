@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:useBean id="now" class="java.util.Date"/>
+<jsp:useBean id="nowDate" class="java.util.Date"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +36,16 @@
 </head>
 
 <body>
+<c:if test="${not empty sessionScope.msg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${sessionScope.msg}' />");
+        });
+    </script>
+
+    <c:remove var="msg" scope="session"/>
+</c:if>
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -166,14 +176,23 @@
                                         <td>${task.id}</td>
                                         <td>${task.name}</td>
                                         <td>${task.projectName}</td>
-                                        <td>${task.userFullname}</td>
+                                        <td>${task.userFullName}</td>
                                         <td>${task.formattedStartDate}</td>
                                         <td>${task.formattedEndDate}</td>
                                         <td>${task.statusName}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                            <a href="#" class="btn btn-sm btn-info">Xem</a>
+                                            <a href="task-update?taskId=${task.id}"
+                                               class="btn btn-primary btn-sm">Sửa</a>
+
+                                            <form action="task-delete" method="post" style="display:inline;"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa task này không?');">
+                                                <input type="hidden" name="taskId" value="${task.id}"/>
+                                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                            </form>
+
+                                            <a href="javascript:void(0)"
+                                               onclick="return confirm('Trang này chưa được hỗ trợ !');"
+                                               class="btn btn-info btn-sm">Xem</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -187,7 +206,7 @@
         </div>
         <!-- /.container-fluid -->
         <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
         </footer>
     </div>
     <!-- /#page-wrapper -->
@@ -207,10 +226,26 @@
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
 <script>
+    <%--  This is appropriate for small number of users only (client-side handling)  --%>
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            pageLength: 10,
+
+            lengthMenu: [10, 25, 50, 100],
+
+            language: {
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                infoEmpty: "Hiển thị 0 đến 0 của 0 mục",
+                search: "Search:",
+                paginate: {
+                    previous: "Previous",
+                    next: "Next"
+                },
+                zeroRecords: "Không tìm thấy kết quả"
+            }
+        });
     });
 </script>
 </body>
-
 </html>

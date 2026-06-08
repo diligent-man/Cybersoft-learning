@@ -2,11 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:useBean id="now" class="java.util.Date"/>
+<jsp:useBean id="nowDate" class="java.util.Date"/>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,7 +33,33 @@
 </head>
 
 <body>
-<jsp:useBean id="nowDate" class="java.util.Date"/>
+<c:if test="${not empty sessionScope.msg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${sessionScope.msg}' />");
+        });
+    </script>
+
+    <c:remove var="msg" scope="session"/>
+
+</c:if>
+
+<c:choose>
+    <c:when test="${task != null}">
+        <c:set var="pageTitle" value="Cập nhật công việc"/>
+        <c:set var="addBttn" value="Update task"/>
+
+        <c:set var="startDate" value="${task.parsedStartDate}"/>
+        <c:set var="endDate" value="${task.parsedEndDate}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="pageTitle" value="Thêm mới công việc"/>
+        <c:set var="addBttn" value="Add task"/>
+
+        <fmt:formatDate var="startDate" value="${nowDate}" pattern="yyyy-MM-dd"/>
+        <fmt:formatDate var="endDate" value="${nowDate}" pattern="yyyy-MM-dd"/>
+    </c:otherwise>
+</c:choose>
 
 <!-- Preloader -->
 <div class="preloader">
@@ -145,7 +170,14 @@
                 <div class="col-md-2 col-12"></div>
                 <div class="col-md-8 col-xs-12">
                     <div class="white-box">
-                        <form class="form-horizontal form-material" method="post" name="task-add">
+                        <form action="${task != null ? 'task-update' : 'task-add'}" method="post"
+                              class="form-horizontal form-material">
+                            <c:choose>
+                                <c:when test="${task != null}">
+                                    <input type="hidden" name="userId" value="${task != null ? task.id : ''}"/>
+                                </c:when>
+                            </c:choose>
+
                             <div class="form-group">
                                 <label class="col-md-12">Dự án</label>
                                 <div class="col-md-12">
@@ -159,7 +191,9 @@
                             <div class="form-group">
                                 <label class="col-md-12">Tên công việc</label>
                                 <div class="col-md-12">
-                                    <input type="text" placeholder="Tên công việc"
+                                    <input type="text" name="name"
+                                           placeholder="Tên công việc"
+                                           value="${task != null ? task.name  : ''}"
                                            class="form-control form-control-line">
                                 </div>
                             </div>
@@ -168,7 +202,7 @@
                                 <div class="col-md-12">
                                     <select class="form-control form-control-line" name="userId">
                                         <c:forEach items="${users}" var="user">
-                                            <option value="${user.id}">${user.name}</option>
+                                            <option value="${user.id}">${user.fullName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -176,23 +210,23 @@
                             <div class="form-group">
                                 <label class="col-md-12">Ngày bắt đầu</label>
                                 <div class="col-md-12">
-                                    <input type="date" value="<fmt:formatDate value='${nowDate}' pattern='yyyy-MM-dd'/>"
-                                           class="form-control form-control-line"
-                                           name="endDate">
+                                    <input type="date" name="startDate"
+                                           value="${startDate}"
+                                           class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Ngày kết thúc</label>
                                 <div class="col-md-12">
-                                    <input type="date" value="<fmt:formatDate value='${nowDate}' pattern='yyyy-MM-dd'/>"
-                                           class="form-control form-control-line"
-                                           name="endDate">
+                                    <input type="date" name="endDate"
+                                           value="${endDate}"
+                                           class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-success">Lưu lại</button>
-                                    <a href="task" class="btn btn-primary">Quay lại</a>
+                                    <button type="submit" class="btn btn-success">${addBttn}</button>
+                                    <a href="task" class="btn btn-primary">Back</a>
                                 </div>
                             </div>
                         </form>
@@ -204,7 +238,7 @@
         </div>
         <!-- /.container-fluid -->
         <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
         </footer>
     </div>
     <!-- /#page-wrapper -->

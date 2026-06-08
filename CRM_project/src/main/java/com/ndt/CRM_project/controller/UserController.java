@@ -19,7 +19,7 @@ import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 
 @WebServlet(
     name = "userController",
-    urlPatterns = {"/user", "/user-add", "/user-update", "/user-details", "/user-fetch", "/user-delete"})
+    urlPatterns = {"/user", "/user-add", "/user-update", "/user-fetch", "/user-delete", "/user-details"})
 public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
 
@@ -163,7 +163,7 @@ public class UserController extends HttpServlet {
                 // TODO: add on delete cascade ?
                 String msg = "Xóa user thất bại";
 
-                Integer userId = Integer.parseInt(req.getParameter("userId"));
+                int userId = Integer.parseInt(req.getParameter("userId"));
 
                 if (userService.delete(userId))
                     msg = "Xóa user thành công";

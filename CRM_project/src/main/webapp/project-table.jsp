@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<jsp:useBean id="nowDate" class="java.util.Date"/>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -196,7 +198,7 @@
         </div>
         <!-- /.container-fluid -->
         <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
         </footer>
     </div>
     <!-- /#page-wrapper -->

@@ -205,8 +205,7 @@
                                 <div class="col-md-12">
                                     <input type="date" name="endDate"
                                            value="${endDate}"
-                                           class="form-control form-control-line"
-                                    >
+                                           class="form-control form-control-line">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -224,7 +223,7 @@
         </div>
         <!-- /.container-fluid -->
         <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
         </footer>
     </div>
 </div>

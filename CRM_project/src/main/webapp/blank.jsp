@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
-<jsp:useBean id="now" class="java.util.Date"/>
+<jsp:useBean id="nowDate" class="java.util.Date"/>
 
 <!DOCTYPE html>
 <!--
@@ -141,7 +141,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.container-fluid -->
         <footer class="footer text-center">
-            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+            <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
         </footer>
     </div>
     <!-- /#page-wrapper -->

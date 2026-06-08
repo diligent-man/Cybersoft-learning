@@ -5,7 +5,7 @@
 <%@ page import="java.net.URLDecoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 
-<jsp:useBean id="now" class="java.util.Date"/>
+<jsp:useBean id="nowDate" class="java.util.Date"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +48,7 @@
     </div>
 
     <footer class="footer text-center">
-        <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+        <fmt:formatDate value="${nowDate}" pattern="yyyy"/> &copy; myclass.com
     </footer>
 </div>
 

@@ -56,6 +56,7 @@ public class ProjectController extends HttpServlet {
             }
 
             case "/project-details" -> {
+                req.getRequestDispatcher("project-details.jsp").forward(req, resp);
             }
         }
     }
