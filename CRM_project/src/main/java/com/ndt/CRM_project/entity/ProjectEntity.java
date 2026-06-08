@@ -60,4 +60,13 @@ public class ProjectEntity {
         return endDate != null ?
             endDate.format(displayFormatter) : "";
     }
+
+    public String getParsedStartDate() {
+        return startDate != null ? startDate.format(parseFormatter) : "";
+    }
+
+
+    public String getParsedEndDate() {
+        return endDate != null ? endDate.format(parseFormatter) : "";
+    }
 }

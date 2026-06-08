@@ -1,6 +1,7 @@
 package com.ndt.CRM_project.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 
 
@@ -17,7 +18,9 @@ import com.ndt.CRM_project.entity.ProjectEntity;
 import com.ndt.CRM_project.service.ProjectService;
 
 
-@WebServlet(name = "groupworkController", urlPatterns = {"/project", "/project-add"})
+@WebServlet(
+    name = "groupworkController",
+    urlPatterns = {"/project", "/project-add", "/project-update", "/project-details", "/project-delete"})
 public class ProjectController extends HttpServlet {
     private final ProjectService projectService = new ProjectService();
 
@@ -29,11 +32,30 @@ public class ProjectController extends HttpServlet {
         switch (path) {
             case "/project" -> {
                 req.setAttribute("projects", projectService.getAll());
-                req.getRequestDispatcher("project.jsp").forward(req, resp);
+                req.getRequestDispatcher("project-table.jsp").forward(req, resp);
             }
 
             case "/project-add" -> {
+                HttpSession session = req.getSession(false);
+                if (session != null) {
+                    req.setAttribute("project", session.getAttribute("project"));
+                    session.removeAttribute("project");
+                }
+
                 req.getRequestDispatcher("project-add.jsp").forward(req, resp);
+            }
+
+            case "/project-update" -> {
+                int projectId = Integer.parseInt(req.getParameter("projectId"));
+                ProjectEntity obj = projectService.getProject(projectId);
+
+                System.out.println(obj);
+
+                req.setAttribute("project", obj);
+                req.getRequestDispatcher("project-add.jsp").forward(req, resp);
+            }
+
+            case "/project-details" -> {
             }
         }
     }
@@ -43,23 +65,62 @@ public class ProjectController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String path = req.getServletPath();
 
-        if (path.equals("/project-add")) {
-            String addMsg = "Thêm project thất bại";
+        switch (path) {
+            case "/project-add" -> {
+                String msg = "Thêm project thất bại";
 
-            ProjectEntity obj = new ProjectEntity();
+                ProjectEntity obj = new ProjectEntity();
 
-            obj.setName(req.getParameter("name"));
-            obj.setStartDate(LocalDate.parse(req.getParameter("startDate")));
-            obj.setEndDate(LocalDate.parse(req.getParameter("endDate")));
+                obj.setName(req.getParameter("name"));
+                obj.setStartDate(LocalDate.parse(req.getParameter("startDate")));
+                obj.setEndDate(LocalDate.parse(req.getParameter("endDate")));
 
-            if (projectService.addProject(obj)) {
-                addMsg = "Thêm project thành công";
+                if (projectService.save(obj)) {
+                    msg = "Thêm project thành công";
+                }
+
+                // demo for using flash message (a.k.a FlashAttribute in Spring)
+                HttpSession session = req.getSession();
+                session.setAttribute("msg", msg);
+                resp.sendRedirect(req.getContextPath() + "/project-add");
             }
 
-            // demo for using flash message (a.k.a FlashAttribute in Spring)
-            HttpSession session = req.getSession();
-            session.setAttribute("addMsg", addMsg);
-            resp.sendRedirect(req.getContextPath() + "/project-add");
+            case "/project-update" -> {
+                String msg = "Cập nhật project thất bại";
+                ProjectEntity obj = new ProjectEntity();
+
+                obj.setId(Integer.parseInt(req.getParameter("projectId")));
+                obj.setName(req.getParameter("name"));
+                obj.setStartDate(req.getParameter("startDate"));
+                obj.setEndDate(req.getParameter("endDate"));
+
+                if (projectService.update(obj)) {
+                    msg = "Cập nhật project thành công";
+                }
+
+                HttpSession session = req.getSession();
+
+                // due to redirect to /porject-add, add these more for loading data
+                // session.setAttribute("project", obj);
+                // resp.sendRedirect(req.getContextPath() + "/project-add");
+
+                session.setAttribute("msg", msg);
+                resp.sendRedirect(req.getContextPath() + "/project");
+            }
+
+            case "/project-delete" -> {
+                // TODO: add on delete cascade ?
+                String msg = "Xóa project thất bại";
+
+                int projectId = Integer.parseInt(req.getParameter("projectId"));
+
+                if (projectService.delete(projectId))
+                    msg = "Xóa project thành công";
+
+                HttpSession session = req.getSession();
+                session.setAttribute("msg", msg);
+                resp.sendRedirect(req.getContextPath() + "/project");
+            }
         }
     }
 }

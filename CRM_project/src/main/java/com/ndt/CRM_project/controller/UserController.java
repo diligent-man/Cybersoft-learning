@@ -7,12 +7,8 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 
-import tools.jackson.databind.ObjectMapper;
-
 
 import com.ndt.CRM_project.entity.UserEntity;
-
-import com.ndt.CRM_project.dto.paging.PageDTO;
 
 import com.ndt.CRM_project.service.RoleService;
 import com.ndt.CRM_project.service.UserService;
@@ -21,7 +17,9 @@ import com.ndt.CRM_project.service.TaskService;
 import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 
 
-@WebServlet(name = "userController", urlPatterns = {"/user", "/user-add", "/user-update", "/user-details", "/user-fetch", "/user-delete"})
+@WebServlet(
+    name = "userController",
+    urlPatterns = {"/user", "/user-add", "/user-update", "/user-details", "/user-fetch", "/user-delete"})
 public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
 
@@ -54,7 +52,7 @@ public class UserController extends HttpServlet {
 
             case "/user-update" -> {
                 int userId = Integer.parseInt(req.getParameter("userId"));
-                UserEntity obj = userService.getUserById(userId);
+                UserEntity obj = userService.getUser(userId);
 
                 req.setAttribute("user", obj);
                 req.setAttribute("roles", roleService.getAll());

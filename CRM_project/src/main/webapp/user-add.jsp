@@ -175,7 +175,6 @@
                                 </c:when>
                             </c:choose>
 
-
                             <div class="form-group">
                                 <label class="col-md-12">Full Name</label>
                                 <div class="col-md-12">

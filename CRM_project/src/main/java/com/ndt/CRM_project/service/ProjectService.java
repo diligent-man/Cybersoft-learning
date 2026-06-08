@@ -16,7 +16,23 @@ public class ProjectService {
     }
 
 
-    public boolean addProject(ProjectEntity obj) {
+    public ProjectEntity getProject(int id) {
+        return projectRepo.findById(id).orElse(null);
+    }
+
+
+    public boolean save(ProjectEntity obj) {
         return projectRepo.save(obj) > 0;
     }
+
+
+    public boolean update(ProjectEntity obj) {
+        return projectRepo.update(obj) > 0;
+    }
+
+
+    public boolean delete(int id) {
+        return projectRepo.deleteById(id) > 0;
+    }
+
 }

@@ -2,6 +2,11 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<%@page import="java.sql.Date" %>
+
+<jsp:useBean id="nowDate" class="java.util.Date"/>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,16 +37,34 @@
 </head>
 
 <body>
-<c:if test="${not empty sessionScope.addMsg}">
+<c:if test="${not empty sessionScope.msg}">
     <script>
         window.addEventListener("load", function () {
-            alert("<c:out value='${sessionScope.addMsg}' />");
+            alert("<c:out value='${sessionScope.msg}' />");
         });
     </script>
 
-    <c:remove var="addMsg" scope="session"/>
+    <c:remove var="msg" scope="session"/>
 </c:if>
-<jsp:useBean id="nowDate" class="java.util.Date" />
+
+<c:choose>
+    <c:when test="${project != null}">
+        <c:set var="addBttn" value="Update project"/>
+        <c:set var="pageTitle" value="Cập nhật dự án"/>
+
+        <c:set var="startDate" value="${project.parsedStartDate}"/>
+        <c:set var="endDate"   value="${project.parsedEndDate}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="addBttn" value="Add project"/>
+        <c:set var="pageTitle" value="Thêm mới dự án"/>
+
+        <fmt:formatDate var="startDate" value="${nowDate}" pattern="yyyy-MM-dd"/>
+        <fmt:formatDate var="endDate"   value="${nowDate}" pattern="yyyy-MM-dd"/>
+    </c:otherwise>
+</c:choose>
+
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -115,12 +138,12 @@
                 </li>
                 <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                aria-hidden="true"></i><span
+                                                              aria-hidden="true"></i><span
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                               aria-hidden="true"></i><span
+                                                           aria-hidden="true"></i><span
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
@@ -141,7 +164,7 @@
         <div class="container-fluid">
             <div class="row bg-title">
                 <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                    <h4 class="page-title">Thêm mới dự án</h4>
+                    <h4 class="page-title">${pageTitle}</h4>
                 </div>
             </div>
             <!-- /.row -->
@@ -150,35 +173,46 @@
                 <div class="col-md-2 col-12"></div>
                 <div class="col-md-8 col-xs-12">
                     <div class="white-box">
-                        <form class="form-horizontal form-material" method="post" action="project-add">
+                        <form action="${project != null ? 'project-update' : 'project-add'}" method="post"
+                              class="form-horizontal form-material">
+                            <c:choose>
+                                <c:when test="${project != null}">
+                                    <input type="hidden" name="projectId" value="${project != null ? project.id : ''}"/>
+                                </c:when>
+                            </c:choose>
+
                             <div class="form-group">
                                 <label class="col-md-12">Tên dự án</label>
                                 <div class="col-md-12">
-                                    <input type="text" placeholder="Tên công việc"
+                                    <input type="text" name="name"
+                                           placeholder="Tên công việc"
+                                           value="${project != null ? project.name : ''}"
                                            class="form-control form-control-line"
-                                           name="name">
+                                    >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Ngày bắt đầu</label>
                                 <div class="col-md-12">
-                                    <input type="date" value="<fmt:formatDate value='${nowDate}' pattern='yyyy-MM-dd'/>"
+                                    <input type="date" name="startDate"
+                                           value="${startDate}"
                                            class="form-control form-control-line"
-                                           name="startDate">
+                                    >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Ngày kết thúc</label>
                                 <div class="col-md-12">
-                                    <input type="date" value="<fmt:formatDate value='${nowDate}' pattern='yyyy-MM-dd'/>"
+                                    <input type="date" name="endDate"
+                                           value="${endDate}"
                                            class="form-control form-control-line"
-                                           name="endDate">
+                                    >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-success">Lưu lại</button>
-                                    <a href="project" class="btn btn-primary">Quay lại</a>
+                                    <button type="submit" class="btn btn-success">${addBttn}</button>
+                                    <a href="project" class="btn btn-primary">Back</a>
                                 </div>
                             </div>
                         </form>
@@ -189,11 +223,11 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
+        <footer class="footer text-center">
+            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+        </footer>
     </div>
-    <!-- /#page-wrapper -->
 </div>
-<!-- /#wrapper -->
 <!-- jQuery -->
 <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
@@ -207,5 +241,4 @@
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
 </body>
-
 </html>

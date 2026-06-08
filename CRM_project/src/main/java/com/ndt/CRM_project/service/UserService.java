@@ -21,18 +21,18 @@ public class UserService {
     }
 
 
-    public UserEntity getUserById(int id) {
+    public UserEntity getUser(int id) {
         return userRepo.findById(id).orElse(null);
     }
 
 
-    public boolean save(UserEntity user) {
-        return userRepo.save(user) > 0;
+    public boolean save(UserEntity obj) {
+        return userRepo.save(obj) > 0;
     }
 
 
-    public boolean update(UserEntity user) {
-        return userRepo.update(user) > 0;
+    public boolean update(UserEntity obj) {
+        return userRepo.update(obj) > 0;
     }
 
 

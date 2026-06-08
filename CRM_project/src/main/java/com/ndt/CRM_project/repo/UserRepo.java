@@ -181,7 +181,36 @@ public class UserRepo {
     }
 
 
-    public int update(UserEntity user) {
+    public int save(UserEntity obj) {
+        int updatedRow = 0;
+
+        String query = """
+            INSERT INTO users(fullname, email, password, phone, role_id) VALUES (?, ?, ?, ?, ?)
+            """;
+
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setString(1, obj.getFullName());
+                stmt.setString(2, obj.getEmail());
+                stmt.setString(3, obj.getPassword());
+                stmt.setString(4, obj.getPhone());
+                stmt.setInt(5, obj.getRoleId());
+
+                updatedRow = stmt.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("UserRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
+        }
+        return updatedRow;
+    }
+
+
+    public int update(UserEntity obj) {
         int updatedRow = 0;
 
         String query = """
@@ -194,12 +223,12 @@ public class UserRepo {
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
 
-                stmt.setString(1, user.getFullName());
-                stmt.setString(2, user.getEmail());
-                stmt.setString(3, user.getPassword());
-                stmt.setString(4, user.getPhone());
-                stmt.setInt(5, user.getRoleId());
-                stmt.setInt(6, user.getId());
+                stmt.setString(1, obj.getFullName());
+                stmt.setString(2, obj.getEmail());
+                stmt.setString(3, obj.getPassword());
+                stmt.setString(4, obj.getPhone());
+                stmt.setInt(5, obj.getRoleId());
+                stmt.setInt(6, obj.getId());
 
                 updatedRow = stmt.executeUpdate();
 
@@ -213,36 +242,7 @@ public class UserRepo {
     }
 
 
-    public int save(UserEntity user) {
-        int updatedRow = 0;
-
-        String query = """
-            INSERT INTO users(fullname, email, password, phone, role_id) VALUES (?, ?, ?, ?, ?)
-            """;
-
-        try (Connection conn = MysqlConfig.getConnection()) {
-            try {
-                PreparedStatement stmt = conn.prepareStatement(query);
-
-                stmt.setString(1, user.getFullName());
-                stmt.setString(2, user.getEmail());
-                stmt.setString(3, user.getPassword());
-                stmt.setString(4, user.getPhone());
-                stmt.setInt(5, user.getRoleId());
-
-                updatedRow = stmt.executeUpdate();
-
-            } catch (Exception e) {
-                System.out.println("UserRepo: " + e.getMessage());
-            }
-        } catch (SQLException e) {
-            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
-        }
-        return updatedRow;
-    }
-
-
-    public int deleteById(Integer id) {
+    public int deleteById(int id) {
         int removedRow = 0;
 
         String query = """

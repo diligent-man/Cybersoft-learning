@@ -33,6 +33,16 @@
 </head>
 
 <body>
+<c:if test="${not empty sessionScope.msg}">
+    <script>
+        window.addEventListener("load", function () {
+            alert("<c:out value='${sessionScope.msg}' />");
+        });
+    </script>
+
+    <c:remove var="msg" scope="session"/>
+</c:if>
+
 <!-- Preloader -->
 <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
@@ -106,12 +116,12 @@
                 </li>
                 <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                aria-hidden="true"></i><span
+                                                              aria-hidden="true"></i><span
                             class="hide-menu">Dự án</span></a>
                 </li>
                 <li>
                     <a href="task" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                               aria-hidden="true"></i><span
+                                                           aria-hidden="true"></i><span
                             class="hide-menu">Công việc</span></a>
                 </li>
                 <li>
@@ -162,9 +172,17 @@
                                         <td>${project.formattedStartDate}</td>
                                         <td>${project.formattedEndDate}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Sửa</a>
-                                            <a href="#" class="btn btn-sm btn-danger">Xóa</a>
-                                            <a href="project-details.jsp" class="btn btn-sm btn-info">Xem</a>
+                                            <a href="project-update?projectId=${project.id}"
+                                               class="btn btn-primary btn-sm">Sửa</a>
+
+                                            <form action="project-delete" method="post" style="display:inline;"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa project này không?');">
+                                                <input type="hidden" name="projectId" value="${project.id}"/>
+                                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                            </form>
+
+                                            <a href="project-details?projectId=${project.id}"
+                                               class="btn btn-info btn-sm">Xem</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -177,7 +195,9 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <footer class="footer text-center"> 2016 &copy; myclass.com</footer>
+        <footer class="footer text-center">
+            <fmt:formatDate value="${now}" pattern="yyyy"/> &copy; myclass.com
+        </footer>
     </div>
     <!-- /#page-wrapper -->
 </div>
@@ -195,11 +215,28 @@
 <script src="js/waves.js"></script>
 <!-- Custom Theme JavaScript -->
 <script src="js/custom.min.js"></script>
+
 <script>
+    <%--  This is appropriate for small number of users only (client-side handling)  --%>
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            pageLength: 10,
+
+            lengthMenu: [10, 25, 50, 100],
+
+            language: {
+                lengthMenu: "Hiển thị _MENU_ mục",
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                infoEmpty: "Hiển thị 0 đến 0 của 0 mục",
+                search: "Search:",
+                paginate: {
+                    previous: "Previous",
+                    next: "Next"
+                },
+                zeroRecords: "Không tìm thấy kết quả"
+            }
+        });
     });
 </script>
 </body>
-
 </html>
