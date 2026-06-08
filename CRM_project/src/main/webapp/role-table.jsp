@@ -179,7 +179,7 @@
 
                                             <form action="role-delete" method="post" style="display:inline;"
                                                   onsubmit="return confirm('Bạn có chắc muốn xóa role này không?');">
-                                                <input type="hidden" name="userId" value="${role.id}"/>
+                                                <input type="hidden" name="id" value="${role.id}"/>
                                                 <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
                                             </form>
                                         </td>

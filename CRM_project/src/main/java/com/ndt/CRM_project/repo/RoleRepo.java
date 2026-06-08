@@ -140,4 +140,30 @@ public class RoleRepo {
         }
         return updatedRow;
     }
+
+    public int deleteById(int id) {
+        int removedRow = 0;
+
+        String query = """
+            DELETE
+            FROM roles
+            WHERE id = ?
+            """;
+
+        try (Connection conn = MysqlConfig.getConnection()) {
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setInt(1, id);
+                removedRow = stmt.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("RoleRepo: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+        }
+        return removedRow;
+    }
+
 }

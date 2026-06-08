@@ -40,7 +40,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
         return users;
     }
@@ -87,7 +87,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
         return users;
     }
@@ -129,7 +129,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
 
         return Optional.ofNullable(users.isEmpty() ? null : users.getFirst());
@@ -174,7 +174,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
 
         return Optional.ofNullable(objLst.isEmpty() ? null : objLst.getFirst());
@@ -207,7 +207,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
         return updatedRow;
     }
@@ -236,7 +236,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
         return updatedRow;
     }
@@ -262,7 +262,7 @@ public class UserRepo {
                 System.out.println("UserRepo: " + e.getMessage());
             }
         } catch (SQLException e) {
-            System.out.println("RoleRepo: Failed to close connection. " + e.getMessage());
+            System.out.println("UserRepo: Failed to close connection. " + e.getMessage());
         }
         return removedRow;
     }

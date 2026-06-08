@@ -3,7 +3,6 @@ package com.ndt.CRM_project.service;
 import java.util.List;
 
 
-import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.repo.RoleRepo;
 import com.ndt.CRM_project.entity.RoleEntity;
 
@@ -18,7 +17,7 @@ public class RoleService {
     }
 
 
-    public RoleEntity getRoleById(int id) {
+    public RoleEntity getRole(int id) {
         return roleRepo.findById(id).orElse(null);
     }
 
@@ -29,4 +28,9 @@ public class RoleService {
     public boolean update(RoleEntity obj) {
         return roleRepo.update(obj) > 0;
     }
+
+    public boolean delete(int id) {
+        return roleRepo.deleteById(id) > 0;
+    }
+
 }

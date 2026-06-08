@@ -3,7 +3,6 @@ package com.ndt.CRM_project.controller;
 import java.io.IOException;
 
 
-import com.ndt.CRM_project.entity.UserEntity;
 import jakarta.servlet.http.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,7 +42,7 @@ public class RoleController extends HttpServlet {
 
             case "/role-update" -> {
                 int roleId = Integer.parseInt(req.getParameter("roleId"));
-                RoleEntity obj = roleService.getRoleById(roleId);
+                RoleEntity obj = roleService.getRole(roleId);
 
                 req.setAttribute("role", obj);
                 req.getRequestDispatcher("role-add.jsp").forward(req, resp);
@@ -92,6 +91,20 @@ public class RoleController extends HttpServlet {
                 // session.setAttribute("role", obj);
                 // resp.sendRedirect(req.getContextPath() + "/role-add");
 
+                session.setAttribute("msg", msg);
+                resp.sendRedirect(req.getContextPath() + "/role");
+            }
+
+            case "/role-delete" -> {
+                // TODO: add on delete cascade ?
+                String msg = "Xóa role thất bại";
+
+                int id = Integer.parseInt(req.getParameter("id"));
+
+                if (roleService.delete(id))
+                    msg = "Xóa role thành công";
+
+                HttpSession session = req.getSession();
                 session.setAttribute("msg", msg);
                 resp.sendRedirect(req.getContextPath() + "/role");
             }

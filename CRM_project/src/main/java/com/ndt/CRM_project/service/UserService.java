@@ -36,7 +36,7 @@ public class UserService {
     }
 
 
-    public boolean delete(Integer id) {
+    public boolean delete(int id) {
         return userRepo.deleteById(id) > 0;
     }
 }
