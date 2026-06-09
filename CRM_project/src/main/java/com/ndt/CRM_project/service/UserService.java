@@ -6,6 +6,9 @@ import java.util.List;
 import com.ndt.CRM_project.repo.UserRepo;
 import com.ndt.CRM_project.entity.UserEntity;
 
+import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
+
+
 
 public class UserService {
     private final UserRepo userRepo = new UserRepo();
@@ -38,5 +41,10 @@ public class UserService {
 
     public boolean delete(int id) {
         return userRepo.deleteById(id) > 0;
+    }
+
+
+    public UserTaskStatusStatsDTO getTaskStatus(int userId) {
+        return userRepo.findTaskStatusById(userId).orElse(null);
     }
 }

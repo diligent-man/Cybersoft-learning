@@ -3,13 +3,9 @@ package com.ndt.CRM_project.service;
 import java.util.List;
 
 
-import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.repo.TaskRepo;
-
 import com.ndt.CRM_project.entity.TaskEntity;
-
 import com.ndt.CRM_project.dto.task.TaskStatusCountDTO;
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 
 
 public class TaskService {
@@ -45,8 +41,4 @@ public class TaskService {
         return taskRepo.findTaskByUserStatus();
     }
 
-
-    public UserTaskStatusStatsDTO getTaskByUserStatus(int userId) {
-        return taskRepo.findTaskByUserStatus(userId).orElse(null);
-    }
 }

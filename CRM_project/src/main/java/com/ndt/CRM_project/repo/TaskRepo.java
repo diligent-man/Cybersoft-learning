@@ -8,26 +8,17 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
-
-
 import com.ndt.CRM_project.utils.MysqlConfig;
 
 import com.ndt.CRM_project.entity.TaskEntity;
 
 import com.ndt.CRM_project.dto.task.TaskStatusCountDTO;
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
-import com.ndt.CRM_project.dto.task.UserTaskStatusDetailDTO;
 
 
 /**
  * Quản lý tất cả câu query liên quan tới bảng task
  */
 public class TaskRepo {
-    private final ObjectMapper mapper = new ObjectMapper();
-
-
     public List<TaskEntity> findAll() {
         List<TaskEntity> objLst = new ArrayList<>();
 
@@ -242,83 +233,5 @@ public class TaskRepo {
             System.out.println("TaskRepo: Failed to close connection. " + e.getMessage());
         }
         return objLst;
-    }
-
-
-    public Optional<UserTaskStatusStatsDTO> findTaskByUserStatus(Integer userId) {
-        UserTaskStatusStatsDTO obj = null;
-
-        String query = """
-            SELECT u.id,
-                   u.fullname,
-                   u.email,
-                   st.name AS 'status_name',
-                   st.color AS 'status_color',
-                   SUM(COUNT(t.id)) OVER () AS total_tasks,
-                   SUM(COUNT(t.id)) OVER (
-                       PARTITION BY st.id
-                   ) AS 'total_tasks_by_status',
-                   IFNULL(
-                        (COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER(), 0)) * 100,
-                        0.00
-                   ) AS 'task_status_rate',
-                   IF(COUNT(t.id) = 0, JSON_ARRAY(),
-                        JSON_ARRAYAGG(
-                             JSON_OBJECT(
-                                      'task_id',            t.id,
-                                      'task_name',        t.name,
-                                      'start_date', t.start_date,
-                                      'end_date',     t.end_date
-                              )
-                       )
-                   ) AS task_details
-            FROM users u
-                CROSS JOIN status st
-                LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
-            WHERE u.id = ?
-            GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
-            """;
-
-        try (Connection conn = MysqlConfig.getConnection()) {
-            try {
-                PreparedStatement stmt = conn.prepareStatement(query);
-
-                stmt.setInt(1, userId);
-                ResultSet rs = stmt.executeQuery();
-
-                while (rs.next()) {
-                    if (obj == null) {
-                        obj = new UserTaskStatusStatsDTO();
-
-                        obj.setUserId(rs.getInt("id"));
-                        obj.setFullName(rs.getString("fullname"));
-                        obj.setEmail(rs.getString("email"));
-                        obj.setTotalTasks(rs.getInt("total_tasks"));
-                    }
-
-                    String statusName = rs.getString("status_name");
-
-                    String statusColor = rs.getString("status_color");
-                    obj.getTaskColorMap().put(statusName, statusColor);
-
-                    Integer taskByStatus = rs.getInt("total_tasks_by_status");
-                    obj.getTaskStatusMap().put(statusName, taskByStatus);
-
-                    Double taskStatusRate = rs.getDouble("task_status_rate");
-                    obj.getTaskStatusRateMap().put(statusName, taskStatusRate);
-
-                    String taskDetailsJson = rs.getString("task_details");
-                    List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(taskDetailsJson, new TypeReference<>() {
-                    });
-
-                    obj.getTaskStatusDetailMap().put(statusName, userTaskDetailsList);
-                }
-            } catch (SQLException e) {
-                System.out.println("TaskRepo: " + e.getMessage());
-            }
-        } catch (SQLException e) {
-            System.out.println("TaskRepo: Failed to close connection. " + e.getMessage());
-        }
-        return Optional.ofNullable(obj);
     }
 }

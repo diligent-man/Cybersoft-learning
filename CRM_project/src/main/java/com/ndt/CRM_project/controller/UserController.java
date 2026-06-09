@@ -12,7 +12,6 @@ import com.ndt.CRM_project.entity.UserEntity;
 
 import com.ndt.CRM_project.service.RoleService;
 import com.ndt.CRM_project.service.UserService;
-import com.ndt.CRM_project.service.TaskService;
 
 import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 
@@ -24,9 +23,6 @@ public class UserController extends HttpServlet {
     private final UserService userService = new UserService();
 
     private final RoleService roleService = new RoleService();
-
-    private final TaskService taskService = new TaskService();
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -61,7 +57,7 @@ public class UserController extends HttpServlet {
 
             case "/user-details" -> {
                 int userId = Integer.parseInt(req.getParameter("userId"));
-                UserTaskStatusStatsDTO userTaskStatusStats = taskService.getTaskByUserStatus(userId);
+                UserTaskStatusStatsDTO userTaskStatusStats = userService.getTaskStatus(userId);
 
                 req.setAttribute("statusLst", userTaskStatusStats.getTaskStatusMap().keySet());
                 req.setAttribute("userTaskStatusStats", userTaskStatusStats);
