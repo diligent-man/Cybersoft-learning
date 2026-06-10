@@ -238,16 +238,11 @@ FROM tasks t
 SELECT u.id,
        u.fullname,
        u.email,
-       st.name                  AS 'status_name',
-       st.color,
-       SUM(COUNT(t.id)) OVER () AS total_tasks,
-       SUM(COUNT(t.id)) OVER (
-           PARTITION BY st.id
-           )                    AS 'total_tasks_by_status',
-       IFNULL(
-               ROUND(COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100, 2),
-               0.
-       )                        AS 'task_status_rate',
+       st.name                                                                         AS 'status_name',
+       st.color                                                                        AS 'status_color',
+       SUM(COUNT(t.id)) OVER ()                                                        AS 'total_task',
+       SUM(COUNT(t.id)) OVER (PARTITION BY st.id)                                      AS 'total_task_by_status',
+       IFNULL(ROUND((COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0)) * 100, 2), 0.) AS 'task_status_rate',
        IF(COUNT(t.id) = 0, JSON_ARRAY(),
           JSON_ARRAYAGG(
                   JSON_OBJECT(
@@ -257,7 +252,7 @@ SELECT u.id,
                           'end_date', t.end_date
                   )
           )
-       )                        AS task_details
+       )                                                                               AS task_details
 FROM users u
          CROSS JOIN status st
          LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
@@ -266,34 +261,17 @@ GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
 
 
 
-SELECT u.id AS 'user_id',
-       t.project_id,
+
+SELECT t.project_id,
+       t.id,
+        u.id,
        u.fullname,
        u.email,
-       st.name                  AS 'status_name',
-       st.color,
-       SUM(COUNT(t.id)) OVER () AS total_tasks,
-       SUM(COUNT(t.id)) OVER (
-           PARTITION BY st.id
-           )                    AS 'total_tasks_by_status',
-       IFNULL(
-               ROUND(
-                       SUM(COUNT(t.id)) OVER (PARTITION BY st.id) /
-                       NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100,
-                       2
-               ), 0.
-       )                        AS 'task_status_rate',
-       SUM(COUNT(t.id)) OVER (
-           PARTITION BY t.user_id
-           )                    AS 'total_tasks_by_user',
-
-       IFNULL(
-               ROUND(
-                       COUNT(t.id) /
-                       NULLIF(SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id), 0) * 100,
-                       2
-               ), 0.
-       )                        AS 'task_status_rate_by_user',
+       st.name                                                                         AS 'status_name',
+       st.color                                                                        AS 'status_color',
+       SUM(COUNT(t.id)) OVER ()                                                        AS 'total_task',
+       SUM(COUNT(t.id)) OVER (PARTITION BY st.id)                                      AS 'total_task_by_status',
+       IFNULL(ROUND((COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0)) * 100, 2), 0.) AS 'task_status_rate',
        IF(COUNT(t.id) = 0, JSON_ARRAY(),
           JSON_ARRAYAGG(
                   JSON_OBJECT(
@@ -303,14 +281,99 @@ SELECT u.id AS 'user_id',
                           'end_date', t.end_date
                   )
           )
-       )                        AS task_details
+       )                                                                               AS task_details
 FROM users u
          CROSS JOIN status st
          LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
-WHERE t.project_id = 1
+WHERE t.project_id = 1 AND u.id = 1
+GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color, t.project_id, t.id
+ORDER BY u.id, t.id;
+
+
+
+
+
+
+
+SELECT t.project_id,
+       u.id                                                  AS 'user_id',
+       u.fullname,
+       u.email,
+       st.name                                               AS 'status_name',
+       st.color,
+       SUM(COUNT(t.id)) OVER ()                              AS total_task,
+       SUM(COUNT(t.id)) OVER (PARTITION BY st.id)            AS 'total_task_by_status',
+       IFNULL(ROUND(SUM(COUNT(t.id)) OVER (PARTITION BY st.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100, 2), 0.)
+                                                             AS 'task_status_rate',
+       SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id)        AS 'total_task_by_status_by_user',
+       SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id, st.id) AS 'total_task_by_status_by_user',
+       IFNULL(ROUND(COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id), 0) * 100, 2), 0.)
+                                                             AS 'task_status_rate_by_user',
+       IF(COUNT(t.id) = 0, JSON_ARRAY(),
+          JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                          'task_id', t.id,
+                          'task_name', t.name,
+                          'start_date', t.start_date,
+                          'end_date', t.end_date
+                  )
+          )
+       )                                                     AS task_details
+FROM users u
+         CROSS JOIN status st
+         LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
 GROUP BY u.id, u.fullname, u.email, t.project_id, st.id, st.name, st.color
 ORDER BY u.id;
 
+
+
+SELECT *,
+       COUNT(t.id) OVER (PARTITION BY u.id) AS 'task_count'
+FROM tasks t
+         cross JOIN status st ON t.project_id = 1
+         left join  users u ON u.id = t.user_id AND st.id = t.status_id
+
+ORDER BY t.id, u.id;
+
+
+
+WITH UserInProject AS (SELECT t.project_id,
+                              t.id                                 AS 'task_id',
+                              t.name                               AS 'task_name',
+                              u.id                                 AS 'user_id',
+                              u.fullname,
+                              u.email,
+                              st.name                              AS 'status_name',
+                              st.color,
+                              t.start_date,
+                              t.end_date,
+                              COUNT(t.id) OVER (PARTITION BY u.id) AS 'task_count'
+                       FROM users u
+                                CROSS JOIN status st
+                                LEFT JOIN tasks t ON t.user_id = u.id)
+SELECT *,
+       SUM(COUNT(t.id)) OVER ()                              AS total_task,
+       SUM(COUNT(t.id)) OVER (PARTITION BY st.id)            AS 'total_task_by_status',
+       IFNULL(ROUND(SUM(COUNT(t.id)) OVER (PARTITION BY st.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100, 2), 0.)
+                                                             AS 'task_status_rate',
+       SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id)        AS 'total_task_by_status_by_user',
+       SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id, st.id) AS 'total_task_by_status_by_user',
+       IFNULL(ROUND(COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id), 0) * 100, 2), 0.)
+                                                             AS 'task_status_rate_by_user',
+       IF(COUNT(t.id) = 0, JSON_ARRAY(),
+          JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                          'task_id', t.id,
+                          'task_name', t.name,
+                          'start_date', t.start_date,
+                          'end_date', t.end_date
+                  )
+          )
+       )                                                     AS task_details
+FROM UserInProject
+WHERE task_count > 0
+GROUP BY user_id, fullname, email, project_id, id, name, color
+ORDER BY u.id, t.project_id;
 
 
 select *

@@ -44,7 +44,7 @@ public class UserService {
     }
 
 
-    public UserTaskStatusStatsDTO getTaskStatus(int userId) {
-        return userRepo.findTaskStatusById(userId).orElse(null);
+    public UserTaskStatusStatsDTO getTaskStatus(int id) {
+        return userRepo.findTaskStatusById(id).orElse(null);
     }
 }

@@ -15,7 +15,7 @@ public class UserTaskStatusStatsDTO {
 
     private String email;
 
-    private Integer totalTasks;
+    private Integer totalTask;
 
     private final Map<String, Integer> taskStatusMap = new HashMap<>();
 

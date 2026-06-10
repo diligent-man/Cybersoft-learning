@@ -278,33 +278,28 @@ public class UserRepo {
     }
 
 
-    public Optional<UserTaskStatusStatsDTO> findTaskStatusById(int userId) {
+    public Optional<UserTaskStatusStatsDTO> findTaskStatusById(int id) {
         UserTaskStatusStatsDTO obj = null;
 
         String query = """
             SELECT u.id,
                    u.fullname,
                    u.email,
-                   st.name AS 'status_name',
-                   st.color AS 'status_color',
-                   SUM(COUNT(t.id)) OVER () AS total_tasks,
-                   SUM(COUNT(t.id)) OVER (
-                       PARTITION BY st.id
-                   ) AS 'total_tasks_by_status',
-                   IFNULL(
-                        ROUND((COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER(), 0)) * 100, 2),
-                        0.
-                   ) AS 'task_status_rate',
+                   st.name                                                                         AS 'status_name',
+                   st.color                                                                        AS 'status_color',
+                   SUM(COUNT(t.id)) OVER ()                                                        AS 'total_task',
+                   SUM(COUNT(t.id)) OVER (PARTITION BY st.id)                                      AS 'total_task_by_status',
+                   IFNULL(ROUND((COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0)) * 100, 2), 0.) AS 'task_status_rate',
                    IF(COUNT(t.id) = 0, JSON_ARRAY(),
-                        JSON_ARRAYAGG(
-                             JSON_OBJECT(
-                                      'task_id',            t.id,
-                                      'task_name',        t.name,
+                      JSON_ARRAYAGG(
+                              JSON_OBJECT(
+                                      'task_id', t.id,
+                                      'task_name', t.name,
                                       'start_date', t.start_date,
-                                      'end_date',     t.end_date
+                                      'end_date', t.end_date
                               )
-                       )
-                   ) AS task_details
+                      )
+                   )                                                                               AS task_details
             FROM users u
                 CROSS JOIN status st
                 LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
@@ -316,7 +311,7 @@ public class UserRepo {
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
 
-                stmt.setInt(1, userId);
+                stmt.setInt(1, id);
                 ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
@@ -326,7 +321,7 @@ public class UserRepo {
                         obj.setUserId(rs.getInt("id"));
                         obj.setFullName(rs.getString("fullname"));
                         obj.setEmail(rs.getString("email"));
-                        obj.setTotalTasks(rs.getInt("total_tasks"));
+                        obj.setTotalTask(rs.getInt("total_task"));
                     }
 
                     String statusName = rs.getString("status_name");
@@ -334,7 +329,7 @@ public class UserRepo {
                     String statusColor = rs.getString("status_color");
                     obj.getTaskColorMap().put(statusName, statusColor);
 
-                    Integer taskByStatus = rs.getInt("total_tasks_by_status");
+                    Integer taskByStatus = rs.getInt("total_task_by_status");
                     obj.getTaskStatusMap().put(statusName, taskByStatus);
 
                     Double taskStatusRate = rs.getDouble("task_status_rate");

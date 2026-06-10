@@ -5,6 +5,7 @@ import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
@@ -15,11 +16,11 @@ import java.util.HashMap;
 public class ProjectTaskStatusStatsDTO {
     private Integer projectId;
 
-    private Integer totalTasks;
+    private Integer totalTask;
 
     private final Map<String, Integer> taskStatusMap = new HashMap<>();
 
     private final Map<String, Double> taskStatusRateMap = new HashMap<>();
 
-    private List<UserTaskStatusStatsDTO> userTaskStatusStatsList;
+    private final List<UserTaskStatusStatsDTO> userTaskStatusStatsList =  new ArrayList<>();
 }
