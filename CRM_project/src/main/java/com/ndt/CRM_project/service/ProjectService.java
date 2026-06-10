@@ -32,7 +32,7 @@ public class ProjectService {
 
 
     public boolean delete(int id) {
-        return projectRepo.deleteById(id) > 0;
+        return projectRepo.delete(id) > 0;
     }
 
 }

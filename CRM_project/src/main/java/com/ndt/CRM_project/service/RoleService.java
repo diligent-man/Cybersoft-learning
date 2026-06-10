@@ -30,7 +30,7 @@ public class RoleService {
     }
 
     public boolean delete(int id) {
-        return roleRepo.deleteById(id) > 0;
+        return roleRepo.delete(id) > 0;
     }
 
 }

@@ -11,11 +11,7 @@ import java.util.Optional;
 
 
 import com.ndt.CRM_project.entity.RoleEntity;
-import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
-import jakarta.ejb.ApplicationException;
-
-import javax.management.relation.Role;
 
 
 /**
@@ -141,7 +137,7 @@ public class RoleRepo {
         return updatedRow;
     }
 
-    public int deleteById(int id) {
+    public int delete(int id) {
         int removedRow = 0;
 
         String query = """

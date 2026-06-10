@@ -40,7 +40,7 @@ public class UserService {
 
 
     public boolean delete(int id) {
-        return userRepo.deleteById(id) > 0;
+        return userRepo.delete(id) > 0;
     }
 
 

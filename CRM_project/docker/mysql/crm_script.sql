@@ -160,12 +160,16 @@ VALUES ("Chưa bắt đầu", "text-danger"),
 
 -- 6 tasks
 INSERT INTO tasks(name, start_date, end_date, user_id, project_id, status_id)
-VALUES ("Thiết kế giao diện", "2026-05-01", "2026-05-05", 3, 1, 2),
-       ("Code Backend", "2026-05-02", "2026-05-20", 1, 1, 2),
-       ("Code Frontend", "2026-06-02", "2026-07-20", 1, 1, 2),
-       ("Test API", "2026-05-10", "2026-05-15", 2, 1, 1),
-       ("Làm Login Mobile", "2026-05-11", "2026-05-25", 4, 2, 2),
-       ("Deploy Website", "2026-05-20", "2026-05-28", 1, 3, 1);
+VALUES ("Code Backend", "2026-05-02", "2026-05-20", 1, 1, 3),
+       ("Code Frontend", "2026-05-21", "2026-06-20", 1, 1, 2),
+       ("Deploy Website", "2026-05-20", "2026-05-28", 1, 3, 1),
+       ("Test API", "2026-05-10", "2026-05-15", 2, 1, 3),
+       ("A/B API", "2026-05-16", "2026-05-17", 2, 1, 2),
+       ("Intergation Test", "2026-05-18", "2026-05-19", 2, 1, 1),
+       ("Compatability Test ", "2026-05-18", "2026-05-19", 2, 1, 1),
+       ("Thiết kế giao diện", "2026-05-01", "2026-05-05", 3, 1, 2),
+       ("Làm Login Mobile", "2026-05-11", "2026-05-25", 4, 2, 2);
+
 
 
 ALTER TABLE users
@@ -241,8 +245,8 @@ SELECT u.id,
            PARTITION BY st.id
            )                    AS 'total_tasks_by_status',
        IFNULL(
-               (COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0)) * 100,
-               0.00
+               ROUND(COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100, 2),
+               0.
        )                        AS 'task_status_rate',
        IF(COUNT(t.id) = 0, JSON_ARRAY(),
           JSON_ARRAYAGG(
@@ -259,6 +263,54 @@ FROM users u
          LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
 WHERE u.id = 1
 GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
+
+
+
+SELECT u.id AS 'user_id',
+       t.project_id,
+       u.fullname,
+       u.email,
+       st.name                  AS 'status_name',
+       st.color,
+       SUM(COUNT(t.id)) OVER () AS total_tasks,
+       SUM(COUNT(t.id)) OVER (
+           PARTITION BY st.id
+           )                    AS 'total_tasks_by_status',
+       IFNULL(
+               ROUND(
+                       SUM(COUNT(t.id)) OVER (PARTITION BY st.id) /
+                       NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100,
+                       2
+               ), 0.
+       )                        AS 'task_status_rate',
+       SUM(COUNT(t.id)) OVER (
+           PARTITION BY t.user_id
+           )                    AS 'total_tasks_by_user',
+
+       IFNULL(
+               ROUND(
+                       COUNT(t.id) /
+                       NULLIF(SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id), 0) * 100,
+                       2
+               ), 0.
+       )                        AS 'task_status_rate_by_user',
+       IF(COUNT(t.id) = 0, JSON_ARRAY(),
+          JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                          'task_id', t.id,
+                          'task_name', t.name,
+                          'start_date', t.start_date,
+                          'end_date', t.end_date
+                  )
+          )
+       )                        AS task_details
+FROM users u
+         CROSS JOIN status st
+         LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
+WHERE t.project_id = 1
+GROUP BY u.id, u.fullname, u.email, t.project_id, st.id, st.name, st.color
+ORDER BY u.id;
+
 
 
 select *

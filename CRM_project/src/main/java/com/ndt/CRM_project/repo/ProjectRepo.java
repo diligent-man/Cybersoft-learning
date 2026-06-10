@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
 import com.ndt.CRM_project.entity.ProjectEntity;
 
@@ -143,7 +142,7 @@ public class ProjectRepo {
     }
 
 
-    public int deleteById(int id) {
+    public int delete(int id) {
         int removedRow = 0;
 
         String query = """

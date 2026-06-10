@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 
+import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
@@ -251,7 +252,7 @@ public class UserRepo {
     }
 
 
-    public int deleteById(int id) {
+    public int delete(int id) {
         int removedRow = 0;
 
         String query = """
@@ -291,8 +292,8 @@ public class UserRepo {
                        PARTITION BY st.id
                    ) AS 'total_tasks_by_status',
                    IFNULL(
-                        (COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER(), 0)) * 100,
-                        0.00
+                        ROUND((COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER(), 0)) * 100, 2),
+                        0.
                    ) AS 'task_status_rate',
                    IF(COUNT(t.id) = 0, JSON_ARRAY(),
                         JSON_ARRAYAGG(
@@ -340,13 +341,19 @@ public class UserRepo {
                     obj.getTaskStatusRateMap().put(statusName, taskStatusRate);
 
                     String taskDetailsJson = rs.getString("task_details");
-                    List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(taskDetailsJson, new TypeReference<>() {
-                    });
+                    List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(
+                        taskDetailsJson,
+                        new TypeReference<>() {
+                            // Jackson's solution to Java's type erasure problem by using anonymous subclass
+                        }
+                    );
 
                     obj.getTaskStatusDetailMap().put(statusName, userTaskDetailsList);
                 }
             } catch (SQLException e) {
                 System.out.println("TaskRepo: " + e.getMessage());
+            } catch (JacksonException e) {
+                System.out.println("TaskRepo - Jackson: " + e.getMessage());
             }
         } catch (SQLException e) {
             System.out.println("TaskRepo: Failed to close connection. " + e.getMessage());

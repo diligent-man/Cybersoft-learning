@@ -176,7 +176,7 @@ public class TaskRepo {
     }
 
 
-    public int deleteById(int id) {
+    public int delete(int id) {
         int removedRow = 0;
 
         String query = """

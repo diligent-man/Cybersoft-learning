@@ -33,7 +33,7 @@ public class TaskService {
 
 
     public boolean delete(int id) {
-        return taskRepo.deleteById(id) > 0;
+        return taskRepo.delete(id) > 0;
     }
 
 

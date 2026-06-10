@@ -2,23 +2,19 @@ package com.ndt.CRM_project.dto.task;
 
 import java.util.*;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
-@Getter
-@ToString
+@Data
 @NoArgsConstructor
 public class UserTaskStatusStatsDTO {
-    @Setter
     private Integer userId;
 
-    @Setter
     private String fullName;
 
-    @Setter
     private String email;
 
-    @Setter
     private Integer totalTasks;
 
     private final Map<String, Integer> taskStatusMap = new HashMap<>();
