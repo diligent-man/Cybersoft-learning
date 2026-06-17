@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ3")
+@Controller("btSpringbootRequestQ3Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q3")
-public class Q3 {
+public class Q3Controller {
     @GetMapping("/users/{id}")
     public ResponseEntity<Map<String, Object>> getUserId(
         @PathVariable String id,

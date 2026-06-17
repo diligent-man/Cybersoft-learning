@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ7")
+@Controller("btSpringbootRequestQ7Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q7")
-public class Q7 {
+public class Q7Controller {
     @PostMapping("/login-form")
     public ResponseEntity<Map<String, Object>> doLogin(
         @RequestHeader(value = "Content-Type", defaultValue = "application/x-www-form-urlencoded") String contentType,

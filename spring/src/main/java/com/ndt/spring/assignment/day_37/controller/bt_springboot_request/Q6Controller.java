@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ6")
+@Controller("btSpringbootRequestQ6Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q6")
-public class Q6 {
+public class Q6Controller {
     @GetMapping("/filters")
     public ResponseEntity<Map<String, String>> getFilters(
         @RequestParam Map<String, String> filters

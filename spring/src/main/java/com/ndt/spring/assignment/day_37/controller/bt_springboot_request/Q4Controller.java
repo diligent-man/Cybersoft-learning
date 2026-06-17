@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ4")
+@Controller("btSpringbootRequestQ4Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q4")
-public class Q4 {
+public class Q4Controller {
     @GetMapping("/search")
     public ResponseEntity<Map<String, Object>> searchByKeywordWithPage(
         @RequestParam(defaultValue = "spring") String keyword,

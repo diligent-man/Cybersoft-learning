@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import com.ndt.spring.assignment.day_37.request.bt_springboot_request.Q9Request;
 
 
-@Controller("btSpringbootRequestQ9")
+@Controller("btSpringbootRequestQ9Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q9")
-public class Q9 {
+public class Q9Controller {
     @PutMapping("/users/{id}")
     public ResponseEntity<Map<String, Object>> getOrder(
         @PathVariable Integer id,

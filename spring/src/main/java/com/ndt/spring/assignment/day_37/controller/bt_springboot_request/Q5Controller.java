@@ -12,9 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ5")
+@Controller("btSpringbootRequestQ5Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q5")
-public class Q5 {
+public class Q5Controller {
     @GetMapping("/tags")
     public ResponseEntity<Map<String, Object>> getOrder(
         @RequestParam(defaultValue = "java,spring,boot") List<String> tags

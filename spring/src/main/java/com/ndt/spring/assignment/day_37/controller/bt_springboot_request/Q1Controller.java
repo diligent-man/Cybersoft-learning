@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ1")
+@Controller("btSpringbootRequestQ1Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q1")
-public class Q1 {
+public class Q1Controller {
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<Map<String, Object>> getOrder(
         @PathVariable Integer orderId,

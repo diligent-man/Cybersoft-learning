@@ -13,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import com.ndt.spring.assignment.day_37.request.bt_springboot_request.Q2Request;
 
 
-@Controller("btSpringbootRequestQ2")
+@Controller("btSpringbootRequestQ2Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q2")
-public class Q2 {
+public class Q2Controller {
     @PostMapping("/comments")
     public ResponseEntity<Map<String, Object>> updatePostComment(
         @RequestParam(defaultValue = "5") Integer postId,

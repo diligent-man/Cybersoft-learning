@@ -18,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ndt.spring.assignment.day_37.request.bt_springboot_request.Q8Request;
 
 
-@Controller("btSpringbootRequestQ8")
+@Controller("btSpringbootRequestQ8Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q8")
-public class Q8 {
+public class Q8Controller {
     private final Path uploadPath = Paths.get("./uploaded_files").toAbsolutePath().normalize();
 
 

@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 
-@Controller("btSpringbootRequestQ10")
+@Controller("btSpringbootRequestQ10Controller")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q10")
-public class Q10 {
+public class Q10Controller {
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<Map<String, Object>> getOrder(
         @PathVariable Long id,
@@ -24,11 +24,7 @@ public class Q10 {
 
         String token = authorization.replace("Bearer ", "");
 
-        System.out.println("ID: " + id);
-        System.out.println("Token: " + token);
-
         Map<String, Object> result = new HashMap<>();
-
         result.put("id", id);
         result.put("Bearer", token);
 

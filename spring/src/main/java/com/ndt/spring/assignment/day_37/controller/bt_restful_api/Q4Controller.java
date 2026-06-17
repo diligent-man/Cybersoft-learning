@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@RestController("btRestfullAPIQ3")
-@RequestMapping("/assignment/day_37/restful-api/q3")
-public class Q3 {
+@RestController("btRestfullAPIQ4Controller")
+@RequestMapping("/assignment/day_37/restful-api/q4")
+public class Q4Controller {
 
 }
