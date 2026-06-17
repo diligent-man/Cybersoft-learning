@@ -5,7 +5,6 @@ import lombok.ToString;
 
 
 @Data
-@ToString
 public class Q2Request {
     private String content;
 }

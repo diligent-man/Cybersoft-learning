@@ -1,14 +1,13 @@
 package com.ndt.spring.assignment.day_37.controller.bt_springboot_request;
 
+import java.util.Map;
+import java.util.HashMap;
+
+
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
-import java.util.HashMap;
 
 
 @Controller("btSpringbootRequestQ6")

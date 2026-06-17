@@ -1,45 +1,90 @@
 package com.ndt.spring.assignment.day_37.controller.bt_springboot_request;
 
+import java.util.*;
+import java.nio.file.*;
 
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
+import java.io.IOException;
+
+
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+
+import com.ndt.spring.assignment.day_37.request.bt_springboot_request.Q8Request;
 
 
 @Controller("btSpringbootRequestQ8")
 @RequestMapping("/assignment/day_37/bt-springboot-request/q8")
 public class Q8 {
-    @Autowired
-    private ResourceLoader pdfResourceLoader;
-
-    private final String pdfResourcePath = "classpath:static/resources/pdf";
+    private final Path uploadPath = Paths.get("./uploaded_files").toAbsolutePath().normalize();
 
 
-    @SneakyThrows
-    @PostMapping("/documents")
+    @PostConstruct
+    public void init() {
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectories(uploadPath);
+            } catch (IOException e) {
+                System.out.println("Could not create directory: " + uploadPath);
+            }
+        }
+    }
+
+
+    @PostMapping(value = "/documents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> uploadFile(
-        @RequestParam(required = false) List<MultipartFile> files
+        @RequestPart(required = false) List<MultipartFile> files,
+        @RequestPart(required = false) Q8Request body
     ) {
-        // String tempPath = System.getProperty("java.io.tmpdir");
-        // System.out.println("Windows Temp Path: " + tempPath);
+        Map<String, Object> result = new HashMap<>();
+        String msg = "Uploaded successfully !";
 
-        for (MultipartFile file : files) {
-            System.out.println("File Name: " + file.getOriginalFilename());
+        if (files.size() != body.getTitles().size() ||
+            files.size() != body.getDescriptions().size() ||
+            files.size() != body.getTags().size()
+        ) {
+            msg = "Elements for one of these  array (titles, desscriptions, tags) are inequivalent to files";
+            result.put("msg", msg);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }
 
-        System.out.println(pdfResourceLoader.getResource(pdfResourcePath + "/Beginning_XML.pdf").getURL());
-        return ResponseEntity.ok(null);
+        List<Map<String, Object>> uploadedFileLst = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile file = files.get(i);
+            String filename = file.getOriginalFilename();
+
+            String title = body.getTitles().get(i);
+            String description = body.getDescriptions().get(i);
+            List<String> tag = body.getTags().get(i);
+
+            Map<String, Object> uploadedFile = new HashMap<>();
+
+            uploadedFile.put("filename", filename);
+            uploadedFile.put("title", title);
+            uploadedFile.put("description", description);
+            uploadedFile.put("tags", tag);
+
+            uploadedFileLst.add(uploadedFile);
+
+            if (filename != null) {
+                Path destination = uploadPath.resolve(filename).normalize();
+
+                try {
+                    file.transferTo(destination);
+                } catch (IOException e) {
+                    System.out.println("Could not move file to " + uploadPath);
+                }
+            }
+        }
+
+        result.put("msg", msg);
+        result.put("uploadedFiles", uploadedFileLst);
+
+        return ResponseEntity.ok(result);
     }
 }
