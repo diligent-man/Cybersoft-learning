@@ -1,7 +1,7 @@
-package com.ndt.spring.day_36_37_38.controller;
+package com.ndt.spring.day_36_37_38_39.controller;
 
 
-import com.ndt.spring.day_36_37_38.request.DeleteUserRequest;
+import com.ndt.spring.day_36_37_38_39.request.DeleteUserRequest;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
         b/ Tham số truyền ngầm - also @RequestParam
  */
 @RestController(value = "paraController")
-@RequestMapping({"/day_36_37_38/param"})
+@RequestMapping({"/day_36_37_38_39/param"})
 public class ParaController {
     @GetMapping("")
     public ResponseEntity<String> getParam() {

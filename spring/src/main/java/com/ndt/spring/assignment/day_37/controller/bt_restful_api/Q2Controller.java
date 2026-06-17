@@ -2,6 +2,7 @@ package com.ndt.spring.assignment.day_37.controller.bt_restful_api;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,9 +17,9 @@ public class Q2Controller {
 
 
     @GetMapping("/greet")
-    public String greet(
+    public ResponseEntity<String> greet(
         @RequestParam(defaultValue = "Alice") String name
     ) {
-        return q2Service.greet(name);
+        return ResponseEntity.ok(q2Service.greet(name));
     }
 }

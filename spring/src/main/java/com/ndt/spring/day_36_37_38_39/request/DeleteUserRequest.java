@@ -1,4 +1,4 @@
-package com.ndt.spring.day_36_37_38.request;
+package com.ndt.spring.day_36_37_38_39.request;
 
 import lombok.*;
 
