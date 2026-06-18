@@ -191,7 +191,7 @@
                 <c:forEach items="${statusLst}" var="status">
                     <div class="col-md-4">
                         <div class="white-box">
-                            <h3 class="box-title">Chưa thực hiện</h3>
+                            <h3 class="box-title">${status}</h3>
                             <div class="message-center">
                                 <c:forEach items="${userTaskStatusStats.taskStatusDetailMap[status]}" var="taskDetail">
                                     <a href="#">

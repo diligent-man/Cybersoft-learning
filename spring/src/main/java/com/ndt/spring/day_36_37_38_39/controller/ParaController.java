@@ -1,10 +1,12 @@
 package com.ndt.spring.day_36_37_38_39.controller;
 
 
-import com.ndt.spring.day_36_37_38_39.request.DeleteUserRequest;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.*;
+
+import com.ndt.spring.day_36_37_38_39.request.DeleteUserRequest;
 
 
 /*
@@ -62,7 +64,7 @@ public class ParaController {
     @DeleteMapping
     public ResponseEntity<String> deleteUser(
         DeleteUserRequest userRequest
-    ){
+    ) {
         return ResponseEntity.ok(userRequest.toString());
     }
 }

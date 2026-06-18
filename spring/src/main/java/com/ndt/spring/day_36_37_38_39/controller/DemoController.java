@@ -1,10 +1,11 @@
 package com.ndt.spring.day_36_37_38_39.controller;
 
-import com.ndt.spring.day_36_37_38_39.dto.BaiVietDTO;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+
+import com.ndt.spring.day_36_37_38_39.dto.BaiVietDTO;
 
 
 /*

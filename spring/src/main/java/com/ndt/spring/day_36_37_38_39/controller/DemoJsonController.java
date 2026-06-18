@@ -1,15 +1,15 @@
 package com.ndt.spring.day_36_37_38_39.controller;
 
 
-import com.ndt.spring.day_36_37_38_39.dto.BaiVietDTO;
-import com.ndt.spring.day_36_37_38_39.dto.BinhLuanDTO;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
+import org.springframework.web.bind.annotation.*;
+
+import org.springframework.http.ResponseEntity;
+
+
+import com.ndt.spring.day_36_37_38_39.dto.*;
 
 
 @RestController("demoJsonController")

@@ -12,6 +12,7 @@ import com.ndt.CRM_project.dto.task.UserTaskStatusDetailDTO;
 import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 import com.ndt.CRM_project.utils.MysqlConfig;
 import com.ndt.CRM_project.entity.ProjectEntity;
+
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.type.TypeReference;
 
@@ -248,14 +249,14 @@ public class ProjectRepo {
 
 
                     String taskDetailsJson = rs.getString("task_details");
-                    List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(
-                        taskDetailsJson,
-                        new TypeReference<>() {
-                            // Jackson's solution to Java's type erasure problem by using anonymous subclass
-                        }
-                    );
-
-                    obj.getTaskStatusDetailMap().put(statusName, userTaskDetailsList);
+                    // List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(
+                    //     taskDetailsJson,
+                    //     new TypeReference<>() {
+                    //         // Jackson's solution to Java's type erasure problem by using anonymous subclass
+                    //     }
+                    // );
+                    //
+                    // obj.getTaskStatusDetailMap().put(statusName, userTaskDetailsList);
                 }
             } catch (SQLException e) {
                 System.out.println("TaskRepo: " + e.getMessage());
