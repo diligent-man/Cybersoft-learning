@@ -41,7 +41,7 @@ public class NhanVien extends Human {
     public String toString() {
         return "NV{" +
             super.toString() + ", " +
-            "truongPhong=" + truongPhong.getMaSo() +
+            "truongPhong=" + (truongPhong == null ? null : truongPhong.getMaSo()) +
             '}';
     }
 
