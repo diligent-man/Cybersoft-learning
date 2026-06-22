@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.ndt.spring.day_40.entity.RoleEntity;
+import com.ndt.spring.day_40.entity.UserEntity;
+
 import com.ndt.spring.day_40.service.RoleService;
+import com.ndt.spring.day_40.service.UserService;
 
 
 @RequiredArgsConstructor
@@ -22,9 +25,18 @@ import com.ndt.spring.day_40.service.RoleService;
 public class DemoJpaController {
     private final RoleService roleService;
 
+    private final UserService userService;
+
 
     @GetMapping("/roles")
     public ResponseEntity<List<RoleEntity>> getRoles() {
         return ResponseEntity.ok(roleService.getAll());
+    }
+
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserEntity>> getUsers() {
+        return ResponseEntity.ok(userService.getAll());
+
     }
 }

@@ -1,12 +1,17 @@
 package com.ndt.spring.day_40.entity;
 
+import java.util.List;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 
 import lombok.*;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Setter
@@ -20,4 +25,8 @@ public class RoleEntity {
     private String name;
 
     private LocalDateTime createdDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "role")
+    private List<UserEntity> users;
 }
