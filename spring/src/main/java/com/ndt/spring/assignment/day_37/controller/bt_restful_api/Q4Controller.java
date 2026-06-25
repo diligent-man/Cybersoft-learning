@@ -42,7 +42,7 @@ public class Q4Controller {
 
 
     @PostMapping("/products")
-    public ResponseEntity<Map<String, Object>> getProduct(
+    public ResponseEntity<Map<String, Object>> addProduct(
         @RequestBody Q4PostRequest body
     ) {
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;

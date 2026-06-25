@@ -5,6 +5,9 @@ import java.util.*;
 import jakarta.annotation.PostConstruct;
 
 
+import lombok.Getter;
+
+
 import org.springframework.stereotype.Service;
 
 
@@ -15,6 +18,7 @@ import com.ndt.spring.assignment.day_37.entity.bt_restful_api.Q4ProductEntity;
 @Service("btRestfullAPIQ4Service")
 public class Q4Service {
     // Fake data cuz not have repo
+    @Getter
     private final List<Q4ProductEntity> products = new ArrayList<>();
 
 
@@ -28,17 +32,13 @@ public class Q4Service {
     }
 
 
-    public List<Q4ProductEntity> getProducts() {
-        return products;
-    }
-
-
     public Optional<Q4ProductEntity> getProduct(int id) {
-        return products.stream().filter(p -> p.getId().equals(id)).findFirst();
+        return products.stream().filter(ele -> ele.getId().equals(id)).findFirst();
     }
 
 
     public boolean addProduct(Q4ProductEntity product) {
+        // data validation is on repo not here !
         return products.add(product);
     }
 
