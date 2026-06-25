@@ -22,6 +22,7 @@ import java.util.Optional;
 @RestController("btRestfullAPIQ8Controller")
 @RequestMapping("/assignment/day_37/restful-api/q8")
 public class Q8Controller {
+    // TODO: https://josealopez.dev/en/blog/spring-boot-global-exception-handling
     private final Q8Service q8Service;
 
 
