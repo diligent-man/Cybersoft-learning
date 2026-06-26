@@ -2,15 +2,10 @@ package com.ndt.spring.day_40.entity;
 
 import java.time.LocalDateTime;
 
-
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter
@@ -27,6 +22,8 @@ public class UserEntity {
     private LocalDateTime createDate;
 
     // Nếu bảng nào giữ FK thì @ManyToOne và @JoinColumn
+    // Sol 1: use @JsonIgnore to ignore this field during serialization (can be in 1 side or N side)
+    // @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity role;

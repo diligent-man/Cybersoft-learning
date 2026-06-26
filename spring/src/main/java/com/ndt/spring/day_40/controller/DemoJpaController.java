@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import com.ndt.spring.day_40.entity.RoleEntity;
-import com.ndt.spring.day_40.entity.UserEntity;
+import com.ndt.spring.day_40.mapper.RoleMapper;
+import com.ndt.spring.day_40.mapper.UserMapper;
 
 import com.ndt.spring.day_40.service.RoleService;
 import com.ndt.spring.day_40.service.UserService;
+
+import com.ndt.spring.day_40.dto.response.RoleDTO;
+import com.ndt.spring.day_40.dto.response.UserDTO;
+
 
 
 @RequiredArgsConstructor
@@ -27,16 +31,31 @@ public class DemoJpaController {
 
     private final UserService userService;
 
+    private final UserMapper userMapper = new UserMapper();
+
+    private final RoleMapper roleMapper = new RoleMapper();
+
 
     @GetMapping("/roles")
-    public ResponseEntity<List<RoleEntity>> getRoles() {
-        return ResponseEntity.ok(roleService.getAll());
+    public ResponseEntity<List<RoleDTO>> getRoles() {
+        return ResponseEntity.ok(
+            roleService
+                .getAll()
+                .stream()
+                .map(roleMapper::toDTO)
+                .toList()
+        );
     }
 
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserEntity>> getUsers() {
-        return ResponseEntity.ok(userService.getAll());
-
+    public ResponseEntity<List<UserDTO>> getUsers() {
+        return ResponseEntity.ok(
+            userService
+                .getAll()
+                .stream()
+                .map(userMapper::toDTO)
+                .toList()
+        );
     }
 }

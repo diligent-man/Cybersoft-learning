@@ -1,17 +1,14 @@
 package com.ndt.spring.day_40.entity;
 
 import java.util.List;
-import java.time.LocalDateTime;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+
+import jakarta.persistence.*;
 
 
 import lombok.*;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Setter
@@ -24,9 +21,8 @@ public class RoleEntity {
 
     private String name;
 
-    private LocalDateTime createdDate;
-
-    @JsonIgnore
+    // Sol 1: use @JsonIgnore to ignore this field during serialization (can be in 1 side or N side)
+    // @JsonIgnore
     @OneToMany(mappedBy = "role")
     private List<UserEntity> users;
 }
