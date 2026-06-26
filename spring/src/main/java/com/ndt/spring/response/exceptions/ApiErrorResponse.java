@@ -1,4 +1,4 @@
-package com.ndt.spring.infra.response.exceptions;
+package com.ndt.spring.response.exceptions;
 
 public interface ApiErrorResponse {
     Integer status();

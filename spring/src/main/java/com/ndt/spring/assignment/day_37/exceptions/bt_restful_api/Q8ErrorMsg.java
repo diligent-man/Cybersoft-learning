@@ -6,7 +6,7 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 
 
-import com.ndt.spring.infra.exceptions.ErrorMsg;
+import com.ndt.spring.exceptions.ErrorMsg;
 
 
 @Getter

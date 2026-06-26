@@ -1,4 +1,4 @@
-package com.ndt.spring.infra.handlers;
+package com.ndt.spring.exceptions;
 
 import java.util.function.BiFunction;
 
@@ -10,17 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
-import com.ndt.spring.infra.exceptions.ErrorMsg;
-import com.ndt.spring.infra.exceptions.GenericErrorMsg;
-import com.ndt.spring.infra.exceptions.GenericException;
-
-import com.ndt.spring.infra.response.exceptions.GenericApiError;
-import com.ndt.spring.infra.response.exceptions.ApiErrorResponse;
+import com.ndt.spring.response.exceptions.GenericApiError;
+import com.ndt.spring.response.exceptions.ApiErrorResponse;
 
 import com.ndt.spring.assignment.day_37.exceptions.bt_restful_api.Q8ErrorMsg;
 import com.ndt.spring.assignment.day_37.exceptions.bt_restful_api.Q8Exception;
 
-import com.ndt.spring.infra.response.exceptions.assignment.bt_restful_api.day_37.Q8ApiError;
+import com.ndt.spring.assignment.day_37.response.exceptions.Q8ApiError;
 import org.springframework.web.multipart.MultipartException;
 
 

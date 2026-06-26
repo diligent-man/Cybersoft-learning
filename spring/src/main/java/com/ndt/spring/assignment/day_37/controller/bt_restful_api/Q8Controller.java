@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import com.ndt.spring.infra.exceptions.GenericErrorMsg;
-import com.ndt.spring.infra.exceptions.GenericException;
+import com.ndt.spring.exceptions.GenericErrorMsg;
+import com.ndt.spring.exceptions.GenericException;
 
 import com.ndt.spring.assignment.day_37.service.bt_restful_api.Q8Service;
 

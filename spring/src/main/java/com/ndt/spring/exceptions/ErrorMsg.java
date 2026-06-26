@@ -1,4 +1,4 @@
-package com.ndt.spring.infra.exceptions;
+package com.ndt.spring.exceptions;
 
 import java.util.Arrays;
 
