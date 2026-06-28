@@ -18,8 +18,8 @@ import com.ndt.spring.day_40.mapper.UserMapper;
 import com.ndt.spring.day_40.service.RoleService;
 import com.ndt.spring.day_40.service.UserService;
 
-import com.ndt.spring.day_40.dto.response.RoleDTO;
-import com.ndt.spring.day_40.dto.response.UserDTO;
+import com.ndt.spring.day_40.dto.RoleDTO;
+import com.ndt.spring.day_40.dto.UserDTO;
 
 
 

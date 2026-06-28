@@ -1,9 +1,9 @@
 package com.ndt.spring.day_40.mapper;
 
 
+import com.ndt.spring.day_40.dto.UserDTO;
 import com.ndt.spring.day_40.entity.UserEntity;
-import com.ndt.spring.day_40.dto.response.UserDTO;
-import com.ndt.spring.day_40.dto.response.RoleSummaryDTO;
+import com.ndt.spring.day_40.dto.RoleSummaryDTO;
 
 
 public class UserMapper {

@@ -6,11 +6,11 @@ import java.util.List;
 import com.ndt.spring.day_40.entity.RoleEntity;
 import com.ndt.spring.day_40.entity.UserEntity;
 
-import com.ndt.spring.day_40.dto.response.RoleDTO;
-import com.ndt.spring.day_40.dto.response.UserDTO;
+import com.ndt.spring.day_40.dto.RoleDTO;
+import com.ndt.spring.day_40.dto.UserDTO;
 
-import com.ndt.spring.day_40.dto.response.RoleSummaryDTO;
-import com.ndt.spring.day_40.dto.response.UserSummaryDTO;
+import com.ndt.spring.day_40.dto.RoleSummaryDTO;
+import com.ndt.spring.day_40.dto.UserSummaryDTO;
 
 
 public class RoleMapper {
