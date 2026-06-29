@@ -1,0 +1,19 @@
+spring:
+    application:
+        name: uniclub
+
+    config:
+        import: "optional:file:.env[.properties]"
+
+    datasource:
+        url: jdbc:mysql://localhost:${MYSQL_PORT}/${MYSQL_DATABASE}
+        username: ${MYSQL_USER}
+        password: ${MYSQL_PASSWORD}
+
+    jpa:
+        generate-ddl: true
+        hibernate.ddl-auto: none
+
+    devtools:
+        restart:
+            enabled: true
