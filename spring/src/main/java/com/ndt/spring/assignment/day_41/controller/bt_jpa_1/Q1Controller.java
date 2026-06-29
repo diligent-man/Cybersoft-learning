@@ -1,4 +1,4 @@
-package com.ndt.spring.assignment.day_41.btJpa_1.controller;
+package com.ndt.spring.assignment.day_41.controller.bt_jpa_1;
 
 
 import lombok.RequiredArgsConstructor;
