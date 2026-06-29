@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * An exception class to throw with input corresponding message (defined in {@link Q8ErrorMsg}). Then it is handled in
- * {@link GlobalExceptionHandler#handleAssignmentDay37RestfulApiError} via
+ * {@link GlobalExceptionHandler#handleAssignmentDay37Q8RestfulApiError} via
  * {@link org.springframework.web.bind.annotation.ExceptionHandler} annotation (using Aspect-oriented programming (AOP)).
  */
 @Getter
