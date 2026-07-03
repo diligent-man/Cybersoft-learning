@@ -1,4 +1,4 @@
-package com.ndt.spring.config;
+package com.ndt.spring.config.v1;
 
 
 public final class DataSourceContextHolder {

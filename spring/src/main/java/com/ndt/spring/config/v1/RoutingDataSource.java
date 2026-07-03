@@ -1,4 +1,4 @@
-package com.ndt.spring.config;
+package com.ndt.spring.config.v1;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
@@ -7,6 +7,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        return DataSourceContextHolder.get();
+        DatabaseType databaseType = DataSourceContextHolder.get();
+        return databaseType != null ? databaseType.name() : "default";
     }
 }

@@ -1,18 +1,21 @@
-package com.ndt.spring.config;
+package com.ndt.spring.config.v1;
 
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
+
+
+import com.zaxxer.hikari.HikariDataSource;
+
+
+import org.springframework.context.annotation.*;
+
 
 @Configuration
 public class DynamicSourceConfig {
-    @Bean("routingDataSource")
     @Primary
+    @Bean("routingDataSource")
     public DataSource routingDataSource(
         DynamicDataSourceProperties properties
     ) {

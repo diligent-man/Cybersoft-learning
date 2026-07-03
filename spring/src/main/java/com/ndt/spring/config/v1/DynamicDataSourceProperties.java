@@ -1,12 +1,14 @@
-package com.ndt.spring.config;
+package com.ndt.spring.config.v1;
+
+import java.util.Map;
+import java.util.HashMap;
+
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 
 @Setter
@@ -20,8 +22,11 @@ public class DynamicDataSourceProperties {
     @Getter
     public static class DbConfig {
         private String beanName;
+
         private String url;
+
         private String username;
+
         private String password;
     }
 }
