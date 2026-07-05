@@ -27,6 +27,7 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
+        System.out.println(path);
 
         switch (path) {
             case "/user" -> {
