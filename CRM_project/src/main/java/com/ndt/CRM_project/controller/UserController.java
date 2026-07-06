@@ -13,7 +13,7 @@ import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.service.RoleService;
 import com.ndt.CRM_project.service.UserService;
 
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
+import com.ndt.CRM_project.dto.user.UserTaskStatusStatsDTO;
 
 
 @WebServlet(
@@ -27,7 +27,6 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
-        System.out.println(path);
 
         switch (path) {
             case "/user" -> {
@@ -60,7 +59,7 @@ public class UserController extends HttpServlet {
                 int userId = Integer.parseInt(req.getParameter("userId"));
                 UserTaskStatusStatsDTO userTaskStatusStats = userService.getTaskStatus(userId);
 
-                req.setAttribute("statusLst", userTaskStatusStats.getTaskStatusMap().keySet());
+                req.setAttribute("statusLst", userTaskStatusStats.getTaskStatusTotalMap().keySet());
                 req.setAttribute("userTaskStatusStats", userTaskStatusStats);
                 req.getRequestDispatcher("user-details.jsp").forward(req, resp);
             }

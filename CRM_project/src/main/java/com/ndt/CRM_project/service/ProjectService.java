@@ -3,6 +3,7 @@ package com.ndt.CRM_project.service;
 import java.util.List;
 
 
+import com.ndt.CRM_project.dto.project.ProjectTaskStatusStatsDTO;
 import com.ndt.CRM_project.repo.ProjectRepo;
 import com.ndt.CRM_project.entity.ProjectEntity;
 
@@ -18,6 +19,11 @@ public class ProjectService {
 
     public ProjectEntity getProject(int id) {
         return projectRepo.findById(id).orElse(null);
+    }
+
+
+    public ProjectTaskStatusStatsDTO getProjectStatus(int id) {
+        return projectRepo.findProjectStatusById(id).orElse(null);
     }
 
 

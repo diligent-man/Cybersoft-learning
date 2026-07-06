@@ -6,7 +6,7 @@ import java.util.List;
 import com.ndt.CRM_project.repo.UserRepo;
 import com.ndt.CRM_project.entity.UserEntity;
 
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
+import com.ndt.CRM_project.dto.user.UserTaskStatusStatsDTO;
 
 
 

@@ -49,8 +49,6 @@ public class ProjectController extends HttpServlet {
                 int projectId = Integer.parseInt(req.getParameter("projectId"));
                 ProjectEntity obj = projectService.getProject(projectId);
 
-                System.out.println(obj);
-
                 req.setAttribute("project", obj);
                 req.getRequestDispatcher("project-add.jsp").forward(req, resp);
             }

@@ -261,7 +261,7 @@ SELECT u.id,
 FROM users u
          CROSS JOIN status st
          LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
-WHERE u.id = 1
+WHERE u.id = 2
 GROUP BY u.id, u.fullname, u.email, st.id, st.name, st.color;
 
 
@@ -271,7 +271,6 @@ WITH UserInProject AS (
         t.id                                 AS 'task_id',
         t.name                               AS 'task_name',
         COALESCE(t.user_id, u.id)            AS 'user_id',
-#         t.user_id,
         u.fullname,
         st.name                              AS 'status_name',
         st.color                             AS 'status_color',
@@ -280,22 +279,27 @@ WITH UserInProject AS (
         COUNT(t.id) OVER (PARTITION BY u.id) AS 'task_count'
     FROM users u
              CROSS JOIN status st
-             LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id AND t.project_id = 1
+             LEFT JOIN tasks t ON t.user_id = u.id AND
+                                  t.status_id = st.id AND
+                                  t.project_id = 1
     ORDER BY t.user_id, t.id
 )
-SELECT *,
+SELECT project_id, user_id, fullname, status_name, status_color,
+       IFNULL(SUM(COUNT(task_id)) OVER (PARTITION BY status_name), 0) AS 'total_task_by_status',
        IFNULL(ROUND(SUM(COUNT(task_id)) OVER (PARTITION BY status_name) / NULLIF(SUM(COUNT(task_id)) OVER (), 0) * 100, 2), 0.) AS 'task_status_rate',
        SUM(COUNT(task_id)) OVER (PARTITION BY user_id, status_name) AS 'user_total_task_by_status',
-       IFNULL(ROUND(COUNT(task_id) / NULLIF(SUM(COUNT(task_id)) OVER (PARTITION BY user_id), 0) * 100, 2), 0.) AS 'task_status_rate_by_user',
+       IFNULL(ROUND(COUNT(task_id) / NULLIF(SUM(COUNT(task_id)) OVER (PARTITION BY user_id), 0) * 100, 2), 0.) AS 'user_task_status_rate',
        IF(COUNT(task_id) = 0, JSON_ARRAY(),
           JSON_ARRAYAGG(
                   JSON_OBJECT(
                           'task_id', task_id,
-                          'task_name', task_name
+                          'task_name', task_name,
+                          'submit_message', submit_message,
+                          'submit_time', submit_time
                   )
           )
        )                                                     AS task_details
 FROM UserInProject
 WHERE task_count > 0
-GROUP BY project_id, task_id, task_name, user_id, fullname, status_name, status_color, submit_message, submit_time
+GROUP BY project_id, user_id, fullname, status_name, status_name, status_color
 ORDER BY user_id;

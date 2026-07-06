@@ -1,20 +1,22 @@
 package com.ndt.CRM_project.repo;
 
 import java.sql.*;
+import java.sql.Date;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ArrayList;
 
-
-import com.ndt.CRM_project.dto.project.ProjectTaskStatusStatsDTO;
-import com.ndt.CRM_project.dto.task.UserTaskStatusDetailDTO;
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
-import com.ndt.CRM_project.utils.MysqlConfig;
-import com.ndt.CRM_project.entity.ProjectEntity;
 
 import tools.jackson.core.JacksonException;
-import tools.jackson.core.type.TypeReference;
+
+
+import com.ndt.CRM_project.utils.MysqlConfig;
+
+import com.ndt.CRM_project.entity.ProjectEntity;
+
+import com.ndt.CRM_project.dto.project.UserTaskStatusStatsDTO;
+import com.ndt.CRM_project.dto.project.ProjectTaskStatusStatsDTO;
 
 
 /**
@@ -175,38 +177,45 @@ public class ProjectRepo {
 
 
     public Optional<ProjectTaskStatusStatsDTO> findProjectStatusById(int id) {
-        ProjectTaskStatusStatsDTO obj = null;
-
         String query = """
-            SELECT u.id                                                  AS 'user_id',
-                   u.fullname,
-                   u.email,
-                   st.name                                               AS 'status_name',
-                   st.color,
-                   SUM(COUNT(t.id)) OVER ()                              AS total_task,
-                   SUM(COUNT(t.id)) OVER (PARTITION BY st.id)            AS 'total_task_by_status',
-                   IFNULL(ROUND(SUM(COUNT(t.id)) OVER (PARTITION BY st.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0) * 100, 2), 0.)
-                                                                         AS 'task_status_rate',
-                   SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id)        AS 'total_task_by_status_by_user',
-                   SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id, st.id) AS 'total_task_by_status_by_user',
-                   IFNULL(ROUND(COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (PARTITION BY t.user_id), 0) * 100, 2), 0.)
-                                                                         AS 'task_status_rate_by_user',
-                   IF(COUNT(t.id) = 0, JSON_ARRAY(),
+            WITH UserInProject AS (
+                SELECT
+                    COALESCE(t.project_id, 1)            AS 'project_id',
+                    t.id                                 AS 'task_id',
+                    t.name                               AS 'task_name',
+                    COALESCE(t.user_id, u.id)            AS 'user_id',
+                    u.fullname,
+                    st.name                              AS 'status_name',
+                    st.color                             AS 'status_color',
+                    t.submit_message,
+                    t.submit_time,
+                    COUNT(t.id) OVER (PARTITION BY u.id) AS 'task_count'
+                FROM users u
+                         CROSS JOIN status st
+                         LEFT JOIN tasks t ON t.user_id = u.id AND
+                                              t.status_id = st.id AND
+                                              t.project_id = ?
+                ORDER BY t.user_id, t.id
+            )
+            SELECT project_id, user_id, fullname, status_name, status_color,
+                   IFNULL(SUM(COUNT(task_id)) OVER (PARTITION BY status_name), 0) AS 'total_task_by_status',
+                   IFNULL(ROUND(SUM(COUNT(task_id)) OVER (PARTITION BY status_name) / NULLIF(SUM(COUNT(task_id)) OVER (), 0) * 100, 2), 0.) AS 'task_status_rate',
+                   SUM(COUNT(task_id)) OVER (PARTITION BY user_id, status_name) AS 'user_total_task_by_status',
+                   IFNULL(ROUND(COUNT(task_id) / NULLIF(SUM(COUNT(task_id)) OVER (PARTITION BY user_id), 0) * 100, 2), 0.) AS 'user_task_status_rate',
+                   IF(COUNT(task_id) = 0, JSON_ARRAY(),
                       JSON_ARRAYAGG(
                               JSON_OBJECT(
-                                      'task_id', t.id,
-                                      'task_name', t.name,
-                                      'start_date', t.start_date,
-                                      'end_date', t.end_date
+                                      'task_id', task_id,
+                                      'task_name', task_name,
+                                      'submit_message', submit_message,
+                                      'submit_time', submit_time
                               )
                       )
                    )                                                     AS task_details
-              FROM users u
-                       CROSS JOIN status st
-                       LEFT JOIN tasks t ON t.user_id = u.id AND t.status_id = st.id
-              WHERE t.project_id = ?
-              GROUP BY u.id, u.fullname, u.email, t.project_id, st.id, st.name, st.color
-              ORDER BY u.id;
+            FROM UserInProject
+            WHERE task_count > 0
+            GROUP BY project_id, user_id, fullname, status_name, status_name, status_color
+            ORDER BY user_id;
             """;
 
         try (Connection conn = MysqlConfig.getConnection()) {
@@ -216,39 +225,46 @@ public class ProjectRepo {
                 stmt.setInt(1, id);
                 ResultSet rs = stmt.executeQuery();
 
-                Integer prevUserId = -1;
-                UserTaskStatusStatsDTO userObj = null;
+                ProjectTaskStatusStatsDTO projectStatusStatsDTO = null;
+                UserTaskStatusStatsDTO userTaskStatusStatsDTO = null;
+
+                int prevUserid = -1;
                 while (rs.next()) {
                     // Build ProjectTaskStatusStatsDTO
-                    if (obj == null) {
-                        obj = new ProjectTaskStatusStatsDTO();
+                    if (projectStatusStatsDTO == null) {
+                        projectStatusStatsDTO = new ProjectTaskStatusStatsDTO();
 
-                        obj.setProjectId(id);
-                        obj.setTotalTask(rs.getInt("total_task"));
-
-                        // obj.setUserId(rs.getInt(userId));
-                        // obj.setFullName(rs.getString("fullname"));
-                        // obj.setEmail(rs.getString("email"));
-                        // obj.setTotalTasks(rs.getInt("total_tasks"));
+                        projectStatusStatsDTO.setProjectId(id);
                     }
 
+                    // Build project's BaseTaskStatusModel
                     String statusName = rs.getString("status_name");
-                    if (!obj.getTaskStatusMap().containsKey(statusName)) {
-                        obj.getTaskStatusMap().put(statusName, rs.getInt("total_tasks_by_status"));
-                        obj.getTaskStatusRateMap().put(statusName, rs.getDouble("task_status_rate"));
+                    if (!projectStatusStatsDTO.getTaskStatusTotalMap().containsKey(statusName)) {
+                        projectStatusStatsDTO.getTaskStatusTotalMap().put(statusName, rs.getInt("total_task_by_status"));
+                        projectStatusStatsDTO.getTaskStatusRateMap().put(statusName, rs.getDouble("task_status_rate"));
+                        projectStatusStatsDTO.getTaskColorMap().put(statusName, rs.getString("status_color"));
                     }
 
-                    // Build UserTaskStatusStatsDTO
-                    Integer curUserId = rs.getInt("user_id");
+                    // Build List<UserTaskStatusStatsDTO>
+                    int userId = rs.getInt("user_id");
+                    if (userTaskStatusStatsDTO == null || prevUserid != userId) {
+                        userTaskStatusStatsDTO = new UserTaskStatusStatsDTO();
 
-                    if (!curUserId.equals(prevUserId)) {
-                        userObj = new UserTaskStatusStatsDTO();
+                        userTaskStatusStatsDTO.setUserId(userId);
+                        userTaskStatusStatsDTO.setFullName(rs.getString("fullname"));
+
+                        if (!userTaskStatusStatsDTO.getTaskStatusTotalMap().containsKey(statusName)) {
+                            userTaskStatusStatsDTO.getTaskStatusTotalMap().put(statusName, rs.getInt("user_total_task_by_status"));
+                            userTaskStatusStatsDTO.getTaskStatusRateMap().put(statusName, rs.getDouble("user_task_status_rate"));
+                            userTaskStatusStatsDTO.getTaskColorMap().put(statusName, rs.getString("status_color"));
+                        }
+
+                        // update to current user TODO
+                        prevUserid = userId;
                     }
 
 
-
-
-                    String taskDetailsJson = rs.getString("task_details");
+                    // String taskDetailsJson = rs.getString("task_details");
                     // List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(
                     //     taskDetailsJson,
                     //     new TypeReference<>() {
@@ -266,6 +282,6 @@ public class ProjectRepo {
         } catch (SQLException e) {
             System.out.println("TaskRepo: Failed to close connection. " + e.getMessage());
         }
-        return Optional.ofNullable(obj);
+        return Optional.ofNullable(projectStatusStatsDTO);
     }
 }

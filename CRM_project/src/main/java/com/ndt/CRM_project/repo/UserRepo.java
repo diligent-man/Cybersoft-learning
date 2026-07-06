@@ -5,14 +5,15 @@ import java.util.*;
 
 
 import tools.jackson.core.JacksonException;
-import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
 
 
-import com.ndt.CRM_project.dto.task.UserTaskStatusDetailDTO;
-import com.ndt.CRM_project.dto.task.UserTaskStatusStatsDTO;
 import com.ndt.CRM_project.entity.UserEntity;
 import com.ndt.CRM_project.utils.MysqlConfig;
+
+import com.ndt.CRM_project.dto.user.UserTaskDetailDTO;
+import com.ndt.CRM_project.dto.user.UserTaskStatusStatsDTO;
 
 
 /**
@@ -287,7 +288,6 @@ public class UserRepo {
                    u.email,
                    st.name                                                                         AS 'status_name',
                    st.color                                                                        AS 'status_color',
-                   SUM(COUNT(t.id)) OVER ()                                                        AS 'total_task',
                    SUM(COUNT(t.id)) OVER (PARTITION BY st.id)                                      AS 'total_task_by_status',
                    IFNULL(ROUND((COUNT(t.id) / NULLIF(SUM(COUNT(t.id)) OVER (), 0)) * 100, 2), 0.) AS 'task_status_rate',
                    IF(COUNT(t.id) = 0, JSON_ARRAY(),
@@ -321,7 +321,6 @@ public class UserRepo {
                         obj.setUserId(rs.getInt("id"));
                         obj.setFullName(rs.getString("fullname"));
                         obj.setEmail(rs.getString("email"));
-                        obj.setTotalTask(rs.getInt("total_task"));
                     }
 
                     String statusName = rs.getString("status_name");
@@ -330,13 +329,13 @@ public class UserRepo {
                     obj.getTaskColorMap().put(statusName, statusColor);
 
                     Integer taskByStatus = rs.getInt("total_task_by_status");
-                    obj.getTaskStatusMap().put(statusName, taskByStatus);
+                    obj.getTaskStatusTotalMap().put(statusName, taskByStatus);
 
                     Double taskStatusRate = rs.getDouble("task_status_rate");
                     obj.getTaskStatusRateMap().put(statusName, taskStatusRate);
 
                     String taskDetailsJson = rs.getString("task_details");
-                    List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(
+                    List<UserTaskDetailDTO> userTaskDetailsList = mapper.readValue(
                         taskDetailsJson,
                         new TypeReference<>() {
                             // Jackson's solution to Java's type erasure problem by using anonymous subclass
