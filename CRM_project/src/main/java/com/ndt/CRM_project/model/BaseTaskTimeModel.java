@@ -1,4 +1,4 @@
-package com.ndt.CRM_project.dto.model;
+package com.ndt.CRM_project.model;
 
 import java.util.Locale;
 
@@ -12,6 +12,7 @@ import lombok.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
+@Getter
 public class BaseTaskTimeModel {
     @JsonProperty("start_date")
     protected LocalDate startDate;

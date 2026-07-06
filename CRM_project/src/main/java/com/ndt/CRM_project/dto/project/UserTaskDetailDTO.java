@@ -1,21 +1,36 @@
 package com.ndt.CRM_project.dto.project;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 import lombok.*;
 
 
-import com.ndt.CRM_project.dto.model.BaseTaskDetailModel;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-@Getter
-@ToString
-@NoArgsConstructor
+import com.ndt.CRM_project.model.BaseTaskDetailModel;
+
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class UserTaskDetailDTO extends BaseTaskDetailModel {
-    private LocalDate submitDate;
+    @JsonProperty("submit_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
+    private LocalDateTime submitTime;
 
+    @JsonProperty("submit_message")
     private String submitMessage;
 
-    // TODO: bo sung AM/ PM preprocessing
+    @ToString.Exclude
+    @Getter(AccessLevel.NONE)
+    private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+
+    public String getFormattedSubmitTime() {
+        return submitTime != null ?
+            submitTime.format(displayFormatter) : "";
+    }
 }

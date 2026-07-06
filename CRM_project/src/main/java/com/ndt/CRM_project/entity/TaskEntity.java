@@ -1,94 +1,30 @@
 package com.ndt.CRM_project.entity;
 
-import java.util.Locale;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-
 import lombok.*;
 
 
-@Getter
-@NoArgsConstructor
-public class TaskEntity {
-    @Setter
+import com.ndt.CRM_project.model.BaseTimedTaskDetailModel;
+
+
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class TaskEntity extends BaseTimedTaskDetailModel {
     private Integer id;
 
-    @Setter
     private String name;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
-    @Setter
     private Integer userId;
 
-    @Setter
     private String userFullName;
 
-    @Setter
     private Integer projectId;
 
-    @Setter
     private String projectName;
 
-    @Setter
     private Integer statusId;
 
-    @Setter
     private String statusName;
 
-    @Setter
     private String statusColor;
-
-
-    @Getter(AccessLevel.NONE)
-    private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-    @Getter(AccessLevel.NONE)
-    private final DateTimeFormatter parseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.of("vi", "VN"));
-
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-
-    public void setStartDate(String startDate) {
-        this.startDate = LocalDate.parse(startDate, parseFormatter);
-    }
-
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-
-    public void setEndDate(String endDate) {
-        this.endDate = LocalDate.parse(endDate, parseFormatter);
-    }
-
-
-    public String getFormattedStartDate() {
-        return startDate != null ?
-            startDate.format(displayFormatter) : "";
-    }
-
-
-    public String getFormattedEndDate() {
-        return endDate != null ?
-            endDate.format(displayFormatter) : "";
-    }
-
-
-    public String getParsedStartDate() {
-        return startDate != null ? startDate.format(parseFormatter) : "";
-    }
-
-
-    public String getParsedEndDate() {
-        return endDate != null ? endDate.format(parseFormatter) : "";
-    }
 }

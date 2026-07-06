@@ -1,15 +1,12 @@
-package com.ndt.CRM_project.dto.model;
+package com.ndt.CRM_project.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-
-@Setter
-@Getter
-@NoArgsConstructor
-public class BaseTaskDetailModel {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class BaseTimedTaskDetailModel extends BaseTaskTimeModel {
     @Setter
     @JsonProperty("task_id")
     protected Integer taskId;

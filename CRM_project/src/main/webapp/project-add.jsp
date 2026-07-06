@@ -185,7 +185,7 @@
                                 <label class="col-md-12">Tên dự án</label>
                                 <div class="col-md-12">
                                     <input type="text" name="name"
-                                           placeholder="Tên công việc"
+                                           placeholder="Tên dự án"
                                            value="${project != null ? project.name : ''}"
                                            class="form-control form-control-line"
                                     >

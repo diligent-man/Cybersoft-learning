@@ -76,8 +76,10 @@ public class TaskController extends HttpServlet {
 
                 TaskEntity obj = new TaskEntity();
 
-                // TODO: check setter fields
                 obj.setName(req.getParameter("name"));
+                obj.setProjectId(Integer.parseInt(req.getParameter("projectId")));
+                obj.setUserId(Integer.parseInt(req.getParameter("userId")));
+                obj.setStatusId(1);  //hard-code for "Chưa bắt đầu"
                 obj.setStartDate(LocalDate.parse(req.getParameter("startDate")));
                 obj.setEndDate(LocalDate.parse(req.getParameter("endDate")));
 

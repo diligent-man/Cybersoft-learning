@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 
+import com.ndt.CRM_project.dto.project.ProjectTaskStatusStatsDTO;
+import com.ndt.CRM_project.dto.user.UserTaskStatusStatsDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 
@@ -46,14 +48,20 @@ public class ProjectController extends HttpServlet {
             }
 
             case "/project-update" -> {
-                int projectId = Integer.parseInt(req.getParameter("projectId"));
-                ProjectEntity obj = projectService.getProject(projectId);
+                int id = Integer.parseInt(req.getParameter("projectId"));
+                ProjectEntity obj = projectService.getProject(id);
 
                 req.setAttribute("project", obj);
                 req.getRequestDispatcher("project-add.jsp").forward(req, resp);
             }
 
             case "/project-details" -> {
+                int id = Integer.parseInt(req.getParameter("projectId"));
+                ProjectTaskStatusStatsDTO projectTaskStatusStatsDTO = projectService.getProjectStatus(id);
+
+                req.setAttribute("statusLst", projectTaskStatusStatsDTO.getTaskStatusTotalMap().keySet());
+                req.setAttribute("projectTaskStatusStats", projectTaskStatusStatsDTO);
+
                 req.getRequestDispatcher("project-details.jsp").forward(req, resp);
             }
         }

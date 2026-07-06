@@ -3,12 +3,11 @@ package com.ndt.CRM_project.dto.user;
 import lombok.*;
 
 
-import com.ndt.CRM_project.dto.model.BaseTimedTaskDetailModel;
+import com.ndt.CRM_project.model.BaseTimedTaskDetailModel;
 
 
-@Getter
-@ToString
-@NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class UserTaskDetailDTO extends BaseTimedTaskDetailModel {
 
 }

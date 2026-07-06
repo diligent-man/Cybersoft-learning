@@ -1,4 +1,4 @@
-package com.ndt.CRM_project.dto.model;
+package com.ndt.CRM_project.model;
 
 import java.util.*;
 

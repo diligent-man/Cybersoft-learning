@@ -6,12 +6,11 @@ import java.util.*;
 import lombok.*;
 
 
-import com.ndt.CRM_project.dto.model.BaseTaskStatusModel;
+import com.ndt.CRM_project.model.BaseTaskStatusModel;
 
 
-@Setter
-@Getter
-@NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ProjectTaskStatusStatsDTO extends BaseTaskStatusModel {
     private Integer projectId;
 

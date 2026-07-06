@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.ArrayList;
 
 
+import com.ndt.CRM_project.dto.project.UserTaskDetailDTO;
 import tools.jackson.core.JacksonException;
 
 
@@ -17,12 +18,17 @@ import com.ndt.CRM_project.entity.ProjectEntity;
 
 import com.ndt.CRM_project.dto.project.UserTaskStatusStatsDTO;
 import com.ndt.CRM_project.dto.project.ProjectTaskStatusStatsDTO;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 
 /**
  * Quản lý tất cả câu query liên quan tới bảng role
  */
 public class ProjectRepo {
+    private final ObjectMapper mapper = new ObjectMapper();
+
+
     public List<ProjectEntity> findAll() {
         List<ProjectEntity> objLst = new ArrayList<>();
 
@@ -218,6 +224,8 @@ public class ProjectRepo {
             ORDER BY user_id;
             """;
 
+        ProjectTaskStatusStatsDTO projectStatusStatsDTO = null;
+
         try (Connection conn = MysqlConfig.getConnection()) {
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
@@ -225,7 +233,6 @@ public class ProjectRepo {
                 stmt.setInt(1, id);
                 ResultSet rs = stmt.executeQuery();
 
-                ProjectTaskStatusStatsDTO projectStatusStatsDTO = null;
                 UserTaskStatusStatsDTO userTaskStatusStatsDTO = null;
 
                 int prevUserid = -1;
@@ -247,33 +254,41 @@ public class ProjectRepo {
 
                     // Build List<UserTaskStatusStatsDTO>
                     int userId = rs.getInt("user_id");
-                    if (userTaskStatusStatsDTO == null || prevUserid != userId) {
+                    if (prevUserid != userId) {
+                        if (userTaskStatusStatsDTO != null)
+                            projectStatusStatsDTO.getUserTaskStatusStatsList().add(userTaskStatusStatsDTO);
+
                         userTaskStatusStatsDTO = new UserTaskStatusStatsDTO();
 
                         userTaskStatusStatsDTO.setUserId(userId);
                         userTaskStatusStatsDTO.setFullName(rs.getString("fullname"));
 
-                        if (!userTaskStatusStatsDTO.getTaskStatusTotalMap().containsKey(statusName)) {
-                            userTaskStatusStatsDTO.getTaskStatusTotalMap().put(statusName, rs.getInt("user_total_task_by_status"));
-                            userTaskStatusStatsDTO.getTaskStatusRateMap().put(statusName, rs.getDouble("user_task_status_rate"));
-                            userTaskStatusStatsDTO.getTaskColorMap().put(statusName, rs.getString("status_color"));
-                        }
-
-                        // update to current user TODO
                         prevUserid = userId;
                     }
 
+                    // Build List<UserTaskDetailDTO>
+                    if (!userTaskStatusStatsDTO.getTaskStatusTotalMap().containsKey(statusName)) {
+                        userTaskStatusStatsDTO.getTaskStatusTotalMap().put(statusName, rs.getInt("user_total_task_by_status"));
+                        userTaskStatusStatsDTO.getTaskStatusRateMap().put(statusName, rs.getDouble("user_task_status_rate"));
+                        userTaskStatusStatsDTO.getTaskColorMap().put(statusName, rs.getString("status_color"));
 
-                    // String taskDetailsJson = rs.getString("task_details");
-                    // List<UserTaskStatusDetailDTO> userTaskDetailsList = mapper.readValue(
-                    //     taskDetailsJson,
-                    //     new TypeReference<>() {
-                    //         // Jackson's solution to Java's type erasure problem by using anonymous subclass
-                    //     }
-                    // );
-                    //
-                    // obj.getTaskStatusDetailMap().put(statusName, userTaskDetailsList);
+                        String taskDetailJson = rs.getString("task_details");
+                        List<UserTaskDetailDTO> userTaskDetailList = mapper.readValue(
+                            taskDetailJson,
+                            new TypeReference<>() {
+                                // Jackson's solution to Java's type erasure problem by using anonymous subclass
+                            }
+                        );
+
+                        userTaskStatusStatsDTO.getTaskStatusDetailMap().put(statusName, userTaskDetailList);
+                    }
                 }
+
+                // add last user
+                if (projectStatusStatsDTO != null) {
+                    projectStatusStatsDTO.getUserTaskStatusStatsList().add(userTaskStatusStatsDTO);
+                }
+
             } catch (SQLException e) {
                 System.out.println("TaskRepo: " + e.getMessage());
             } catch (JacksonException e) {

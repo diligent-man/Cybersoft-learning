@@ -96,6 +96,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
+                    <a href="role" class="waves-effect"><i class="fa fa-modx fa-fw"
+                                                           aria-hidden="true"></i><span
+                            class="hide-menu">Dự án</span></a>
+                </li>
+                <li>
                     <a href="project" class="waves-effect"><i class="fa fa-table fa-fw"
                                                               aria-hidden="true"></i><span
                             class="hide-menu">Công việc</span></a>
