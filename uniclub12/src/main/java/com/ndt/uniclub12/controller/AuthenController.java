@@ -1,6 +1,5 @@
 package com.ndt.uniclub12.controller;
 
-import com.ndt.uniclub12.enumeric.AuthenError;
 import com.ndt.uniclub12.payload.response.BaseResponse;
 import com.ndt.uniclub12.payload.response.SignInResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +28,11 @@ public class AuthenController {
     public ResponseEntity<?> signIn(
         @RequestBody SignInRequest request
     ) {
-        boolean isSuccess = authenService.doLogin(request);
+        String token = authenService.doLogin(request);
+
         BaseResponse baseResponse = new SignInResponse(
-            AuthenError.A00.toString(), "", Boolean.valueOf(isSuccess)
+            // AuthenError.A00.toString(), "", Boolean.valueOf(isSuccess)
         );
-        return ResponseEntity.ok(isSuccess);
+        return ResponseEntity.ok(token);
     }
 }

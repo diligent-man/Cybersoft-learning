@@ -17,3 +17,6 @@ spring:
     devtools:
         restart:
             enabled: true
+
+jwt:
+    private-key: LTKw1Ba/s6nM6PoClDdEwk68UZ7cMBuqNGARAGIFowU=

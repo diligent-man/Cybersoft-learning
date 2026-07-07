@@ -8,18 +8,16 @@ import java.util.Optional;
 import java.util.ArrayList;
 
 
-import com.ndt.CRM_project.dto.project.UserTaskDetailDTO;
 import tools.jackson.core.JacksonException;
-
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
 
 import com.ndt.CRM_project.utils.MysqlConfig;
-
 import com.ndt.CRM_project.entity.ProjectEntity;
 
+import com.ndt.CRM_project.dto.project.UserTaskDetailDTO;
 import com.ndt.CRM_project.dto.project.UserTaskStatusStatsDTO;
 import com.ndt.CRM_project.dto.project.ProjectTaskStatusStatsDTO;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 
 
 /**

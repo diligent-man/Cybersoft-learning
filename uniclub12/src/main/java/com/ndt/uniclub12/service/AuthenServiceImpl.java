@@ -2,6 +2,7 @@ package com.ndt.uniclub12.service;
 
 import java.util.Optional;
 
+import com.ndt.uniclub12.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 
 
@@ -21,19 +22,21 @@ public class AuthenServiceImpl implements AuthenService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JWTUtils jwtUtils;
+
 
     @Override
-    public boolean doLogin(SignInRequest request) {
-        boolean isSuccess = false;
+    public String doLogin(SignInRequest request) {
+        String token = null;
         Optional<UserEntity> opUser = userRepo.findByEmail(request.getEmail());
 
         if (opUser.isPresent()) {
             UserEntity user = opUser.get();
 
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                isSuccess = true;
+                token = jwtUtils.generateJWTToken("Ok");
             }
         }
-        return isSuccess;
+        return token;
     }
 }
