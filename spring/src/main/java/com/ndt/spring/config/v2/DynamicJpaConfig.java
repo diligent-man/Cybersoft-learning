@@ -8,11 +8,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 @Configuration(proxyBeanMethods = true)
 public class DynamicJpaConfig {
-    // private DynamicJpaConfig() {
-    //     /* This utility class should not be instantiated */
-    // }
-
-
     @Bean
     public static BeanDefinitionRegistryPostProcessor dynamicJpaBeanRegistrar(
         ConfigurableEnvironment environment) {

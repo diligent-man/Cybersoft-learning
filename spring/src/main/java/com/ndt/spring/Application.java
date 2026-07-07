@@ -12,13 +12,12 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import com.ndt.spring.config.v1.WebConfig;
 import com.ndt.spring.config.v1.DynamicSourceConfig;
 import com.ndt.spring.config.v1.DynamicDataSourceProperties;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication(
-    // exclude = {
-    //     DataSourceAutoConfiguration.class
-    // }
+    exclude = {
+        // DataSourceAutoConfiguration.class,
+    }
 )
 @ComponentScan(
     excludeFilters = @ComponentScan.Filter(
@@ -28,13 +27,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
             DynamicSourceConfig.class,
             WebConfig.class,
         }
-    )
-)
-@EnableJpaRepositories(
-    basePackages = "com.ndt.spring",
-    excludeFilters = @ComponentScan.Filter(
-        type = FilterType.REGEX,
-        pattern = "com\\.ndt\\.spring\\.assignment\\.day_41\\.repo\\..*"
     )
 )
 @ConfigurationPropertiesScan

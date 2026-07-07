@@ -4,6 +4,11 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 
 public class RoutingDataSource extends AbstractRoutingDataSource {
+    public RoutingDataSource() {
+        // raise exception for mismatched datasource lookup
+        setLenientFallback(false);
+    }
+
 
     @Override
     protected Object determineCurrentLookupKey() {

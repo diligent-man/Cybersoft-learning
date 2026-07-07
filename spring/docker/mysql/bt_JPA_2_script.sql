@@ -24,3 +24,7 @@ VALUES (1, 'nguyenvana@gmail.com', '123456');
 INSERT INTO usersss(id, email, password)
 VALUES (2, 'nguyenvanb@gmail.com', '123');
 
+
+
+select * from userss;
+select * from usersss;

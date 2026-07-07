@@ -16,7 +16,6 @@ public class UserService {
     @Qualifier("btJpa1Q1UserRepo")
     private final UserRepo userRepo;
 
-
     public List<UserEntity> getAll(){
         return userRepo.findAll();
     }

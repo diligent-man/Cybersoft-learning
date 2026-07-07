@@ -1,15 +1,12 @@
 package com.ndt.spring.config.v2;
 
-import com.ndt.spring.config.v1.DynamicDataSourceProperties;
-import com.ndt.spring.config.v1.RoutingDataSource;
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
+
+
+import org.springframework.context.annotation.*;
 
 
 @Configuration
@@ -17,22 +14,10 @@ public class DynamicSourceConfig {
     @Primary
     @Bean("routingDataSource")
     public DataSource routingDataSource(
-        DynamicDataSourceProperties properties
+        Map<String, DataSource> dataSourceBeans
     ) {
         RoutingDataSource router = new RoutingDataSource();
-
-        Map<Object, Object> targetDataSources = new HashMap<>();
-
-        properties.getDatasources().forEach((key, config) -> {
-
-            HikariDataSource ds = new HikariDataSource();
-
-            ds.setJdbcUrl(config.getUrl());
-            ds.setUsername(config.getUsername());
-            ds.setPassword(config.getPassword());
-            targetDataSources.put(key, ds);
-
-        });
+        Map<Object, Object> targetDataSources = new HashMap<>(dataSourceBeans);
 
         router.setTargetDataSources(targetDataSources);
         router.setDefaultTargetDataSource(targetDataSources.get("default"));

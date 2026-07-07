@@ -1,11 +1,14 @@
 package com.ndt.spring.config.v2;
 
+import java.util.*;
+
+
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import lombok.ToString;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 
 @Setter
@@ -17,13 +20,14 @@ public class DynamicDataSourceProperties {
 
     @Setter
     @Getter
+    @ToString
     public static class DbConfig {
-        private String beanName;
-
         private String url;
 
         private String username;
 
         private String password;
+
+        private Map<String, String> jpa = new LinkedHashMap<>();
     }
 }

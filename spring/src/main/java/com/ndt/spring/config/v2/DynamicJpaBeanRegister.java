@@ -1,21 +1,30 @@
 package com.ndt.spring.config.v2;
 
-import com.zaxxer.hikari.HikariDataSource;
+import java.util.HashMap;
+import java.util.Map;
+
+
 import lombok.RequiredArgsConstructor;
+
 import org.jspecify.annotations.NonNull;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
+
 import org.springframework.core.ResolvableType;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-import java.util.Map;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 
 @RequiredArgsConstructor
@@ -25,9 +34,13 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) {
-        Bindable<Map<String, DynamicDataSourceProperties.DbConfig>> bindable =
-            Bindable.of(ResolvableType.forClassWithGenerics(
-                Map.class, String.class, DynamicDataSourceProperties.DbConfig.class));
+        Bindable<Map<String, DynamicDataSourceProperties.DbConfig>> bindable = Bindable.of(
+            ResolvableType.forClassWithGenerics(
+                Map.class,
+                String.class,
+                DynamicDataSourceProperties.DbConfig.class
+            )
+        );
 
 
         // bind spring.datasources.* the same way DynamicDataSourceProperties does
@@ -37,19 +50,11 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
                 .orElse(Map.of());
 
         datasources.forEach((key, rawConfig) -> {
-            DynamicDataSourceProperties.DbConfig config = bindConfig(key);
-
-            String dsBeanName = key + "DataSource";
             String emfBeanName = key + "EntityManagerFactory";
             String tmBeanName = key + "TransactionManager";
 
-            // 1. DataSource bean
-            registerDataSourceBean(registry, dsBeanName, config);
-
-            // 2. EntityManagerFactory bean, scanning the matching entity package
-            registerEmfBean(registry, emfBeanName, dsBeanName, key);
-
-            // 3. TransactionManager bean
+            registerDataSourceBean(registry, key, rawConfig);
+            registerEmfBean(registry, emfBeanName, key, key, rawConfig);
             registerTxManagerBean(registry, tmBeanName, emfBeanName);
         });
     }
@@ -81,7 +86,8 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         BeanDefinitionRegistry registry,
         String beanName,
         String dsBeanName,
-        String key
+        String key,
+        DynamicDataSourceProperties.DbConfig config
     ) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder
             .genericBeanDefinition(LocalContainerEntityManagerFactoryBean.class);
@@ -90,8 +96,10 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         builder.addPropertyValue("packagesToScan", packageForKey(key));
         builder.addPropertyValue("persistenceUnitName", key);
 
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        // TODO: check jpa & hibernate for show-sql
+        JpaVendorAdapter vendorAdapter = HibernateVendorAdapterFactory.create(buildJpaProperties(config));
         builder.addPropertyValue("jpaVendorAdapter", vendorAdapter);
+        // builder.addPropertyValue("jpaPropertyMap", buildJpaProperties(config));
 
         registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
     }
@@ -104,8 +112,15 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
     }
 
 
-    // convention: key "bt-jpa1-q1" -> package "...entity.bt_jpa_1.q1"
+    private Map<String, String> buildJpaProperties(DynamicDataSourceProperties.DbConfig config) {
+        Map<String, String> props = new HashMap<>(DefaultHibernateProperties.get());
+        props.putAll(normalizeJpaKeys(config.getJpa()));
+        return props;
+    }
+
+
     private String packageForKey(String key) {
+        // convention: key "bt-jpa1-q1" -> package "...entity.bt_jpa_1.q1"
         String[] keyParts = key.split("-");
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -119,7 +134,17 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         // customize this mapping to fit your actual package layout
         return "com.ndt.spring.assignment.day_41.entity." + stringBuilder;
     }
-
+    private Map<String, String> normalizeJpaKeys(Map<String, String> raw) {
+        Map<String, String> normalized = new HashMap<>();
+        raw.forEach((rawKey, value) -> {
+            String key = rawKey;
+            if (key.startsWith("properties.")) key = key.substring("properties.".length());
+            if (!key.startsWith("hibernate.")) key = "hibernate." + key;
+            key = key.replace('-', '_');
+            normalized.put(key, value);
+        });
+        return normalized;
+    }
 
     @Override
     public void postProcessBeanFactory(org.springframework.beans.factory.config.@NonNull ConfigurableListableBeanFactory beanFactory) {

@@ -2,7 +2,11 @@ package com.ndt.spring.config.v2;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+
 import org.jspecify.annotations.NonNull;
+
+
 import org.springframework.web.servlet.HandlerInterceptor;
 
 
@@ -21,7 +25,6 @@ public class DataSourceInterceptor implements HandlerInterceptor {
         } else if (uri.startsWith("/assignment/day_41/jpa1/q2")) {
             DataSourceContextHolder.set(DatabaseType.JPA1Q2);
         }
-
         return true;
     }
 
