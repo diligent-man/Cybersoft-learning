@@ -1,8 +1,9 @@
-package com.ndt.spring.assignment.day_37.exceptions.bt_restful_api;
+package com.ndt.spring.assignment.day_37.exception.bt_restful_api;
 
-import com.ndt.spring.exceptions.GlobalExceptionHandler;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
+
+import com.ndt.spring.exception.GlobalExceptionHandler;
 
 
 /**

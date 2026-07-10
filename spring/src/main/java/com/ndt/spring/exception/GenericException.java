@@ -1,4 +1,4 @@
-package com.ndt.spring.exceptions;
+package com.ndt.spring.exception;
 
 import lombok.*;
 

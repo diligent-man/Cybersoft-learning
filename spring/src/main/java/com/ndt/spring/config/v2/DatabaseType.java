@@ -10,8 +10,8 @@ import lombok.AllArgsConstructor;
 public enum DatabaseType {
     DEFAULT("default"),
 
-    JPA1Q1("bt-jpa1-q1"),
-    JPA1Q2("bt-jpa1-q2");
+    JPA1Q1("bt-jpa1-q1");
+    // JPA1Q2("bt-jpa1-q2");
     // JPA1Q3("bt-jpa1-q3"),
     // JPA1Q4("bt-jpa1-q4"),
     // JPA1Q5("bt-jpa1-q5"),

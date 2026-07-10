@@ -1,4 +1,4 @@
-package com.ndt.spring.assignment.day_37.exceptions.bt_restful_api;
+package com.ndt.spring.assignment.day_37.exception.bt_restful_api;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 
 
-import com.ndt.spring.exceptions.ErrorMsg;
+import com.ndt.spring.exception.ErrorMsg;
 
 
 @Getter

@@ -15,15 +15,14 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 
-import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.bind.Bindable;
 
 import org.springframework.core.ResolvableType;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 
@@ -96,7 +95,7 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         builder.addPropertyValue("packagesToScan", packageForKey(key));
         builder.addPropertyValue("persistenceUnitName", key);
 
-        // TODO: check jpa & hibernate for show-sql
+        // TODO: check jpa & hibernate for show-sql (currently JPA is run twice due to autoconfigure class)
         JpaVendorAdapter vendorAdapter = HibernateVendorAdapterFactory.create(buildJpaProperties(config));
         builder.addPropertyValue("jpaVendorAdapter", vendorAdapter);
         // builder.addPropertyValue("jpaPropertyMap", buildJpaProperties(config));

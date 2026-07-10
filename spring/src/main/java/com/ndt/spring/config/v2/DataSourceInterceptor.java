@@ -22,9 +22,10 @@ public class DataSourceInterceptor implements HandlerInterceptor {
 
         if (uri.startsWith("/assignment/day_41/jpa1/q1")) {
             DataSourceContextHolder.set(DatabaseType.JPA1Q1);
-        } else if (uri.startsWith("/assignment/day_41/jpa1/q2")) {
-            DataSourceContextHolder.set(DatabaseType.JPA1Q2);
         }
+        // else if (uri.startsWith("/assignment/day_41/jpa1/q2")) {
+        //     DataSourceContextHolder.set(DatabaseType.JPA1Q2);
+        // }
         return true;
     }
 

@@ -1,4 +1,4 @@
-package com.ndt.spring.assignment.day_37.exceptions.bt_restful_api;
+package com.ndt.spring.assignment.day_37.exception.bt_restful_api;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

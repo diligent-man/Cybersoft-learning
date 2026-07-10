@@ -9,12 +9,14 @@ import lombok.*;
 
 @Getter
 @Setter
-@Entity(name = "userss")
-public class UserEntity {
+@Entity(name = "student")
+public class StudentEntity {
     @Id
     private String id;
 
+    private String name;
+
     private String email;
 
-    private String password;
+    private String age;
 }

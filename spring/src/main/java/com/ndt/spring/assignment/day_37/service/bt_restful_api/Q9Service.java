@@ -13,8 +13,8 @@ import com.ndt.spring.assignment.day_37.repo.bt_restful_api.Q9Repo;
 import com.ndt.spring.assignment.day_37.entity.bt_restful_api.Q9CustomerEntity;
 
 
-import com.ndt.spring.assignment.day_37.exceptions.bt_restful_api.Q9ErrorMsg;
-import com.ndt.spring.assignment.day_37.exceptions.bt_restful_api.Q9Exception;
+import com.ndt.spring.assignment.day_37.exception.bt_restful_api.Q9ErrorMsg;
+import com.ndt.spring.assignment.day_37.exception.bt_restful_api.Q9Exception;
 
 
 @RequiredArgsConstructor
