@@ -274,5 +274,5 @@ ALTER TABLE product_brand
 
 
 INSERT INTO user(email, password, full_name) VALUES
-    ('nv1@gmail.com', '$2a$12$uK5K0iIRxTls1hxzSI3vMOnFTSX0q1QGZ3Qwe6lF7mZOPbe3RARre', 'Nguyen Van Mot'),
-    ('nv2@gmail.com', '$2a$12$bh0p.LMf1PWLNGF1RMtG1O1dmxHzROL0OOZss9W4qp6bwZfC0blIq', 'Nguyen Van Hai');
+    ('nv1@gmail.com', '$2a$12$uK5K0iIRxTls1hxzSI3vMOnFTSX0q1QGZ3Qwe6lF7mZOPbe3RARre', 'Nguyen Van Mot'), -- pwd: nv1
+    ('nv2@gmail.com', '$2a$12$bh0p.LMf1PWLNGF1RMtG1O1dmxHzROL0OOZss9W4qp6bwZfC0blIq', 'Nguyen Van Hai'); -- pwd: nv2

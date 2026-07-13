@@ -37,6 +37,7 @@ public class AuthenServiceImpl implements AuthenService {
                 token = jwtUtils.generateJWTToken("Ok");
             }
         }
+
         return token;
     }
 }

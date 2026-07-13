@@ -1,11 +1,14 @@
 package com.ndt.uniclub12.payload.response;
 
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
-@Data
+@Setter
+@Getter
+@SuperBuilder
 public class BaseResponse {
-    protected String code;
+    protected Integer code;
 
     protected String message;
 

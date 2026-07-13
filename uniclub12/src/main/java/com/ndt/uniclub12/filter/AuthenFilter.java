@@ -1,22 +1,27 @@
 package com.ndt.uniclub12.filter;
 
-import com.ndt.uniclub12.utils.JWTUtils;
+import java.io.IOException;
+import java.util.List;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 import lombok.RequiredArgsConstructor;
+
+
 import org.jspecify.annotations.NonNull;
 
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import java.io.IOException;
-import java.util.List;
+import com.ndt.uniclub12.utils.JWTUtils;
 
 
 @Service
@@ -40,6 +45,8 @@ public class AuthenFilter extends OncePerRequestFilter {
             String data = jwtUtils.decodeJWTToken(token);
             if (data != null) {
                 SecurityContextHolder.getContext().setAuthentication(
+                    // chỉ cấp thẻ thông hành, không cần ghi login info lên thẻ vì thông tin đã được lưu trong JWT token
+                    // temporarily contain emptied permission
                     new UsernamePasswordAuthenticationToken(null, null, List.of())
                 );
             }

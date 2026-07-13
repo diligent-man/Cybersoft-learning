@@ -1,11 +1,9 @@
 package com.ndt.uniclub12.payload.response;
 
-import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
-@Data
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+
+@SuperBuilder
 public class SignInResponse extends BaseResponse {
-
 }
