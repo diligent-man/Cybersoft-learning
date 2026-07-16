@@ -3,6 +3,7 @@ CREATE DATABASE uniclub;
 
 USE uniclub;
 
+
 CREATE TABLE color
 (
     id   int auto_increment,
@@ -46,7 +47,7 @@ CREATE TABLE order_variant
 CREATE TABLE orders
 (
     id          int auto_increment,
-    total double,
+    total       double,
     note        text,
     id_payment  int,
     id_user     int,
@@ -140,7 +141,7 @@ CREATE TABLE product
     name        varchar(255),
     description text,
     information text,
-    price double,
+    price       double,
     id_brand    int,
     create_date timestamp default now(),
 
@@ -272,7 +273,29 @@ ALTER TABLE product_brand
     ADD CONSTRAINT FK_id_brand_product_brand FOREIGN KEY (id_brand) REFERENCES brand (id);
 
 
+# Create roles tbl
+CREATE TABLE roles
+(
+    id   INTEGER AUTO_INCREMENT,
+    name VARCHAR(255),
 
-INSERT INTO user(email, password, full_name) VALUES
-    ('nv1@gmail.com', '$2a$12$uK5K0iIRxTls1hxzSI3vMOnFTSX0q1QGZ3Qwe6lF7mZOPbe3RARre', 'Nguyen Van Mot'), -- pwd: nv1
-    ('nv2@gmail.com', '$2a$12$bh0p.LMf1PWLNGF1RMtG1O1dmxHzROL0OOZss9W4qp6bwZfC0blIq', 'Nguyen Van Hai'); -- pwd: nv2
+    CONSTRAINT PRIMARY KEY (id)
+);
+
+
+# Add role_id in user
+ALTER TABLE user
+    ADD COLUMN role_id INTEGER NOT NULL;
+ALTER TABLE user
+    ADD CONSTRAINT FK_role_id FOREIGN KEY (role_id) REFERENCES roles (id);
+
+
+# Seed data
+INSERT INTO roles (name)
+VALUES ('ROLE_ADMIN'),
+       ('ROLE_GUEST');
+
+
+INSERT INTO user(email, password, full_name, role_id)
+VALUES ('nv1@gmail.com', '$2a$12$uK5K0iIRxTls1hxzSI3vMOnFTSX0q1QGZ3Qwe6lF7mZOPbe3RARre', 'Nguyen Van Mot', 1), -- pwd: nv1
+       ('nv2@gmail.com', '$2a$12$bh0p.LMf1PWLNGF1RMtG1O1dmxHzROL0OOZss9W4qp6bwZfC0blIq', 'Nguyen Van Hai', 2); -- pwd: nv2

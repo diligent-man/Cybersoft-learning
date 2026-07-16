@@ -30,8 +30,9 @@ public class SecurityConfig {
             .addFilterBefore(authenFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(
                 rq -> {
+                    rq.requestMatchers("/api/jwt/*").permitAll();
                     rq.requestMatchers(HttpMethod.GET, "/product").permitAll();
-                    rq.requestMatchers(HttpMethod.POST, "/product").permitAll();
+                    rq.requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN");
                     rq.requestMatchers(HttpMethod.POST, "/auth/*").permitAll();
 
                     // tất cả các request còn lại đều phải chứng thực

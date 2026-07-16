@@ -2,7 +2,7 @@ package com.ndt.uniclub12.service;
 
 import java.util.Optional;
 
-import com.ndt.uniclub12.utils.JWTUtils;
+import com.ndt.uniclub12.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 
 
@@ -22,7 +22,7 @@ public class AuthenServiceImpl implements AuthenService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final JWTUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
 
     @Override
@@ -34,7 +34,7 @@ public class AuthenServiceImpl implements AuthenService {
             UserEntity user = opUser.get();
 
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                token = jwtUtils.generateJWTToken("Ok");
+                token = jwtUtils.generateJWTToken(user.getRole().getName());
             }
         }
 

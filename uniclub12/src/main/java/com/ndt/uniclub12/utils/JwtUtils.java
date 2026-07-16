@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 
 @Component
-public class JWTUtils {
+public class JwtUtils {
     @Value(value = "${jwt.private-key:}")
     private String secretStr;
 
@@ -33,7 +33,7 @@ public class JWTUtils {
             .getSubject();
     }
 
-    public String generateJWTKey(){
+    public static String generateJWTKey(){
         SecretKey key = Jwts.SIG.HS256.key().build();
         return Encoders.BASE64.encode(key.getEncoded());
     }

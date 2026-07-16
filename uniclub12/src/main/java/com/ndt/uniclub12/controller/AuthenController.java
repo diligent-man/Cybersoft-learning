@@ -17,6 +17,7 @@ import com.ndt.uniclub12.payload.response.BaseResponse;
 import com.ndt.uniclub12.payload.response.SignInResponse;
 
 
+@CrossOrigin  // allow all domains
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

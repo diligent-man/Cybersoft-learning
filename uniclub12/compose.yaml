@@ -54,6 +54,44 @@ services:
                     cpus: "4"
                     memory: 2048M
 
+    fe:
+        build:
+            context: docker/fe
+            dockerfile: Dockerfile
+            platforms:
+                - "linux/amd64"
+            tags:
+                - "uniclub/fe:1.0.0"
+            args:
+                NODE_VERSION: 26.1.0
+
+        container_name: uniclub_fe
+
+#        environment:
+#            FE_PORT: ${FE_PORT:-3979}
+
+        ports:
+            - "3979:3979"
+
+        restart: on-failure
+
+        deploy:
+            mode: global
+
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+
+            resources:
+                limits:
+                    cpus: "2"
+                    memory: 2048M
+                reservations:
+                    cpus: "2"
+                    memory: 2048M
+
 networks:
     mysql:
         driver: bridge
