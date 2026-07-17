@@ -39,8 +39,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         try {
             Files.copy(
                 file.getInputStream(),
-                this.root.resolve(Objects.requireNonNull(file.getOriginalFilename())),
-                StandardCopyOption.REPLACE_EXISTING
+                this.root.resolve(Objects.requireNonNull(file.getOriginalFilename()))
             );
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
