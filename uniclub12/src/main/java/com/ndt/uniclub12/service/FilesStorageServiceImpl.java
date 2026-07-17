@@ -1,14 +1,16 @@
 package com.ndt.uniclub12.service;
 
+import java.nio.file.*;
+
 import java.io.IOException;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.net.MalformedURLException;
 
 import java.util.Objects;
 import java.util.stream.Stream;
-import java.net.MalformedURLException;
 
+
+import com.ndt.uniclub12.exception.SaveFileException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -43,7 +45,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             );
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException("A file of that name already exists.");
+                throw new SaveFileException("A file of that name already exists.");
             }
 
             throw new RuntimeException(e.getMessage());
