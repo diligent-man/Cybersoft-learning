@@ -12,11 +12,18 @@ spring:
 
     jpa:
         generate-ddl: true
-        hibernate.ddl-auto: none
+        hibernate:
+            ddl-auto: none
 
     devtools:
         restart:
             enabled: true
-
+    servlet:
+        multipart:
+            max-file-size: 500MB
+            max-request-size: 500MB
 jwt:
     private-key: LTKw1Ba/s6nM6PoClDdEwk68UZ7cMBuqNGARAGIFowU=
+
+path:
+    upload: ${USERPROFILE}/Downloads/spring_upload

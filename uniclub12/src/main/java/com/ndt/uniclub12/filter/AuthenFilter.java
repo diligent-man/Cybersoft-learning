@@ -45,7 +45,6 @@ public class AuthenFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
 
             String data = jwtUtils.decodeJWTToken(token);
-            System.out.println("data: " + data);
 
             if (data != null) {
                 List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(data);
