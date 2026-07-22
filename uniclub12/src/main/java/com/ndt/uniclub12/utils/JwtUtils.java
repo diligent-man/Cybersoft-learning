@@ -18,12 +18,14 @@ public class JwtUtils {
     @Value(value = "${jwt.private-key:}")
     private String secretStr;
 
-    public String generateJWTToken(String data){
+
+    public String generateJWTToken(String data) {
         SecretKey secret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretStr));
         return Jwts.builder().subject(data).signWith(secret).compact();
     }
 
-    public String decodeJWTToken(String token){
+
+    public String decodeJWTToken(String token) {
         SecretKey secret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretStr));
         return Jwts.parser()
             .verifyWith(secret)
@@ -33,7 +35,8 @@ public class JwtUtils {
             .getSubject();
     }
 
-    public static String generateJWTKey(){
+
+    public static String generateJWTKey() {
         SecretKey key = Jwts.SIG.HS256.key().build();
         return Encoders.BASE64.encode(key.getEncoded());
     }

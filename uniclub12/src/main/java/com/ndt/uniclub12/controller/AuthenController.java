@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 
-import com.ndt.uniclub12.enumeric.AuthenError;
+import com.ndt.uniclub12.enums.AuthenError;
 
 import com.ndt.uniclub12.service.AuthenService;
 import com.ndt.uniclub12.payload.request.SignInRequest;

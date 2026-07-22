@@ -1,4 +1,4 @@
-package com.ndt.uniclub12.enumeric;
+package com.ndt.uniclub12.enums;
 
 import lombok.Getter;
 import lombok.AllArgsConstructor;
