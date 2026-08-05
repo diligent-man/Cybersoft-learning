@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q1.StudentEntity;
 
 
-@Repository("btJpa1Q1StudentRepo")
+@Repository("btJPA1Q1StudentRepo")
 public interface StudentRepo extends JpaRepository<StudentEntity, Integer> {
 
 }

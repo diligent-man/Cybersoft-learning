@@ -6,27 +6,26 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 
-import com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q2.UserEntity;
-import com.ndt.spring.assignment.day_41.service.bt_jpa_1.q2.UserService;
+import com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q2.CourseEntity;
+import com.ndt.spring.assignment.day_41.service.bt_jpa_1.q2.CourseService;
 
 
 @RequiredArgsConstructor
-@RestController("btJpa1Q2Controller")
+@RestController("btJPA1Q2Controller")
 @RequestMapping("/assignment/day_41/jpa1/q2")
 public class Q2Controller {
-    @Qualifier("btJpa1Q2UserService")
-    private final UserService userService;
+    @Qualifier("btJPA1Q2CourseService")
+    private final CourseService courseService;
 
 
     @GetMapping("")
-    public ResponseEntity<List<UserEntity>> get() {
-        return ResponseEntity.ok(userService.getAll());
+    public ResponseEntity<List<CourseEntity>> get() {
+        return ResponseEntity.ok(courseService.getAll());
     }
 }

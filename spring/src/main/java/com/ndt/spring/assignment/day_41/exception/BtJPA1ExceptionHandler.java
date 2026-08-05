@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @RestControllerAdvice
-public class BtJpa1ExceptionHandler implements BaseExceptionHandler {
+public class BtJPA1ExceptionHandler implements BaseExceptionHandler {
     @ExceptionHandler(Q1Exception.class)
     public ResponseEntity<Q1ApiError> handleAssignmentDay41Q1RestfulApiError(Q1Exception ex) {
         final Q1ErrorMsg errorMsg = ex.getErrorMsg();

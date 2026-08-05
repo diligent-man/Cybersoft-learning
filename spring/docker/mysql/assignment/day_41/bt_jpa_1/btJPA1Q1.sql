@@ -7,9 +7,9 @@ USE btJPA1Q1;
 CREATE TABLE student
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
-    name  VARCHAR(200),
-    email VARCHAR(50) UNIQUE,
-    age  INT
+    name  VARCHAR(200) NOT NULL ,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    age  INT NOT NULL
 );
 
 
