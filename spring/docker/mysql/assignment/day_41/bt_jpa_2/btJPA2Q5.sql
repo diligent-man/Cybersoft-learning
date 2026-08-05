@@ -7,22 +7,22 @@ USE btJPA2Q5;
 
 CREATE TABLE student
 (
-    id    INT AUTO_INCREMENT PRIMARY KEY,
-    name  VARCHAR(200)
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL
 );
 
 
 CREATE TABLE course
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    title    VARCHAR(200) NOT NULL
+    id    INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE registration
 (
-    id                INT AUTO_INCREMENT PRIMARY KEY,
-    student_id        INT  NOT NULL,
-    course_id         INT  NOT NULL
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    course_id  INT NOT NULL
 );
 
 ALTER TABLE registration

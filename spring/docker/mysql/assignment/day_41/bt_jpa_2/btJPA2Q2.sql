@@ -8,7 +8,7 @@ USE btJPA2Q2;
 CREATE TABLE product
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(200) NOT NULL ,
+    name        VARCHAR(200)   NOT NULL,
     price       DECIMAL(10, 2) NOT NULL,
     description TEXT
 );

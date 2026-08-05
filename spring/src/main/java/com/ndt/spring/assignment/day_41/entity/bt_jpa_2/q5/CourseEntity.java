@@ -1,4 +1,4 @@
-package com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q2;
+package com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q5;
 
 import jakarta.persistence.*;
 
@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @ToString
 @Table(name = "course")
-@Entity(name = "btJPA1Q1Course")
+@Entity(name = "btJPA2Q5Course")
 public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,4 @@ public class CourseEntity {
 
     @Column(length = 200, nullable = false)
     private String title;
-
-    @Column(nullable = false, comment = "thời lượng khóa học, tính theo giờ")
-    private Integer duration;
 }

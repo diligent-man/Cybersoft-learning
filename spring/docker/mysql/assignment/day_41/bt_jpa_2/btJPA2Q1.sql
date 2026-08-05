@@ -8,8 +8,8 @@ USE btJPA2Q1;
 CREATE TABLE student
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
-    name  VARCHAR(200),
-    email VARCHAR(50) UNIQUE
+    name  VARCHAR(200) NOT NULL,
+    email VARCHAR(50)  NOT NULL UNIQUE
 );
 
 

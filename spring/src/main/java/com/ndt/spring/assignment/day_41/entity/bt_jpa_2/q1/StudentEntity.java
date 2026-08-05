@@ -1,7 +1,6 @@
-package com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q1;
+package com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q1;
 
 import jakarta.persistence.*;
-
 
 import lombok.*;
 
@@ -10,8 +9,9 @@ import lombok.*;
 @Setter
 @ToString
 @Table(name = "student")
-@Entity(name = "btJPA1Q1Student")
-public class StudentEntity {
+@Entity(name = "btJPA2Q1Student")
+public class
+StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,7 +21,4 @@ public class StudentEntity {
 
     @Column(length = 50, nullable = false, unique = true)
     private String email;
-
-    @Column(nullable = false)
-    private Integer age;
 }

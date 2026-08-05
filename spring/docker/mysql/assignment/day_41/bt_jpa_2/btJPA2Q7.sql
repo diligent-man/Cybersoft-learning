@@ -8,7 +8,7 @@ USE btJPA2Q7;
 CREATE TABLE user
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
-    username  VARCHAR(200),
+    username  VARCHAR(200) NOT NULL ,
     email VARCHAR(200) NOT NULL UNIQUE,
     password VARCHAR(60) NOT NULL
 );
