@@ -16,4 +16,16 @@ public interface BaseExceptionHandler {
             errorMsg.getErrorMsg()
         );
     }
+
+
+    default <T extends ApiErrorResponse> T createErrorMsgDTO(
+        GenericErrorMsg errorMsg,
+        String overrideMsg,
+        BiFunction<Integer, String, T> factory
+    ) {
+        return factory.apply(
+            errorMsg.getHttpStatus().value(),
+            overrideMsg != null ? overrideMsg : errorMsg.getErrorMsg()
+        );
+    }
 }

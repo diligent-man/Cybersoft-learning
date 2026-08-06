@@ -1,13 +1,18 @@
 package com.ndt.spring.assignment.day_41.exception;
 
-import com.ndt.spring.assignment.day_41.exception.bt_jpa_1.Q1ErrorMsg;
-import com.ndt.spring.assignment.day_41.exception.bt_jpa_1.Q1Exception;
-import com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_1.exception.Q1ApiError;
-import com.ndt.spring.exception.BaseExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+
+import com.ndt.spring.exception.BaseExceptionHandler;
+
+import com.ndt.spring.assignment.day_41.exception.bt_jpa_1.Q1ErrorMsg;
+import com.ndt.spring.assignment.day_41.exception.bt_jpa_1.Q1Exception;
+
+import com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_1.exception.Q1ApiError;
 
 
 @RestControllerAdvice

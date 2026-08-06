@@ -1,5 +1,8 @@
 package com.ndt.spring.config.v2;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -11,6 +14,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 
 public class DataSourceInterceptor implements HandlerInterceptor {
+    private static final Pattern DB_URI_PATTERN = Pattern.compile("/assignment/day_41/jpa(\\d+)/q(\\d+)");
+
 
     @Override
     public boolean preHandle(
@@ -19,13 +24,17 @@ public class DataSourceInterceptor implements HandlerInterceptor {
         @NonNull Object handler
     ) {
         String uri = request.getRequestURI();
+        Matcher matcher = DB_URI_PATTERN.matcher(uri);
 
-        if (uri.startsWith("/assignment/day_41/jpa1/q1")) {
-            DataSourceContextHolder.set(DatabaseType.JPA1Q1);
+        if (matcher.find()) {
+            String enumName = "JPA" + matcher.group(1) + "Q" + matcher.group(2);
+
+            try {
+                DataSourceContextHolder.set(DatabaseType.valueOf(enumName));
+            } catch (IllegalArgumentException e) {
+                System.out.println("no matching DatabaseType enum constant");
+            }
         }
-        // else if (uri.startsWith("/assignment/day_41/jpa1/q2")) {
-        //     DataSourceContextHolder.set(DatabaseType.JPA1Q2);
-        // }
         return true;
     }
 

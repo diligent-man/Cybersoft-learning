@@ -1,8 +1,14 @@
 package com.ndt.spring.exception;
 
+import java.util.stream.Collectors;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,21 +25,64 @@ import com.ndt.spring.payload.resp.exception.GenericApiError;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler implements BaseExceptionHandler {
+    // Handle user-defined generic exception
     @ExceptionHandler({GenericException.class})
     public ResponseEntity<GenericApiError> handleGenericException(GenericException ex) {
-        return buildGenericResponse(ex.getErrorMsg());
+        return buildResponse(ex.getErrorMsg(), ex.getOverrideMsg());
     }
 
 
+    // Handle file uploading
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<GenericApiError> handleMultipartException() {
-        return buildGenericResponse(GenericErrorMsg.BAD_REQUEST);
+        return buildResponse(GenericErrorMsg.BAD_REQUEST);
     }
 
 
-    private ResponseEntity<GenericApiError> buildGenericResponse(GenericErrorMsg errorMsg) {
+    // Handle inbound media types
+    @ExceptionHandler(HttpMediaTypeException.class)
+    public ResponseEntity<GenericApiError> handleHttpMediaTypeException(HttpMediaTypeException ex) {
+        return buildResponse(
+            ErrorMsg.fromErrorResponse(GenericErrorMsg.class, ex),
+            ex.getMessage()
+        );
+    }
+
+
+    // Handle validations from jakarta.validation
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<GenericApiError> handleValidationException(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+            .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+            .collect(Collectors.joining("; "));
+
+        return ResponseEntity
+            .status(GenericErrorMsg.BAD_REQUEST.getHttpStatus())
+            .body(createErrorMsgDTO(GenericErrorMsg.BAD_REQUEST, message, GenericApiError::new));
+    }
+
+
+    // Handle sql integrity constrain violation (e.g. duplicate, not null, etc.)
+    @ExceptionHandler({
+        SQLIntegrityConstraintViolationException.class
+    })
+    public ResponseEntity<GenericApiError> handleDataIntegrityViolation(SQLIntegrityConstraintViolationException ex) {
+        return ResponseEntity
+            .status(GenericErrorMsg.CONFLICT.getHttpStatus())
+            .body(createErrorMsgDTO(GenericErrorMsg.CONFLICT, ex.getMessage(), GenericApiError::new));
+    }
+
+
+    private ResponseEntity<GenericApiError> buildResponse(GenericErrorMsg errorMsg) {
         return ResponseEntity
             .status(errorMsg.getHttpStatus())
-            .body(createErrorMsgDTO(errorMsg, GenericApiError::new));
+            .body(createErrorMsgDTO(errorMsg, null, GenericApiError::new));
+    }
+
+
+    private ResponseEntity<GenericApiError> buildResponse(GenericErrorMsg errorMsg, String overrideMsg) {
+        return ResponseEntity
+            .status(errorMsg.getHttpStatus())
+            .body(createErrorMsgDTO(errorMsg, overrideMsg, GenericApiError::new));
     }
 }
