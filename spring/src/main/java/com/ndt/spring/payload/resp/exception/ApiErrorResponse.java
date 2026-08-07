@@ -1,9 +1,5 @@
 package com.ndt.spring.payload.resp.exception;
 
 
-public interface ApiErrorResponse {
-    Integer code();
-
-
-    String status();
+public record ApiErrorResponse(Integer code, String status) implements ApiErrResp {
 }

@@ -18,7 +18,7 @@ import com.ndt.spring.assignment.day_41.service.bt_jpa_2.q1.StudentService;
 import com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_2.q1.StudentsResp;
 
 import com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q1.StudentEntity;
-import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2.AddStudentRequest;
+import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2.q1.AddStudentReq;
 
 
 @RequiredArgsConstructor
@@ -31,19 +31,19 @@ public class Q1Controller {
 
     @GetMapping("")
     public ResponseEntity<ApiResponse> getStudents() {
-        StudentsResp q1StudentsResp = StudentsResp.builder().students(studentService.getAll()).build();
+        StudentsResp studentsResp = StudentsResp.builder().students(studentService.getAll()).build();
 
         ApiResponse apiResponse = ApiResponse.builder()
             .code("200")
             .status("success")
-            .data(q1StudentsResp)
+            .data(studentsResp)
             .build();
         return ResponseEntity.ok(apiResponse);
     }
 
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> addStudent(@Valid @RequestBody AddStudentRequest request) {
+    public ResponseEntity<ApiResponse> addStudent(@Valid @RequestBody AddStudentReq request) {
         StudentEntity saved = studentService.save(request);
 
         ApiResponse apiResponse = ApiResponse.builder()

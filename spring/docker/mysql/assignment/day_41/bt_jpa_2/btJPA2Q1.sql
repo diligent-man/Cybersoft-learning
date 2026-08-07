@@ -26,6 +26,7 @@ DELETE
 FROM student
 WHERE id = 4;
 
-ALTER TABLE student AUTO_INCREMENT = 3;
+ALTER TABLE student
+    AUTO_INCREMENT = 3;
 
 

@@ -15,7 +15,7 @@ import com.ndt.spring.exception.GenericException;
 
 import com.ndt.spring.assignment.day_41.repo.bt_jpa_2.q1.StudentRepo;
 import com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q1.StudentEntity;
-import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2.AddStudentRequest;
+import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2.q1.AddStudentReq;
 
 
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class StudentService {
     }
 
 
-    public StudentEntity save(AddStudentRequest req) {
+    public StudentEntity save(AddStudentReq req) {
         if (studentRepo.existsByEmail(req.getEmail())) {
             throw new GenericException(GenericErrorMsg.CONFLICT, "Email '" + req.getEmail() + "' is already registered");
         }

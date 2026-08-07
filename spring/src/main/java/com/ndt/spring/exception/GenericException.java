@@ -1,22 +1,13 @@
 package com.ndt.spring.exception;
 
-import lombok.Getter;
 
-
-@Getter
-public final class GenericException extends RuntimeException {
-    private final GenericErrorMsg errorMsg;
-
-    private final String overrideMsg;
-
-
+public final class GenericException extends BaseException {
     public GenericException(GenericErrorMsg errorMsg) {
-        this(errorMsg, null);
+        super(errorMsg, null);
     }
 
 
     public GenericException(GenericErrorMsg errorMsg, String overrideMsg) {
-        this.errorMsg = errorMsg;
-        this.overrideMsg = overrideMsg;
+        super(errorMsg, overrideMsg);
     }
 }

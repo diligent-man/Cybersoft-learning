@@ -1,4 +1,4 @@
-package com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2;
+package com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2.q1;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -13,7 +13,7 @@ import com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q1.StudentEntity;
 
 
 @Data
-public class AddStudentRequest {
+public class AddStudentReq {
     @Length(min = 1, max = 200)
     @NotNull(message = "name cannot be null")
     private String name;

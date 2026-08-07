@@ -1,16 +1,19 @@
 package com.ndt.spring.assignment.day_41.exception;
 
-import com.ndt.spring.exception.BaseExceptionHandler;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+
+import com.ndt.spring.exception.BaseExceptionHandler;
+import com.ndt.spring.payload.resp.exception.ApiErrorResponse;
+import com.ndt.spring.assignment.day_41.exception.bt_jpa_2.Q2Exception;
 
 
 @RestControllerAdvice
 public class BtJPA2ExceptionHandler implements BaseExceptionHandler {
-    // @ExceptionHandler(Q1Exception.class)
-    // public ResponseEntity<Q1ApiError> handleAssignmentDay41Q1RestfulApiError(Q1Exception ex) {
-    //     final Q1ErrorMsg errorMsg = ex.getErrorMsg();
-    //     final HttpStatus status = errorMsg.getHttpStatus();
-    //     final Q1ApiError body = createErrorMsgDTO(errorMsg, Q1ApiError::new);
-    //     return ResponseEntity.status(status).body(body);
-    // }
+    @ExceptionHandler(Q2Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleQ2Error(Q2Exception ex) {
+        return buildResponse(ex.getErrorMsg(), ex.getOverrideMsg());
+    }
 }

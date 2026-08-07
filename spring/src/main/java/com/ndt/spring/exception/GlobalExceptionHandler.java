@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
-import com.ndt.spring.payload.resp.exception.GenericApiError;
+import com.ndt.spring.payload.resp.exception.ApiErrorResponse;
 
 
 /**
@@ -27,21 +27,21 @@ import com.ndt.spring.payload.resp.exception.GenericApiError;
 public class GlobalExceptionHandler implements BaseExceptionHandler {
     // Handle user-defined generic exception
     @ExceptionHandler({GenericException.class})
-    public ResponseEntity<GenericApiError> handleGenericException(GenericException ex) {
+    public ResponseEntity<ApiErrorResponse> handleGenericException(GenericException ex) {
         return buildResponse(ex.getErrorMsg(), ex.getOverrideMsg());
     }
 
 
     // Handle file uploading
     @ExceptionHandler(MultipartException.class)
-    public ResponseEntity<GenericApiError> handleMultipartException() {
+    public ResponseEntity<ApiErrorResponse> handleMultipartException() {
         return buildResponse(GenericErrorMsg.BAD_REQUEST);
     }
 
 
     // Handle inbound media types
     @ExceptionHandler(HttpMediaTypeException.class)
-    public ResponseEntity<GenericApiError> handleHttpMediaTypeException(HttpMediaTypeException ex) {
+    public ResponseEntity<ApiErrorResponse> handleHttpMediaTypeException(HttpMediaTypeException ex) {
         return buildResponse(
             ErrorMsg.fromErrorResponse(GenericErrorMsg.class, ex),
             ex.getMessage()
@@ -51,14 +51,14 @@ public class GlobalExceptionHandler implements BaseExceptionHandler {
 
     // Handle validations from jakarta.validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<GenericApiError> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()
             .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
             .collect(Collectors.joining("; "));
 
         return ResponseEntity
             .status(GenericErrorMsg.BAD_REQUEST.getHttpStatus())
-            .body(createErrorMsgDTO(GenericErrorMsg.BAD_REQUEST, message, GenericApiError::new));
+            .body(createErrorMsgDTO(GenericErrorMsg.BAD_REQUEST, message, ApiErrorResponse::new));
     }
 
 
@@ -66,23 +66,9 @@ public class GlobalExceptionHandler implements BaseExceptionHandler {
     @ExceptionHandler({
         SQLIntegrityConstraintViolationException.class
     })
-    public ResponseEntity<GenericApiError> handleDataIntegrityViolation(SQLIntegrityConstraintViolationException ex) {
+    public ResponseEntity<ApiErrorResponse> handleDataIntegrityViolation(SQLIntegrityConstraintViolationException ex) {
         return ResponseEntity
             .status(GenericErrorMsg.CONFLICT.getHttpStatus())
-            .body(createErrorMsgDTO(GenericErrorMsg.CONFLICT, ex.getMessage(), GenericApiError::new));
-    }
-
-
-    private ResponseEntity<GenericApiError> buildResponse(GenericErrorMsg errorMsg) {
-        return ResponseEntity
-            .status(errorMsg.getHttpStatus())
-            .body(createErrorMsgDTO(errorMsg, null, GenericApiError::new));
-    }
-
-
-    private ResponseEntity<GenericApiError> buildResponse(GenericErrorMsg errorMsg, String overrideMsg) {
-        return ResponseEntity
-            .status(errorMsg.getHttpStatus())
-            .body(createErrorMsgDTO(errorMsg, overrideMsg, GenericApiError::new));
+            .body(createErrorMsgDTO(GenericErrorMsg.CONFLICT, ex.getMessage(), ApiErrorResponse::new));
     }
 }
