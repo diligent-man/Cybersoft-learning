@@ -52,6 +52,7 @@ public class GlobalExceptionHandler implements BaseExceptionHandler {
     // Handle validations from jakarta.validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        System.out.println(ex.getMessage());
         String message = ex.getBindingResult().getFieldErrors().stream()
             .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
             .collect(Collectors.joining("; "));

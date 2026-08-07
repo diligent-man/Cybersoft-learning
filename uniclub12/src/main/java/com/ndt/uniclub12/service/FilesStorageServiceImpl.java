@@ -10,14 +10,17 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 
-import com.ndt.uniclub12.exception.SaveFileException;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+
+import com.ndt.uniclub12.exception.SaveFileException;
 
 
 @Service
@@ -41,7 +44,8 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         try {
             Files.copy(
                 file.getInputStream(),
-                this.root.resolve(Objects.requireNonNull(file.getOriginalFilename()))
+                root.resolve(Objects.requireNonNull(file.getOriginalFilename())),
+                StandardCopyOption.REPLACE_EXISTING
             );
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
@@ -79,9 +83,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public Stream<Path> loadAll() {
         try {
-            return Files.walk(this.root, 1)
+            return Files.walk(root, 1)
                 .filter(path -> !path.equals(this.root))
-                .map(this.root::relativize);
+                .map(root::relativize);
         } catch (IOException e) {
             throw new RuntimeException("Could not load the files!");
         }

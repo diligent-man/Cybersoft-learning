@@ -2,15 +2,16 @@ package com.ndt.uniclub12.service;
 
 import java.util.Optional;
 
-import com.ndt.uniclub12.utils.JwtUtils;
+
 import lombok.RequiredArgsConstructor;
 
 
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 import com.ndt.uniclub12.repo.UserRepo;
+import com.ndt.uniclub12.utils.JwtUtils;
+
 import com.ndt.uniclub12.entity.UserEntity;
 import com.ndt.uniclub12.payload.request.SignInRequest;
 

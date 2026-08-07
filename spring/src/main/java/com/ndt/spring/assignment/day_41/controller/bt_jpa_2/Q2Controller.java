@@ -45,7 +45,7 @@ public class Q2Controller {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> getStudent(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse> getProduct(@PathVariable Integer id) {
         ProductResp product = ProductResp.builder().product(productService.getById(id)).build();
 
         ApiResponse apiResponse = ApiResponse.builder()

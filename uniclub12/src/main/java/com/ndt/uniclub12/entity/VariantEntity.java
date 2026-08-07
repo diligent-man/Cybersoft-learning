@@ -1,0 +1,41 @@
+package com.ndt.uniclub12.entity;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+
+
+import lombok.*;
+
+
+@Setter
+@Getter
+@NoArgsConstructor
+@Entity(name = "variant")
+public class VariantEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer sku;
+
+    private String images;
+
+    private Integer quantity;
+
+    private BigDecimal price;
+
+    private LocalDateTime createDate;
+
+    @ManyToOne
+    @JoinColumn(name = "id_product")
+    private ProductEntity productEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "id_color")
+    private ColorEntity colorEntity;
+
+
+    @ManyToOne
+    @JoinColumn(name = "id_size")
+    private SizeEntity sizeEntity;
+}
