@@ -15,7 +15,7 @@ CREATE TABLE student
 CREATE TABLE course
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200) NOT NULL
+    title VARCHAR(200) NOT NULL UNIQUE
 );
 
 CREATE TABLE registration
@@ -64,3 +64,19 @@ VALUES (1, 1),
        (3, 2),
        (3, 3),
        (3, 4);
+
+
+# test
+SELECT * FROM student;
+SELECT * FROM course;
+SELECT * FROM registration;
+
+DELETE FROM student WHERE id = 4;
+ALTER TABLE student AUTO_INCREMENT = 3;
+
+
+DELETE FROM course WHERE id = 8;
+ALTER TABLE course AUTO_INCREMENT = 7;
+
+DELETE FROM registration WHERE id = 19;
+ALTER TABLE registration AUTO_INCREMENT = 18;

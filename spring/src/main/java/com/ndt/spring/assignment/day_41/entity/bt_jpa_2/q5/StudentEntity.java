@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -17,4 +19,8 @@ public class StudentEntity {
 
     @Column(length = 200, nullable = false)
     private String name;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "student")
+    private List<RegistrationEntity> registrations;
 }

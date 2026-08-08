@@ -9,5 +9,5 @@ import com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q5.CourseEntity;
 
 @Repository("btJPA2Q5CourseRepo")
 public interface CourseRepo extends JpaRepository<CourseEntity, Integer> {
-
+    boolean existsByTitle(String title);
 }
