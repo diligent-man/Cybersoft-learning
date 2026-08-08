@@ -8,17 +8,19 @@ USE btJPA2Q4;
 CREATE TABLE category
 (
     id   INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(200) NOT NULL
+    name VARCHAR(200) NOT NULL UNIQUE
 );
 
 
 CREATE TABLE product
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(200)   NOT NULL,
+    name        VARCHAR(200)   NOT NULL UNIQUE,
     price       DECIMAL(10, 2) NOT NULL,
-    category_id INT
-);
+    category_id INT            NOT NULL
+) CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
 
 ALTER TABLE product
     ADD CONSTRAINT FK_category_id_product FOREIGN KEY (category_id) REFERENCES category (id);
@@ -37,3 +39,29 @@ VALUES ('kẹo dừa', 10000, 1),
        ('rượu đế', 520000, 2),
        ('thịt đùi', 120000, 3),
        ('thịt thăn', 190000, 3);
+
+
+# test
+SELECT *
+FROM category;
+
+SELECT *
+FROM product;
+
+
+# add new category
+DELETE
+FROM category
+WHERE id = 4;
+
+ALTER TABLE category
+    AUTO_INCREMENT = 3;
+
+
+# add new product
+DELETE
+FROM product
+WHERE id = 9;
+
+ALTER TABLE category
+    AUTO_INCREMENT = 8;
