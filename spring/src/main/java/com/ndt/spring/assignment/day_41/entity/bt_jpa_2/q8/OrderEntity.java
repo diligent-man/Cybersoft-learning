@@ -19,12 +19,12 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 200, nullable = false)
+    @Column(name = "`customerName`", length = 200, nullable = false)
     private String customerName;
 
-    @Column(precision = 13, scale = 4, nullable = false)
+    @Column(name = "`totalAmount`", precision = 13, scale = 4, nullable = false)
     private BigDecimal totalAmount;
 
-    @Column(nullable = false)
+    @Column(name = "`createdAt`", nullable = false)
     private LocalDateTime createdAt;
 }

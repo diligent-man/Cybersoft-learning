@@ -24,3 +24,6 @@ VALUES ('Nguyen Van Mot', 1500000, NOW() - INTERVAL 1 DAY),
        ('Nguyen Van Ba', 1800000, NOW() - INTERVAL 1 DAY),
        ('Nguyen Van Ba', 1900000, NOW() - INTERVAL 2 DAY),
        ('Nguyen Van Ba', 2000000, NOW() - INTERVAL 3 DAY);
+
+# test
+SELECT * FROM `order`;
