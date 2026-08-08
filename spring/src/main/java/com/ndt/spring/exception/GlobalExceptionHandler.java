@@ -5,6 +5,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.core.PropertyReferenceException;
 
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.multipart.MultipartException;
@@ -71,5 +72,14 @@ public class GlobalExceptionHandler implements BaseExceptionHandler {
         return ResponseEntity
             .status(GenericErrorMsg.CONFLICT.getHttpStatus())
             .body(createErrorMsgDTO(GenericErrorMsg.CONFLICT, ex.getMessage(), ApiErrorResponse::new));
+    }
+
+
+    // if a client passes sort=nonexistentField,desc, Spring throws PropertyReferenceException at query time
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidSortField(PropertyReferenceException ex) {
+        return ResponseEntity
+            .status(GenericErrorMsg.BAD_REQUEST.getHttpStatus())
+            .body(createErrorMsgDTO(GenericErrorMsg.BAD_REQUEST, "Invalid sort field: " + ex.getPropertyName(), ApiErrorResponse::new));
     }
 }
