@@ -17,3 +17,6 @@ INSERT INTO user(username, email, password)
 VALUES ('Nguyen Van Mot', 'nv1@gmail.com', '1'),
        ('Nguyen Van Hai', 'nv2@gmail.com', '2'),
        ('Nguyen Van Ba', 'nv3@gmail.com', '3');
+
+# test
+SELECT * FROM user;
