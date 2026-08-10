@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.ndt.spring.assignment.day_41.repo.bt_jpa_2.q3.BookRepo;
 import com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q3.BookEntity;
-import com.ndt.spring.assignment.day_41.search_spec.bt_jpa_2.q3.BookSpecifications;
+import com.ndt.spring.assignment.day_41.search_spec.bt_jpa_2.q3.BookSpecs;
 
 
 @RequiredArgsConstructor
@@ -31,9 +31,9 @@ public class BookService {
 
     public List<BookEntity> searchBooks(String author, BigDecimal minPrice, BigDecimal maxPrice) {
         Specification<BookEntity> spec = Specification
-            .where(BookSpecifications.hasAuthor(author))
-            .and(BookSpecifications.priceGreaterThanOrEqual(minPrice))
-            .and(BookSpecifications.priceLessThanOrEqual(maxPrice));
+            .where(BookSpecs.hasAuthor(author))
+            .and(BookSpecs.priceGreaterThanOrEqual(minPrice))
+            .and(BookSpecs.priceLessThanOrEqual(maxPrice));
         return bookRepo.findAll(spec);
     }
 }
