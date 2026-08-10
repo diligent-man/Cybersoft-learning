@@ -17,6 +17,7 @@ import com.ndt.spring.payload.resp.exception.ApiErrorResponse;
 public class BtJPA3ExceptionHandler implements BaseExceptionHandler {
     @ExceptionHandler({
         Q1Exception.class,
+        Q2Exception.class,
     })
     public ResponseEntity<ApiErrorResponse> handleException(BaseException ex) {
         return buildResponse(ex.getErrorMsg(), ex.getOverrideMsg());

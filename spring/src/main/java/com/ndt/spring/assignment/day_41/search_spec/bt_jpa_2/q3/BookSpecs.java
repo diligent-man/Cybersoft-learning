@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import com.ndt.spring.assignment.day_41.entity.bt_jpa_2.q3.BookEntity;
 
 
-public class BookSpecs {
+public final class BookSpecs {
     public static Specification<BookEntity> hasAuthor(String author) {
         return (root, query, cb) -> author == null ? null : cb.equal(root.get("author"), author);
     }
