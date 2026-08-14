@@ -18,7 +18,7 @@ public class VariantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer sku;
 
-    private String images;
+    private String image;
 
     private Integer quantity;
 
@@ -28,14 +28,14 @@ public class VariantEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_product")
-    private ProductEntity productEntity;
+    private ProductEntity product;
 
     @ManyToOne
     @JoinColumn(name = "id_color")
-    private ColorEntity colorEntity;
+    private ColorEntity color;
 
 
     @ManyToOne
     @JoinColumn(name = "id_size")
-    private SizeEntity sizeEntity;
+    private SizeEntity size;
 }

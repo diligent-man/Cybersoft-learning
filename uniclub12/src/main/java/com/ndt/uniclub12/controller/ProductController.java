@@ -5,15 +5,12 @@ import com.ndt.uniclub12.payload.request.InsertProductRequest;
 import lombok.RequiredArgsConstructor;
 
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import com.ndt.uniclub12.service.ProductService;
-import com.ndt.uniclub12.payload.response.UploadFileResponse;
 
 
 @RestController

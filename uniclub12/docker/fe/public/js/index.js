@@ -14,7 +14,7 @@ $(document).ready(function(){
                 html += `<div class="col-md-6 col-lg-3 my-4">
                                 <div class="product-item">
                                     <div class="image-holder" style="width: 100%; height: 100%;">
-                                    <img src="http://localhost:8080/files/${item.images}" alt="Books" class="product-image img-fluid">
+                                    <img src="http://localhost:8080/files/${item.image}" alt="Books" class="product-image img-fluid">
                                     </div>
                                     <div class="cart-concern">
                                     <div class="cart-button d-flex justify-content-between align-items-center">

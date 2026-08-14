@@ -1,6 +1,7 @@
 package com.ndt.uniclub12.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -29,4 +30,7 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "id_brand")
     private BrandEntity brand;
+
+    @OneToMany(mappedBy = "product")
+    private List<VariantEntity> variants;
 }

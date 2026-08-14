@@ -113,15 +113,11 @@ public class Assignment1Answer {
         System.out.printf("Year to wait: %d", year);
     }
 
-    static void sum(int a){
-        a += 10;
-    }
-
     static void main() {
-        // Q1();
-        // Q2();
-        // Q3();
-        // Q4();
-        // Q5();
+        Q1();
+        Q2();
+        Q3();
+        Q4();
+        Q5();
     }
 }
