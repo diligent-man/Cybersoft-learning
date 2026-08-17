@@ -9,28 +9,29 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-
-import com.ndt.spring.assignment.day_41.dto.bt_jpa_3.q2.*;
-import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_3.q2.*;
-import com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_3.q2.*;
+import com.ndt.spring.assignment.day_41.dto.bt_jpa_3.q3.*;
+import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_3.q3.*;
+import com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_3.q3.*;
 
 import com.ndt.spring.payload.resp.ApiResponse;
 
-import com.ndt.spring.assignment.day_41.service.bt_jpa_3.q2.ProductService;
+import com.ndt.spring.assignment.day_41.service.bt_jpa_3.q3.ProductService;
+import com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_3.q3.ProductsResp;
 
 
 @RequiredArgsConstructor
-@RestController("btJPA3Q2Controller")
-@RequestMapping("/assignment/day_41/jpa3/q2/api/products")
-public class Q2Controller {
-    @Qualifier("btJPA3Q2ProductService")
+@RestController("btJPA3Q3Controller")
+@RequestMapping("/assignment/day_41/jpa3/q3/api/products")
+public class Q3Controller {
+    @Qualifier("btJPA3Q3ProductService")
     private final ProductService productService;
 
 
@@ -106,7 +107,7 @@ public class Q2Controller {
 
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse> searchProducts(
+    public ResponseEntity<ApiResponse> searchProduct(
         @Valid @ModelAttribute SearchProductReq req,
         @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
@@ -114,7 +115,7 @@ public class Q2Controller {
             ApiResponse.builder()
                 .code("200")
                 .status("success")
-                .data(productService.searchProducts(req.getName(), pageable))
+                .data(productService.searchProducts(req.getCategoryId(), pageable))
                 .build()
         );
     }

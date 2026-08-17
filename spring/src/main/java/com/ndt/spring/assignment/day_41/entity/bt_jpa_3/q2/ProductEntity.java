@@ -12,7 +12,7 @@ import lombok.*;
 @Setter
 @ToString
 @Table(name = "product")
-@Entity(name = "btJPA3Q1Product")
+@Entity(name = "btJPA3Q2Product")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

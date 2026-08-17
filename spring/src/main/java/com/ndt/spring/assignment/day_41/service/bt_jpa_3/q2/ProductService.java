@@ -40,15 +40,6 @@ public class ProductService {
     }
 
 
-    public List<ProductDTO> searchProducts(String name, Pageable pageable) {
-        Specification<ProductEntity> specs = Specification.where(ProductSpecs.hasNameContainingIgnoreCase(name));
-        return productRepo
-            .findAll(specs, pageable)
-            .map(ProductDTO::fromEntity)
-            .toList();
-    }
-
-
     public ProductDTO getById(Integer id) {
         return ProductDTO.fromEntity(
             productRepo
@@ -83,5 +74,14 @@ public class ProductService {
             .orElseThrow(() -> new Q2Exception(Q2ErrorMsg.NOT_FOUND, "Id " + id + " doesn't exist"));
         productRepo.delete(product);
         return ProductDTO.fromEntity(product);
+    }
+
+
+    public List<ProductDTO> searchProducts(String name, Pageable pageable) {
+        Specification<ProductEntity> specs = Specification.where(ProductSpecs.hasNameContainingIgnoreCase(name));
+        return productRepo
+            .findAll(specs, pageable)
+            .map(ProductDTO::fromEntity)
+            .toList();
     }
 }

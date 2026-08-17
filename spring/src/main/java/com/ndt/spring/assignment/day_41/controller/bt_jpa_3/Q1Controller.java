@@ -54,45 +54,45 @@ public class Q1Controller {
     }
 
 
-        @PostMapping("")
-        public ResponseEntity<ApiResponse> addStudent(
-            @Valid @RequestBody AddStudentReq req
-        ) {
-            return ResponseEntity.ok(
-                ApiResponse.builder()
-                    .code("200")
-                    .status("success")
-                    .data(studentService.save(req))
-                    .build()
-            );
-        }
+    @PostMapping("")
+    public ResponseEntity<ApiResponse> addStudent(
+        @Valid @RequestBody AddStudentReq req
+    ) {
+        return ResponseEntity.ok(
+            ApiResponse.builder()
+                .code("200")
+                .status("success")
+                .data(studentService.save(req))
+                .build()
+        );
+    }
 
 
-        @PutMapping("/{id}")
-        public ResponseEntity<ApiResponse> updateStudent(
-            @PathVariable @Positive Integer id,
-            @Valid @RequestBody UpdateStudentReq req
-        ) {
-            return ResponseEntity.ok(
-                ApiResponse.builder()
-                    .code("200")
-                    .status("success")
-                    .data(studentService.update(id, req))
-                    .build()
-            );
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse> updateStudent(
+        @PathVariable @Positive Integer id,
+        @Valid @RequestBody UpdateStudentReq req
+    ) {
+        return ResponseEntity.ok(
+            ApiResponse.builder()
+                .code("200")
+                .status("success")
+                .data(studentService.update(id, req))
+                .build()
+        );
+    }
 
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<ApiResponse> deleteStudent(@PathVariable @Positive Integer id) {
-            StudentDTO student = studentService.delete(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteStudent(@PathVariable @Positive Integer id) {
+        StudentDTO student = studentService.delete(id);
 
-            return ResponseEntity.ok(
-                ApiResponse.builder()
-                    .code("200")
-                    .status("Student with name " + student.getName() + " has been deleted")
-                    .data(student)
-                    .build()
-            );
-        }
+        return ResponseEntity.ok(
+            ApiResponse.builder()
+                .code("200")
+                .status("Student with name " + student.getName() + " has been deleted")
+                .data(student)
+                .build()
+        );
+    }
 }
