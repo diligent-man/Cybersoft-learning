@@ -31,7 +31,7 @@ public class Q7Controller {
     public ResponseEntity<ApiResponse> addUser(
         @Valid @RequestBody AddUserReq req
     ) {
-        UserEntity user = userService.addUser(req);
+        UserEntity user = userService.add(req);
 
         ApiResponse apiResponse = ApiResponse.builder()
             .code("200")

@@ -31,7 +31,7 @@ public class Q5CourseController {
             ApiResponse.builder()
                 .code("200")
                 .status("success")
-                .data(courseService.addCourse(req))
+                .data(courseService.add(req))
                 .build()
         );
     }

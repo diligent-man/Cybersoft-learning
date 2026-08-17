@@ -1,4 +1,4 @@
-package com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_1;
+package com.ndt.spring.assignment.day_41.payload.resp.bt_jpa_1.q1;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ import com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q1.StudentEntity;
 
 @Data
 @SuperBuilder
-public class Q1StudentsResp {
+public class StudentsResp {
     private final List<StudentEntity> students;
 }

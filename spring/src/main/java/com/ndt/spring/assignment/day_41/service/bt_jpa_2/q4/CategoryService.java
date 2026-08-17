@@ -3,9 +3,6 @@ package com.ndt.spring.assignment.day_41.service.bt_jpa_2.q4;
 import java.util.List;
 
 
-import com.ndt.spring.assignment.day_41.exception.bt_jpa_2.Q4ErrorMsg;
-import com.ndt.spring.assignment.day_41.exception.bt_jpa_2.Q4Exception;
-import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_2.q4.AddProductReq;
 import lombok.RequiredArgsConstructor;
 
 
@@ -36,12 +33,12 @@ public class CategoryService {
     private final ProductRepo productRepo;
 
 
-    public List<ProductEntity> getProductsByCategory(Integer id) {
+    public List<ProductEntity> getByCategory(Integer id) {
         return productRepo.findByCategoryId(id);
     }
 
 
-    public CategoryEntity addCategory(AddCategoryReq req) {
+    public CategoryEntity add(AddCategoryReq req) {
         if (categoryRepo.existsByName(req.getName())) {
             throw new GenericException(
                 GenericErrorMsg.CONFLICT,

@@ -21,7 +21,7 @@ public class CourseService {
     private final CourseRepo courseRepo;
 
 
-    public CourseDTO addCourse(AddCourseReq req) {
+    public CourseDTO add(AddCourseReq req) {
         if (courseRepo.existsByTitle((req.getTitle()))) {
             throw new Q5Exception(Q5ErrorMsg.COURSE_EXISTED);
         }

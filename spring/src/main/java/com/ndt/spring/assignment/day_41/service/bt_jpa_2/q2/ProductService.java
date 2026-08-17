@@ -46,7 +46,7 @@ public class ProductService {
     }
 
 
-    public ProductEntity updateProduct(Integer id, UpdateProductReq req) {
+    public ProductEntity update(Integer id, UpdateProductReq req) {
         ProductEntity product = getById(id);
 
         product.setName(req.getName());

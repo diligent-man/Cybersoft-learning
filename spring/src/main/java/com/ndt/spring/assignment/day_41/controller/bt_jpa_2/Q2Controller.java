@@ -80,7 +80,7 @@ public class Q2Controller {
             ApiResponse.builder()
                 .code("200")
                 .status("success")
-                .data(productService.updateProduct(id, req))
+                .data(productService.update(id, req))
                 .build()
         );
     }
@@ -93,7 +93,7 @@ public class Q2Controller {
         return ResponseEntity.ok(
             ApiResponse.builder()
                 .code("200")
-                .status("Product with name " + product.getName() + " 1has been deleted")
+                .status("Product with name " + product.getName() + " has been deleted")
                 .data(null)
                 .build()
         );

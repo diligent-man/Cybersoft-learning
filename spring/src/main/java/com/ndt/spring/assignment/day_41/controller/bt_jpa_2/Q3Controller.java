@@ -33,7 +33,7 @@ public class Q3Controller {
     public ResponseEntity<ApiResponse> searchBooks(
         @Valid @ModelAttribute SearchBookReq req
     ) {
-        BooksResp books = BooksResp.builder().books(bookService.searchBooks(
+        BooksResp books = BooksResp.builder().books(bookService.search(
             req.getAuthor(),
             req.getMinPrice(),
             req.getMaxPrice()

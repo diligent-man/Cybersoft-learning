@@ -29,7 +29,7 @@ public class ProductService {
     private final CategoryRepo categoryRepo;
 
 
-    public ProductEntity addProduct(Integer categoryId, AddProductReq req) {
+    public ProductEntity add(Integer categoryId, AddProductReq req) {
         CategoryEntity category = categoryRepo
             .findById(categoryId)
             .orElseThrow(() -> new Q4Exception(Q4ErrorMsg.CATEGORY_NOT_FOUND, String.format("Category [%s] not found with : ", categoryId)));

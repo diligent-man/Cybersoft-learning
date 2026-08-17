@@ -32,7 +32,7 @@ public class Q5StudentController {
             ApiResponse.builder()
                 .code("200")
                 .status("success")
-                .data(studentService.addStudent(req))
+                .data(studentService.add(req))
                 .build()
         );
     }

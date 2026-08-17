@@ -21,7 +21,7 @@ public class StudentService {
     private final StudentRepo studentRepo;
 
 
-    public StudentDTO addStudent(AddStudentReq req) {
+    public StudentDTO add(AddStudentReq req) {
         if (studentRepo.existsByName(req.getName())) {
             throw new Q5Exception(Q5ErrorMsg.STUDENT_EXISTED);
         }

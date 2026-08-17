@@ -43,7 +43,7 @@ public class Q4Controller {
         @Positive(message = "id must be a positive number")
         Integer id
     ) {
-        ProductsResp products = ProductsResp.builder().products(categoryService.getProductsByCategory(id)).build();
+        ProductsResp products = ProductsResp.builder().products(categoryService.getByCategory(id)).build();
 
         return ResponseEntity.ok(ApiResponse.builder()
             .code("200")
@@ -57,7 +57,7 @@ public class Q4Controller {
     public ResponseEntity<ApiResponse> addCategory(
         @Valid @RequestBody AddCategoryReq req
     ) {
-        CategoryEntity category = categoryService.addCategory(req);
+        CategoryEntity category = categoryService.add(req);
         return ResponseEntity.ok(
             ApiResponse.builder()
                 .code("200")
@@ -73,7 +73,7 @@ public class Q4Controller {
         @PathVariable @Positive Integer id,
         @Valid @RequestBody AddProductReq req
     ) {
-        ProductEntity product = productService.addProduct(id, req);
+        ProductEntity product = productService.add(id, req);
         return ResponseEntity.ok(
             ApiResponse.builder()
                 .code("200")

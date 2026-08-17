@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepo userRepo;
 
 
-    public UserEntity addUser(AddUserReq req) {
+    public UserEntity add(AddUserReq req) {
         if (userRepo.existsByEmail(req.getEmail())) {
             throw new Q7Exception(Q7ErrorMsg.USER_EXISTED);
         }

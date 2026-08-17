@@ -29,7 +29,7 @@ public class BookService {
     }
 
 
-    public List<BookEntity> searchBooks(String author, BigDecimal minPrice, BigDecimal maxPrice) {
+    public List<BookEntity> search(String author, BigDecimal minPrice, BigDecimal maxPrice) {
         Specification<BookEntity> spec = Specification
             .where(BookSpecs.hasAuthor(author))
             .and(BookSpecs.priceGreaterThanOrEqual(minPrice))
