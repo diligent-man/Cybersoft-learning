@@ -1,16 +1,17 @@
 package com.ndt.spring.assignment.day_41.service.bt_jpa_1.q2;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 
-import com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q2.CourseEntity;
 import com.ndt.spring.assignment.day_41.repo.bt_jpa_1.q2.CourseRepo;
+import com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q2.CourseEntity;
 
 
 @RequiredArgsConstructor
@@ -22,5 +23,9 @@ public class CourseService {
 
     public List<CourseEntity> getAll() {
         return userRepo.findAll();
+    }
+
+    public List<CourseEntity> search(BigDecimal durationGreaterThan) {
+        return userRepo.findByDurationGreaterThan(durationGreaterThan);
     }
 }

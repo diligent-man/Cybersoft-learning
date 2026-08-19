@@ -13,7 +13,7 @@ import com.ndt.spring.exception.ErrorMsg;
 @AllArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public enum Q2ErrorMsg implements ErrorMsg {
-    NOT_FOUND(HttpStatus.NOT_FOUND, "not found");
+    STUDENT_NOT_FOUND(HttpStatus.NOT_FOUND, "not found");
 
     private final HttpStatus httpStatus;
 
