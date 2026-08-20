@@ -1,7 +1,8 @@
 package com.ndt.spring.config.v2;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
 
 
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,12 @@ import org.jspecify.annotations.NonNull;
 import com.zaxxer.hikari.HikariDataSource;
 
 
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 
+import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.Bindable;
 
@@ -56,6 +59,9 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
             registerEmfBean(registry, emfBeanName, key, key, rawConfig);
             registerTxManagerBean(registry, tmBeanName, emfBeanName);
         });
+
+        // auto route bean for @Transactional of Spring
+        registerRoutingTransactionManager(registry, datasources.keySet());
     }
 
 
@@ -72,11 +78,9 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         DynamicDataSourceProperties.DbConfig config
     ) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(HikariDataSource.class);
-
         builder.addPropertyValue("jdbcUrl", config.getUrl());
         builder.addPropertyValue("username", config.getUsername());
         builder.addPropertyValue("password", config.getPassword());
-
         registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
     }
 
@@ -99,15 +103,32 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         JpaVendorAdapter vendorAdapter = HibernateVendorAdapterFactory.create(buildJpaProperties(config));
         builder.addPropertyValue("jpaVendorAdapter", vendorAdapter);
         // builder.addPropertyValue("jpaPropertyMap", buildJpaProperties(config));
-
         registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
     }
 
 
-    private void registerTxManagerBean(BeanDefinitionRegistry registry, String beanName, String emfBeanName) {
+    private void registerTxManagerBean(BeanDefinitionRegistry registry, String txBeanName, String emfBeanName) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(JpaTransactionManager.class);
         builder.addPropertyReference("entityManagerFactory", emfBeanName);
-        registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
+        registry.registerBeanDefinition(txBeanName, builder.getBeanDefinition());
+    }
+
+
+    private void registerRoutingTransactionManager(BeanDefinitionRegistry registry, Set<String> keys) {
+        BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(RoutingTransactionManager.class);
+
+        // ManagedMap để Spring tự resolve các reference lúc container khởi tạo
+        ManagedMap<String, RuntimeBeanReference> managerRefs = new ManagedMap<>();
+
+        for (String key : keys) {
+            String txBeanName = key + "TransactionManager";
+            managerRefs.put(txBeanName, new RuntimeBeanReference(txBeanName));
+        }
+
+        builder.addConstructorArgValue(managerRefs);
+
+        // đặt tên "transactionManager" => Spring sẽ dùng bean này làm mặc định cho @Transactional không tham số
+        registry.registerBeanDefinition("txManager", builder.getBeanDefinition());
     }
 
 
@@ -133,6 +154,8 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         // customize this mapping to fit your actual package layout
         return "com.ndt.spring.assignment.day_41.entity." + stringBuilder;
     }
+
+
     private Map<String, String> normalizeJpaKeys(Map<String, String> raw) {
         Map<String, String> normalized = new HashMap<>();
         raw.forEach((rawKey, value) -> {
@@ -144,6 +167,7 @@ public class DynamicJpaBeanRegister implements BeanDefinitionRegistryPostProcess
         });
         return normalized;
     }
+
 
     @Override
     public void postProcessBeanFactory(org.springframework.beans.factory.config.@NonNull ConfigurableListableBeanFactory beanFactory) {

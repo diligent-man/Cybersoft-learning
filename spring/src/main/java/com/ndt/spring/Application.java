@@ -2,6 +2,10 @@ package com.ndt.spring;
 
 import org.springframework.boot.SpringApplication;
 
+import org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -19,7 +23,10 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @SpringBootApplication(
     exclude = {
+        // HibernateJpaAutoConfiguration.class,
         // DataSourceAutoConfiguration.class,
+        // DataSourceTransactionManagerAutoConfiguration.class,
+        // DataJpaRepositoriesAutoConfiguration.class
     }
 )
 @ComponentScan(

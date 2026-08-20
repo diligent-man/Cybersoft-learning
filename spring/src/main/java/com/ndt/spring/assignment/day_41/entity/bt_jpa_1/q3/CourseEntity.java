@@ -1,8 +1,10 @@
-package com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q2;
+package com.ndt.spring.assignment.day_41.entity.bt_jpa_1.q3;
 
+import java.util.List;
 import java.math.BigDecimal;
 
 import jakarta.persistence.*;
+
 
 import lombok.*;
 
@@ -11,7 +13,7 @@ import lombok.*;
 @Setter
 @ToString
 @Table(name = "course")
-@Entity(name = "btJPA1Q2Course")
+@Entity(name = "btJPA1Q3Course")
 public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +22,10 @@ public class CourseEntity {
     @Column(length = 200, nullable = false)
     private String title;
 
-    @Column(nullable = false, comment = "thời lượng khóa học, tính theo giờ")
+    @Column(nullable = false)
     private BigDecimal duration;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "course")
+    private List<RegistrationEntity> registrations;
 }
