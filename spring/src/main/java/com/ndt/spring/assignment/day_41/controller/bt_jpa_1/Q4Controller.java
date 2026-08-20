@@ -1,6 +1,6 @@
 package com.ndt.spring.assignment.day_41.controller.bt_jpa_1;
 
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
 
 import lombok.RequiredArgsConstructor;
@@ -12,19 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 
-import com.ndt.spring.assignment.day_41.dto.bt_jpa_1.q3.*;
-
 import com.ndt.spring.payload.resp.ApiResponse;
-
-import com.ndt.spring.assignment.day_41.service.bt_jpa_1.q3.RegistrationService;
-import com.ndt.spring.assignment.day_41.payload.req.bt_jpa_1.q3.RegisterCourseReq;
+import com.ndt.spring.assignment.day_41.service.bt_jpa_1.q4.RegistrationService;
 
 
 @RequiredArgsConstructor
-@RestController("btJPA1Q3Controller")
-@RequestMapping("/assignment/day_41/jpa1/q3/api")
-public class Q3Controller {
-    @Qualifier("btJPA1Q3RegistrationService")
+@RestController("btJPA1Q4Controller")
+@RequestMapping("/assignment/day_41/jpa1/q4/api")
+public class Q4Controller {
+    @Qualifier("btJPA1Q4RegistrationService")
     private final RegistrationService registrationService;
 
 
@@ -41,17 +37,33 @@ public class Q3Controller {
     }
 
 
-    @PostMapping("/students/{studentId}/courses")
+    @PostMapping("/students/{studentId}/courses/{courseId}")
     public ResponseEntity<ApiResponse> registerCourses(
-        @PathVariable Integer studentId,
-        @Valid @RequestBody RegisterCourseReq request
+        @Positive @PathVariable Integer studentId,
+        @Positive @PathVariable Integer courseId
     ) {
         return ResponseEntity.ok(
             ApiResponse
                 .builder()
                 .code("200")
                 .status("success")
-                .data(registrationService.registerCourses(studentId, request))
+                .data(registrationService.enrollCourse(studentId, courseId))
+                .build()
+        );
+    }
+
+
+    @DeleteMapping("/students/{studentId}/courses/{courseId}")
+    public ResponseEntity<ApiResponse> withrawCourse(
+        @Positive @PathVariable Integer studentId,
+        @Positive @PathVariable Integer courseId
+    ) {
+        return ResponseEntity.ok(
+            ApiResponse
+                .builder()
+                .code("200")
+                .status("success")
+                .data(registrationService.unenrollCourse(studentId, courseId))
                 .build()
         );
     }

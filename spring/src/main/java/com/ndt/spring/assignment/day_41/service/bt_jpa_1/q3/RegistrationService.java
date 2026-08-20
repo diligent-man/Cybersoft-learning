@@ -25,18 +25,18 @@ import com.ndt.spring.assignment.day_41.exception.bt_jpa_1.Q3Exception;
 @RequiredArgsConstructor
 public class RegistrationService {
     @Qualifier("btJPA1Q3StudentRepo")
-    private final StudentRepository studentRepository;
+    private final StudentRepo studentRepo;
 
     @Qualifier("btJPA1Q3CourseRepo")
-    private final CourseRepository courseRepository;
+    private final CourseRepo courseRepo;
 
     @Qualifier("btJPA1Q3RegistrationRepo")
-    private final RegistrationRepository registrationRepository;
+    private final RegistrationRepo registrationRepo;
 
 
     @Transactional(value = "bt-jpa1-q3TransactionManager")
     public List<RegistrationDTO> registerCourses(Integer studentId, RegisterCourseReq req) {
-        StudentEntity student = studentRepository
+        StudentEntity student = studentRepo
             .findById(studentId)
             .orElseThrow(() -> new Q3Exception(Q3ErrorMsg.STUDENT_NOT_FOUND, "Không tìm thấy sinh viên id=" + studentId));
 
@@ -44,11 +44,11 @@ public class RegistrationService {
             .getCourseIds()
             .stream()
             .distinct()
-            .filter(courseId -> registrationRepository
+            .filter(courseId -> registrationRepo
                 .findByStudent_IdAndCourse_Id(studentId, courseId).isEmpty()
             )
             .map(courseId -> {
-                CourseEntity course = courseRepository
+                CourseEntity course = courseRepo
                     .findById(courseId)
                     .orElseThrow(() -> new Q3Exception(Q3ErrorMsg.COURSE_NOT_FOUND, "Không tìm thấy khóa học id=" + courseId));
 
@@ -59,7 +59,7 @@ public class RegistrationService {
             })
             .collect(Collectors.toList());
 
-        List<RegistrationEntity> saved = registrationRepository.saveAll(newRegistrations);
+        List<RegistrationEntity> saved = registrationRepo.saveAll(newRegistrations);
         return saved
             .stream()
             .map(this::toRegistrationDTO)
@@ -68,10 +68,10 @@ public class RegistrationService {
 
 
     public List<CourseDTO> getCoursesByStudent(Integer studentId) {
-        if (!studentRepository.existsById(studentId)) {
+        if (!studentRepo.existsById(studentId)) {
             throw new Q3Exception(Q3ErrorMsg.STUDENT_NOT_FOUND, "Không tìm thấy sinh viên id=" + studentId);
         }
-        return registrationRepository
+        return registrationRepo
             .findByStudent_Id(studentId)
             .stream()
             .map(RegistrationEntity::getCourse)
@@ -81,10 +81,10 @@ public class RegistrationService {
 
 
     public List<StudentDTO> getStudentsByCourse(Integer courseId) {
-        if (!courseRepository.existsById(courseId)) {
+        if (!courseRepo.existsById(courseId)) {
             throw new Q3Exception(Q3ErrorMsg.COURSE_NOT_FOUND, "Không tìm thấy khóa học id=" + courseId);
         }
-        return registrationRepository
+        return registrationRepo
             .findByCourse_Id(courseId)
             .stream()
             .map(RegistrationEntity::getStudent)
