@@ -31,3 +31,4 @@ replay_pid*
 /.idea
 
 capstone_project/**
+CRM_project/**
