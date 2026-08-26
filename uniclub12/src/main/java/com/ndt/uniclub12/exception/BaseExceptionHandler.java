@@ -13,10 +13,10 @@ import com.ndt.spring.payload.resp.exception.ApiErrorResponse;
 public interface BaseExceptionHandler {
     default <T extends ApiErrResp> T createErrorMsgDTO(
         ErrorMsg errorMsg,
-        BiFunction<String, String, T> factory
+        BiFunction<Integer, String, T> factory
     ) {
         return factory.apply(
-            String.valueOf(errorMsg.getHttpStatus().value()),
+            errorMsg.getHttpStatus().value(),
             errorMsg.getErrorMsg()
         );
     }
@@ -25,10 +25,10 @@ public interface BaseExceptionHandler {
     default <T extends ApiErrResp> T createErrorMsgDTO(
         ErrorMsg errorMsg,
         String overrideMsg,
-        BiFunction<String, String, T> factory
+        BiFunction<Integer, String, T> factory
     ) {
         return factory.apply(
-            String.valueOf(errorMsg.getHttpStatus().value()),
+            errorMsg.getHttpStatus().value(),
             overrideMsg != null ? overrideMsg : errorMsg.getErrorMsg()
         );
     }

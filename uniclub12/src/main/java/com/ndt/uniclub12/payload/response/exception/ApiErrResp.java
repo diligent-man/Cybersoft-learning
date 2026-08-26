@@ -2,7 +2,7 @@ package com.ndt.spring.payload.resp.exception;
 
 
 public interface ApiErrResp {
-    String code();
+    Integer code();
 
 
     String status();
