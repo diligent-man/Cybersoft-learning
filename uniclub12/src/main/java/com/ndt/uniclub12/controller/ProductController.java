@@ -1,6 +1,5 @@
 package com.ndt.uniclub12.controller;
 
-import com.ndt.uniclub12.entity.ProductEntity;
 import jakarta.validation.Valid;
 
 
@@ -42,25 +41,6 @@ public class ProductController {
     public ResponseEntity<ApiResponse> insertProduct(
         @Valid @ModelAttribute InsertProductRequest insertProductRequest
     ) {
-        // int code = 200;
-        // String message = "";
-        // try {
-        //     productService.insertProduct(file);
-        //
-        //     message = "Uploaded the file successfully: " + file.getOriginalFilename();
-        //     return ResponseEntity.ok(
-        //         UploadFileResponse.builder()
-        //             .code(code)
-        //             .message(message)
-        //             .build()
-        //     );
-        // } catch (Exception e) {
-        //     code = 417;
-        //     message = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
-        //     return ResponseEntity
-        //         .status(HttpStatus.EXPECTATION_FAILED)
-        //         .body(UploadFileResponse.builder().code(code).message(message));
-        // }
         return ResponseEntity.ok(
             ApiResponse
                 .builder()

@@ -1,8 +1,8 @@
 package com.ndt.uniclub12.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+
+
 import org.springframework.http.HttpStatus;
 
 
@@ -10,12 +10,13 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public enum FileErrorMsg implements ErrorMsg {
-    LOGIN_SUCCESS(HttpStatus.OK, "Login success"),
-    LOGIN_FAIL(HttpStatus.BAD_REQUEST, "Login fail");
+    FILE_EXISTED(HttpStatus.CONFLICT, "A file of that name already exists."),
+    FILE_UPLOADED(HttpStatus.OK, "Upload successfully."),
+    FILE_UPLOAD_FAILED(HttpStatus.EXPECTATION_FAILED, "Upload failed."),
+    ;
 
     private final HttpStatus httpStatus;
 
     @ToString.Include
     private final String errorMsg;
-
 }

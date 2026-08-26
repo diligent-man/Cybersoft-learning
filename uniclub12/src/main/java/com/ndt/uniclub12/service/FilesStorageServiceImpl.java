@@ -4,13 +4,11 @@ import java.nio.file.*;
 
 import java.io.IOException;
 
-import java.net.MalformedURLException;
-
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import java.net.MalformedURLException;
 
-import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -18,9 +16,11 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 
-import com.ndt.uniclub12.exception.SaveFileException;
+import com.ndt.uniclub12.exception.FileErrorMsg;
+import com.ndt.uniclub12.exception.FileException;
 
 
 @Service
@@ -49,7 +49,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             );
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
-                throw new SaveFileException("A file of that name already exists.");
+                throw new FileException(FileErrorMsg.FILE_EXISTED);
             }
 
             throw new RuntimeException(e.getMessage());
@@ -76,16 +76,21 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 
     @Override
     public void deleteAll() {
-        FileSystemUtils.deleteRecursively(root.toFile());
+        try (Stream<Path> children = Files.list(root)) {
+            children.forEach(child -> FileSystemUtils.deleteRecursively(child.toFile()));
+        } catch (IOException e) {
+            throw new RuntimeException("FileStorageService Error: " + e.getMessage());
+        }
     }
 
 
     @Override
     public Stream<Path> loadAll() {
-        try {
-            return Files.walk(root, 1)
-                .filter(path -> !path.equals(this.root))
-                .map(root::relativize);
+        try (Stream<Path> walk = Files.walk(root, 1)) {
+            return walk.filter(path -> !path.equals(this.root))
+                .map(root::relativize)
+                .toList()
+                .stream();
         } catch (IOException e) {
             throw new RuntimeException("Could not load the files!");
         }

@@ -3,10 +3,8 @@ package com.ndt.uniclub12.model;
 import lombok.*;
 
 
-@Setter
-@Getter
-@ToString
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class FileInfo {
     private String name;
 

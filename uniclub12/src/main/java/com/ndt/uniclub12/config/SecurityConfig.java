@@ -37,8 +37,13 @@ public class SecurityConfig {
             .addFilterBefore(authenFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(
                 rq -> {
-                    rq.requestMatchers("/api/jwt/*").permitAll();
-                    rq.requestMatchers(HttpMethod.GET, "/product", "/file/*").permitAll();
+                    rq.requestMatchers(
+                        "/api/jwt/*",
+                        "/files", "/files/*"
+                    ).permitAll();
+
+                    rq.requestMatchers(HttpMethod.GET, "/product").permitAll();
+
                     rq.requestMatchers(HttpMethod.POST, "/product").hasRole("ADMIN");
                     rq.requestMatchers(HttpMethod.POST, "/auth/*").permitAll();
 
