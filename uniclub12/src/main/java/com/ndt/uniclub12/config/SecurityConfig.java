@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.http.HttpMethod;
 
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -32,7 +33,7 @@ public class SecurityConfig {
     ) {
         return http
             .csrf(CsrfConfigurer::disable)
-            .cors(CorsConfigurer::disable)
+            .cors(Customizer.withDefaults())
             .sessionManagement(AbstractHttpConfigurer::disable)
             .addFilterBefore(authenFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(
@@ -65,7 +66,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5500"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3979"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(false); // Only if you're using cookies/session auth

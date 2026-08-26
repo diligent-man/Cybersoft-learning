@@ -1,14 +1,15 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-        $.ajax({
-            method: "GET",
-            url: "http://localhost:8080/product"
-        })
-        .done(function( result ) {
+    $.ajax({
+        method: "GET",
+        url: "http://localhost:8080/product"
+    })
+        .done(function (result) {
+            console.log(result);
 
             var html = ''
-            
-            for(i=0; i<result.data.length; i++){
+
+            for (i = 0; i < result.data.length; i++) {
                 var item = result.data[i]
 
                 html += `<div class="col-md-6 col-lg-3 my-4">
@@ -40,5 +41,8 @@ $(document).ready(function(){
             }
 
             $('#container-products').append(html)
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("Request failed:", textStatus, errorThrown, jqXHR.responseText);
         });
 })

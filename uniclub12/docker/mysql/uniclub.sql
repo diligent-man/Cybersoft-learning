@@ -318,3 +318,19 @@ VALUES ('Red'),
 INSERT INTO brand(name)
 VALUES ('Gucci'),
        ('Adidas');
+
+INSERT INTO product(name, description, information, price, id_brand)
+VALUES ('Áo sơ mi tay ngắn', 'Mô tả áo sơ mi tay ngắn', 'Thông tin áo sơ mi tay ngắn', 1e5, 1),
+       ('Áo sơ mi tay dài', 'Mô tả áo sơ mi tay dài', 'Thông tin áo sơ mi tay dài', 1.1e5, 2),
+       ('Áo thun tay ngắn', 'Mô tả áo thun tay ngắn', 'Thông tin áo thun tay ngắn', 1.2e5, 1),
+       ('Áo thun tay dài', 'Mô tả áo thun tay dài', 'Thông tin áo thun tay dài', 1.3e5, 2);
+
+INSERT INTO variant(id_product, id_color, id_size, images, quantity, price)
+VALUES (1, 1, 1, 'item1.jpg', 1, 1e5),
+       (1, 1, 1, 'item1.jpg', 1, 1e5),
+       (2, 2, 2, 'item1.jpg', 1, 1.1e5),
+       (2, 2, 2, 'item1.jpg', 1, 1.1e5),
+       (3, 3, 3, 'item1.jpg', 1, 1.2e5),
+       (3, 3, 3, 'item1.jpg', 1, 1.2e5),
+       (4, 1, 4, 'item1.jpg', 1, 1.3e5),
+       (4, 1, 4, 'item1.jpg', 1, 1.3e5);
