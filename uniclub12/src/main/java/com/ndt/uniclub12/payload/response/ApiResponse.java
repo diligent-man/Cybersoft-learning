@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class ApiResponse {
-    protected Integer code;
+    protected String code;
 
     protected String message;
 

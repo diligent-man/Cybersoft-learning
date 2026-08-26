@@ -1,11 +1,10 @@
-package com.ndt.spring.exception;
-
-import java.util.Arrays;
-
+package com.ndt.uniclub12.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.web.ErrorResponse;
+
+import java.util.Arrays;
 
 
 public interface ErrorMsg {

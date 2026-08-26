@@ -1,5 +1,4 @@
-package com.ndt.spring.payload.resp.exception;
+package com.ndt.uniclub12.payload.response.exception;
 
 
-public record ApiErrorResponse(Integer code, String status) implements ApiErrResp {
-}
+public record ApiErrorResponse(String code, String status) implements ApiErrResp { }

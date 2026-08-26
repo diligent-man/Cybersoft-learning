@@ -1,8 +1,8 @@
-package com.ndt.spring.exception;
+package com.ndt.uniclub12.exception;
 
-import lombok.*;
-
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 

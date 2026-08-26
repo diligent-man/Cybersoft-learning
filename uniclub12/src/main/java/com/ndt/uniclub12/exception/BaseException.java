@@ -1,4 +1,4 @@
-package com.ndt.spring.exception;
+package com.ndt.uniclub12.exception;
 
 import lombok.Getter;
 

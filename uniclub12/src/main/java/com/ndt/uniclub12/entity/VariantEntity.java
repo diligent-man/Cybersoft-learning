@@ -18,7 +18,7 @@ public class VariantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer sku;
 
-    private String image;
+    private String images;
 
     private Integer quantity;
 

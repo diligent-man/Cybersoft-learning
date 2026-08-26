@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
         variant.setProduct(insertedProduct);
         variant.setPrice(req.getPrice());
         variant.setQuantity(req.getQuantity());
-        variant.setImage(req.getFile().getOriginalFilename());
+        variant.setImages(req.getFile().getOriginalFilename());
 
         variantRepo.save(variant);
     }

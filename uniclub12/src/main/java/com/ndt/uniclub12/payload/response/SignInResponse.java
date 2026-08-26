@@ -5,5 +5,5 @@ import lombok.experimental.SuperBuilder;
 
 
 @SuperBuilder
-public class SignInResponse extends BaseResponse {
+public class SignInResponse extends ApiResponse {
 }

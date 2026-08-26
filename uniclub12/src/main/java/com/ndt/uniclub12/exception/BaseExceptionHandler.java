@@ -1,4 +1,4 @@
-package com.ndt.spring.exception;
+package com.ndt.uniclub12.exception;
 
 import java.util.function.BiFunction;
 
@@ -6,17 +6,17 @@ import java.util.function.BiFunction;
 import org.springframework.http.ResponseEntity;
 
 
-import com.ndt.spring.payload.resp.exception.ApiErrResp;
-import com.ndt.spring.payload.resp.exception.ApiErrorResponse;
+import com.ndt.uniclub12.payload.response.exception.ApiErrResp;
+import com.ndt.uniclub12.payload.response.exception.ApiErrorResponse;
 
 
 public interface BaseExceptionHandler {
     default <T extends ApiErrResp> T createErrorMsgDTO(
         ErrorMsg errorMsg,
-        BiFunction<Integer, String, T> factory
+        BiFunction<String, String, T> factory
     ) {
         return factory.apply(
-            errorMsg.getHttpStatus().value(),
+            String.valueOf(errorMsg.getHttpStatus().value()),
             errorMsg.getErrorMsg()
         );
     }
@@ -25,10 +25,10 @@ public interface BaseExceptionHandler {
     default <T extends ApiErrResp> T createErrorMsgDTO(
         ErrorMsg errorMsg,
         String overrideMsg,
-        BiFunction<Integer, String, T> factory
+        BiFunction<String, String, T> factory
     ) {
         return factory.apply(
-            errorMsg.getHttpStatus().value(),
+            String.valueOf(errorMsg.getHttpStatus().value()),
             overrideMsg != null ? overrideMsg : errorMsg.getErrorMsg()
         );
     }

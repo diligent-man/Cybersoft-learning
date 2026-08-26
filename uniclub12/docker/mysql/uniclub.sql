@@ -94,7 +94,7 @@ CREATE TABLE wishlist
 CREATE TABLE user
 (
     id        int auto_increment,
-    email     varchar(50),
+    email     varchar(50) NOT NULL,
     password  varchar(255),
     full_name varchar(255),
 
@@ -141,7 +141,7 @@ CREATE TABLE product
     name        varchar(255),
     description text,
     information text,
-    price       double,
+    price       decimal(38, 2),
     id_brand    int,
     create_date timestamp default now(),
 

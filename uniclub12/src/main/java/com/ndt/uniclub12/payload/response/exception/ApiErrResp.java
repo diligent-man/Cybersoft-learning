@@ -1,8 +1,8 @@
-package com.ndt.spring.payload.resp.exception;
+package com.ndt.uniclub12.payload.response.exception;
 
 
 public interface ApiErrResp {
-    Integer code();
+    String code();
 
 
     String status();

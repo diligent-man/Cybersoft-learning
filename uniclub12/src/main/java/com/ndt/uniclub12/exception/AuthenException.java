@@ -1,13 +1,13 @@
 package com.ndt.uniclub12.exception;
 
 
-public final class GenericException extends BaseException {
-    public GenericException(GenericErrorMsg errorMsg) {
+public final class AuthenException extends BaseException {
+    public AuthenException(AuthenErrorMsg errorMsg) {
         super(errorMsg, null);
     }
 
 
-    public GenericException(GenericErrorMsg errorMsg, String overrideMsg) {
+    public AuthenException(AuthenErrorMsg errorMsg, String overrideMsg) {
         super(errorMsg, overrideMsg);
     }
 }

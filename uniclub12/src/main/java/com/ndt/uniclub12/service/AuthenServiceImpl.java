@@ -1,8 +1,7 @@
 package com.ndt.uniclub12.service;
 
-import java.util.Optional;
-
-
+import com.ndt.uniclub12.exception.AuthenErrorMsg;
+import com.ndt.uniclub12.exception.AuthenException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -29,14 +28,13 @@ public class AuthenServiceImpl implements AuthenService {
     @Override
     public String doLogin(SignInRequest request) {
         String token = null;
-        Optional<UserEntity> opUser = userRepo.findByEmail(request.getEmail());
 
-        if (opUser.isPresent()) {
-            UserEntity user = opUser.get();
+        UserEntity user = userRepo.findByEmail(request.getEmail()).orElseThrow(
+            () -> new AuthenException(AuthenErrorMsg.LOGIN_FAIL)
+        );
 
-            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-                token = jwtUtils.generateJWTToken(user.getRole().getName());
-            }
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            token = jwtUtils.generateJWTToken(user.getRole().getName());
         }
 
         return token;

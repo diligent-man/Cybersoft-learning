@@ -4,6 +4,6 @@ import lombok.experimental.SuperBuilder;
 
 
 @SuperBuilder
-public class UploadFileResponse extends BaseResponse {
+public class UploadFileResponse extends ApiResponse {
 
 }

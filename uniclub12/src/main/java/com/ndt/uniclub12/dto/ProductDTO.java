@@ -36,7 +36,7 @@ public class ProductDTO {
 
         List<VariantEntity> variants = entity.getVariants();
         if (!variants.isEmpty()) {
-            obj.setImage(variants.getFirst().getImage());
+            obj.setImage(variants.getFirst().getImages());
         }
         return obj;
     }

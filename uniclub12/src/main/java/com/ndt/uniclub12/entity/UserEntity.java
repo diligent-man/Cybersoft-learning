@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "user")
 public class UserEntity {
     @Id
