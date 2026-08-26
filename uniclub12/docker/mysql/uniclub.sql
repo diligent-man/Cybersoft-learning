@@ -138,13 +138,12 @@ CREATE TABLE post
 CREATE TABLE product
 (
     id          int auto_increment,
-    name        varchar(255),
+    name        varchar(255) UNICODE UNIQUE,
     description text,
     information text,
     price       decimal(38, 2),
     id_brand    int,
     create_date timestamp default now(),
-
     primary key (id)
 );
 

@@ -13,10 +13,10 @@ import com.ndt.uniclub12.utils.JwtUtils;
 @RestController
 @RequestMapping("/api/jwt")
 public class JwtController {
-    @GetMapping("/get-token")
-    public ResponseEntity<Map<String, String>> generateJwtToken() {
+    @GetMapping("/gen-key")
+    public ResponseEntity<Map<String, String>> generateJwtKey() {
         return ResponseEntity.ok(
-            Map.of("jwt_token", JwtUtils.generateJWTKey())
+            Map.of("key", JwtUtils.generateJWTKey())
         );
     }
 }

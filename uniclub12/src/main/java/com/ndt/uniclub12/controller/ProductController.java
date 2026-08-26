@@ -1,7 +1,9 @@
 package com.ndt.uniclub12.controller;
 
+import com.ndt.uniclub12.entity.ProductEntity;
+import jakarta.validation.Valid;
 
-import com.ndt.uniclub12.payload.request.InsertProductRequest;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ndt.uniclub12.service.ProductService;
 
+import com.ndt.uniclub12.payload.response.ApiResponse;
+import com.ndt.uniclub12.payload.request.InsertProductRequest;
+
 
 @RestController
 @RequestMapping("/product")
@@ -21,14 +26,21 @@ public class ProductController {
 
 
     @GetMapping
-    public ResponseEntity<?> getProduct() {
-        return ResponseEntity.ok("Get product");
+    public ResponseEntity<ApiResponse> getProduct() {
+        return ResponseEntity.ok(
+            ApiResponse
+                .builder()
+                .code("200")
+                .message("success")
+                .data(productService.getProducts())
+                .build()
+        );
     }
 
 
     @PostMapping
-    public ResponseEntity<?> addProduct(
-        InsertProductRequest insertProductRequest
+    public ResponseEntity<ApiResponse> insertProduct(
+        @Valid @ModelAttribute InsertProductRequest insertProductRequest
     ) {
         // int code = 200;
         // String message = "";
@@ -49,7 +61,13 @@ public class ProductController {
         //         .status(HttpStatus.EXPECTATION_FAILED)
         //         .body(UploadFileResponse.builder().code(code).message(message));
         // }
-        productService.insertProduct(insertProductRequest);
-        return ResponseEntity.ok("Add product");
+        return ResponseEntity.ok(
+            ApiResponse
+                .builder()
+                .code("200")
+                .message("success")
+                .data(productService.insertProduct(insertProductRequest))
+                .build()
+        );
     }
 }

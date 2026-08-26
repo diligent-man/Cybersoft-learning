@@ -43,7 +43,6 @@ public class AuthenFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-
             String data = jwtUtils.decodeJWTToken(token);
 
             if (data != null) {

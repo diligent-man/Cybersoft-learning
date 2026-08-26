@@ -1,13 +1,15 @@
 package com.ndt.uniclub12.service;
 
-import com.ndt.uniclub12.dto.ProductDTO;
-import com.ndt.uniclub12.payload.request.InsertProductRequest;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 
+import com.ndt.uniclub12.dto.ProductDTO;
+import com.ndt.uniclub12.payload.request.InsertProductRequest;
+
+
 public interface ProductService {
-    void insertProduct(InsertProductRequest req);
+    ProductDTO insertProduct(InsertProductRequest req);
+
+
     List<ProductDTO> getProducts();
 }
