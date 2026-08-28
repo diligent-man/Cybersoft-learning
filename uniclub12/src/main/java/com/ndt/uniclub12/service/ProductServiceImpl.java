@@ -1,5 +1,6 @@
 package com.ndt.uniclub12.service;
 
+import java.time.Duration;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -8,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +25,8 @@ import com.ndt.uniclub12.repo.ProductRepo;
 import com.ndt.uniclub12.repo.VariantRepo;
 
 import com.ndt.uniclub12.payload.request.InsertProductRequest;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 
 @Service
@@ -31,16 +36,53 @@ public class ProductServiceImpl implements ProductService {
 
     private final VariantRepo variantRepo;
 
+    private final ObjectMapper objectMapper;
+
     private final FilesStorageService filesStorageService;
+
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private static final String PRODUCT_CACHE_KEY = "product:all";
+
+
+    // @Cacheable("product")
+    // @Override
+    // public List<ProductDTO> getProducts() {
+    //     return productRepo
+    //         .findAll()
+    //         .stream()
+    //         .map(ProductDTO::fromEntity)
+    //         .toList();
+    // }
 
 
     @Override
     public List<ProductDTO> getProducts() {
-        return productRepo
-            .findAll()
-            .stream()
-            .map(ProductDTO::fromEntity)
-            .toList();
+        try {
+            // 1. Đọc cache
+            String cache = redisTemplate.opsForValue().get(PRODUCT_CACHE_KEY);
+
+            if (cache != null && !cache.isBlank()) {
+                System.out.println("Load Product From Redis");
+                return objectMapper.readValue(cache, new TypeReference<>() {
+                });
+            }
+
+            // 2. Không có cache -> Query DB
+            List<ProductDTO> products = productRepo.findAll()
+                .stream()
+                .map(ProductDTO::fromEntity)
+                .toList();
+
+            // 3. Lưu cache 10 phút
+            redisTemplate.opsForValue().set(
+                PRODUCT_CACHE_KEY,
+                objectMapper.writeValueAsString(products),
+                Duration.ofMinutes(10));
+            return products;
+        } catch (Exception e) {
+            throw new RuntimeException("Redis Cache Error", e);
+        }
     }
 
 

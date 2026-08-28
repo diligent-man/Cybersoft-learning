@@ -92,6 +92,58 @@ services:
                     cpus: "2"
                     memory: 2048M
 
+    redis:
+        image: redis:8.8.1-alpine
+        container_name: uniclub_redis
+        environment:
+            REDIS_PORT: ${REDIS_PORT}
+        ports:
+            - "${REDIS_PORT}:${REDIS_PORT}"
+        command:
+            - redis-server
+            - --appendonly
+            - "yes"
+            - --requirepass
+            - ${REDIS_PASSWORD}
+        networks:
+            - mysql
+            - redis
+        restart: on-failure
+#        volumes:
+#            - redis:/data
+        deploy:
+            mode: global
+
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+
+            resources:
+                limits:
+                    cpus: "2"
+                    memory: 2048M
+                reservations:
+                    cpus: "2"
+                    memory: 2048M
+
+    redisinsight:
+        image: redis/redisinsight:3.8
+        container_name: uniclub_redisinsight
+        environment:
+            REDIS_UI_PORT: ${REDIS_UI_PORT}
+        ports:
+            - "${REDIS_UI_PORT}:${REDIS_UI_PORT}"
+        restart: on-failure
+        volumes:
+            - redisinsight:/data
+        networks:
+            - redis
+volumes:
+    redisinsight:
 networks:
     mysql:
+        driver: bridge
+    redis:
         driver: bridge
