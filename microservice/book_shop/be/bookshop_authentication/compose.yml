@@ -1,0 +1,312 @@
+name: java_bc12_capstone
+services:
+    # refer to fe source for building its docker image
+    fe:
+        image: java_bc12_capstone/fe:1.0.0
+        container_name: java_bc12_capstone_fe
+        ports:
+            - "${FE_PORT}:3979"
+        environment:
+            VITE_API_URL: ${VITE_API_URL}
+        restart: on-failure
+        healthcheck:
+            test: [
+                "CMD",
+                "node",
+                "-e",
+                "require('http').get('http://127.0.0.1:3979/', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
+            ]
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 10s
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    be:
+        image: java_bc12_capstone/be:${APP_VERSION}
+        container_name: java_bc12_capstone_be
+        ports:
+            - "${APPLICATION_PORT}:8080"
+        env_file:
+            - .env.prod
+        volumes:
+            - ./data:/app/data
+        networks:
+            - mysql
+        depends_on:
+            mysql:
+                condition: service_healthy
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    mysql:
+        image: java_bc12_capstone/mysql:1.0.0
+        container_name: java_bc12_capstone_mysql
+        environment:
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        networks:
+            - mysql
+        ports:
+            - "${MYSQL_PORT}:3306"
+        volumes:
+            - mysql:/var/lib/mysql
+        restart: on-failure
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 30s
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    redis:
+        image: redis:8.8.1-alpine
+        container_name: java_bc12_capstone_redis
+        environment:
+            REDIS_PORT: ${REDIS_PORT}
+        networks:
+            - mysql
+            - redis
+        ports:
+            - "${REDIS_PORT}:${REDIS_PORT}"
+        command:
+            - redis-server
+            - --appendonly
+            - "yes"
+            - --requirepass
+            - ${REDIS_PASSWORD}
+        restart: on-failure
+        volumes:
+            - redis:/data
+        healthcheck:
+            test: [
+                "CMD-SHELL",
+                "redis-cli -a ${REDIS_PASSWORD} --no-auth-warning ping | grep -q PONG || exit 1"
+            ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    redisinsight:
+        image: redis/redisinsight:3.8
+        container_name: java_bc12_capstone_redisinsight
+        ports:
+            - "${REDIS_UI_PORT}:5540"
+        restart: on-failure
+        volumes:
+            - redisinsight:/data
+        networks:
+            - redis
+        healthcheck:
+            test: [
+                "CMD-SHELL",
+                "wget --no-verbose --tries=1 --spider http://127.0.0.1:5540/api/health || exit 1"
+            ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    kafka0:
+        # https://docs.confluent.io/platform/current/installation/versions-interoperability.html#cp-and-apache-ak-compatibility
+        # Kafka v4.3.x
+        image: confluentinc/cp-kafka:8.3.1
+        hostname: kafka0
+        container_name: java_bc12_capstone_kafka0
+        environment:
+            KAFKA_KRAFT_MODE: "true"
+            KAFKA_NODE_ID: 1
+            CLUSTER_ID: "Mk30EYBSD34fcwNTJENDM2Qk"
+
+            KAFKA_PROCESS_ROLES: controller,broker
+            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka0:${KAFKA0_CONTROLLER_PORT}"
+
+            KAFKA_INTER_BROKER_LISTENER_NAME: BROKER
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: BROKER:PLAINTEXT,CONTROLLER:PLAINTEXT,CLIENT:PLAINTEXT
+
+            KAFKA_ADVERTISED_LISTENERS: BROKER://kafka0:${KAFKA0_BROKER_PORT},CLIENT://localhost:${KAFKA0_CLIENT_PORT}
+            KAFKA_LISTENERS: BROKER://0.0.0.0:${KAFKA0_BROKER_PORT},CONTROLLER://0.0.0.0:${KAFKA0_CONTROLLER_PORT},CLIENT://0.0.0.0:${KAFKA0_CLIENT_PORT}
+
+            KAFKA_LOG_RETENTION_HOURS: 168
+            KAFKA_LOG_DIRS: ${KAFKA_LOG_DIRS}
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+            KAFKA_MESSAGE_MAX_BYTES: 10485760
+            KAFKA_REPLICA_FETCH_MAX_BYTES: 10485760
+
+            KAFKA_HEAP_OPTS: "-Xmx2G -Xms2G"
+            KAFKA_OPTS: -javaagent:/usr/share/jmx_exporter/jmx_prometheus_javaagent.jar=${KAFKA_CLUSTERS_0_METRICS_PORT}:/usr/share/jmx_exporter/kafka_broker.yml
+        volumes:
+            - kafka0:${KAFKA_LOG_DIRS}
+            - ${KAFKA_JMX_EXPORTER_PATH}:/usr/share/jmx_exporter/
+        networks:
+            - kafka
+        ports:
+            - "${KAFKA0_BROKER_PORT}:9092"
+            - "${KAFKA0_CONTROLLER_PORT}:9093"
+            - "${KAFKA0_CLIENT_PORT}:9094"
+        healthcheck:
+            test: [
+                "CMD-SHELL",
+                "KAFKA_OPTS= kafka-broker-api-versions --bootstrap-server localhost:${KAFKA0_BROKER_PORT} || exit 1"
+            ]
+            interval: 10s
+            timeout: 10s
+            retries: 10
+            start_period: 10s
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+    kafka-ui:
+        image: provectuslabs/kafka-ui:v0.7.2
+        container_name: java_bc12_capstone_kafka_ui
+        ports:
+            - "${KAFKA_UI_PORT}:8080"
+        environment:
+            AUTH_TYPE: "LOGIN_FORM"
+            SERVER_SERVLET_CONTEXT_PATH: /
+            KAFKA_UI_PORT: ${KAFKA_UI_PORT}
+            SPRING_SECURITY_USER_NAME: ${KAFKA_UI_USER}
+            SPRING_SECURITY_USER_PASSWORD: ${KAFKA_UI_PASSWORD}
+
+            DYNAMIC_CONFIG_ENABLED: 'true'
+
+            KAFKA_CLUSTERS_0_NAME: ${KAFKA_CLUSTERS_0_NAME}
+            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: ${KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS}
+        networks:
+            - kafka
+        depends_on:
+            - kafka0
+        healthcheck:
+            test: [
+                "CMD-SHELL",
+                "wget --no-verbose --tries=1 --spider 'http://${KAFKA_UI_USER}:${KAFKA_UI_PASSWORD}@localhost:8080/actuator/health' || exit 1"
+            ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        deploy:
+            mode: global
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                window: 120s
+                max_attempts: 3
+            resources:
+                limits:
+                    cpus: "4"
+                    memory: 4096M
+                reservations:
+                    cpus: "4"
+                    memory: 2048M
+
+volumes:
+    mysql:
+        driver: local
+        labels:
+            com.ndt.capstone.description: "Backend Database"
+    redis:
+        driver: local
+        labels:
+            com.ndt.capstone.description: "Redis Cache Database"
+    redisinsight:
+        driver: local
+        labels:
+            com.ndt.capstone.description: "Redis Cache Database"
+    kafka0:
+        driver: local
+        labels:
+            com.ndt.capstone.description: "Kafka Cache Database"
+
+networks:
+    mysql:
+        driver: bridge
+    kafka:
+        driver: bridge
+    redis:
+        driver: bridge
