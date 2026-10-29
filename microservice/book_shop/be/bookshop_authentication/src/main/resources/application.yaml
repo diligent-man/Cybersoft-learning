@@ -1,0 +1,17 @@
+spring:
+    application:
+        name: bookshop_authentication
+    datasource:
+        hikari:
+            jdbc-url: jdbc:mysql://localhost:3307/bookstore
+            username: sa
+            password: Root123!
+            maximum-pool-size: 10
+            minimum-idle: 5
+            idle-timeout: 30000
+            connection-timeout: 30000
+            max-lifetime: 60000
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: validate
