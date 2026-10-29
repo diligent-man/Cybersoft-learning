@@ -1,11 +1,16 @@
 spring:
     application:
         name: bookshop_authentication
+
+    config:
+        import: "optional:file:.env[.properties]"
+
     datasource:
+        url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+        username: ${MYSQL_USER}
+        password: ${MYSQL_PASSWORD}
+
         hikari:
-            jdbc-url: jdbc:mysql://localhost:3307/bookstore
-            username: sa
-            password: Root123!
             maximum-pool-size: 10
             minimum-idle: 5
             idle-timeout: 30000
@@ -15,3 +20,6 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: validate
+
+jwt:
+    secret: ${JWT_SIGN}

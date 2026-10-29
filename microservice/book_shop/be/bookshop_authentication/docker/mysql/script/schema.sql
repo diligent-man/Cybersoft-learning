@@ -1,13 +1,13 @@
 CREATE DATABASE bookstore;
 
-DELETE TABLE IF EXISTS users;
-
 USE bookstore;
+
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users(
     id VARCHAR(36) PRIMARY KEY,
     email VARCHAR(255),
     password TEXT,
-    create_date DATETIME DEFAULT CURRENT_TIMESTAMP(),
-    update_date DATETIME
-)
+    created_date DATETIME DEFAULT CURRENT_TIMESTAMP(),
+    updated_date DATETIME
+);

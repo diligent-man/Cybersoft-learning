@@ -1,4 +1,13 @@
 package com.ndt.bookshop_authentication.exception;
 
-public class DataNotFound {
+import lombok.AllArgsConstructor;
+
+
+@AllArgsConstructor
+public class DataNotFound extends RuntimeException {
+    private String message;
+
+    public DataNotFound(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
