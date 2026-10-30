@@ -24,7 +24,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public String signIn(AuthReq authReq) {
         Users user = userRepo

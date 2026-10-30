@@ -1,0 +1,4 @@
+Log content:
+    1/ Request body
+    2/ Response body
+    3/ Exception
