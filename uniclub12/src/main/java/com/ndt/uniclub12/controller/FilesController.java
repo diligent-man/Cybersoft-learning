@@ -81,7 +81,7 @@ public class FilesController {
                     .toString();
 
                 return new FileInfo(filename, url);
-            }).collect(Collectors.toList());
+            }).toList();
         return ResponseEntity.ok(
             ApiResponse.builder()
                 .code("200")

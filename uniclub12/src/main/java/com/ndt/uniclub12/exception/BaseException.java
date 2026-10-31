@@ -10,12 +10,12 @@ public abstract class BaseException extends RuntimeException {
     protected final String overrideMsg;
 
 
-    public <T extends ErrorMsg> BaseException(T errorMsg) {
+    protected  <T extends ErrorMsg> BaseException(T errorMsg) {
         this(errorMsg, null);
     }
 
 
-    public <T extends ErrorMsg> BaseException(T errorMsg, String overrideMsg) {
+    protected  <T extends ErrorMsg> BaseException(T errorMsg, String overrideMsg) {
         this.errorMsg = errorMsg;
         this.overrideMsg = overrideMsg;
     }

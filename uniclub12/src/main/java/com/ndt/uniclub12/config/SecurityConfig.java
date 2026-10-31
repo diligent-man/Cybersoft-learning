@@ -42,6 +42,7 @@ public class SecurityConfig {
                         "/api/jwt/*",
                         "/files", "/files/*"
                     ).permitAll();
+                    rq.requestMatchers("/api/**").permitAll();
 
                     rq.requestMatchers(HttpMethod.GET, "/product").permitAll();
 

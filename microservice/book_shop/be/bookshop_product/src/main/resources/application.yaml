@@ -1,0 +1,25 @@
+
+spring:
+    application:
+        name: product-service
+
+    config:
+        import: "optional:file:.env[.properties]"
+
+    datasource:
+        url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+        username: ${MYSQL_USER}
+        password: ${MYSQL_PASSWORD}
+
+        hikari:
+            maximum-pool-size: 10
+            minimum-idle: 5
+            idle-timeout: 30000
+            connection-timeout: 30000
+            max-lifetime: 60000
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: validate
+server:
+    port: 8081

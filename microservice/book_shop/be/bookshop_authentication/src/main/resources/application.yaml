@@ -1,6 +1,6 @@
 spring:
     application:
-        name: bookshop_authentication
+        name: authentication-service
 
     config:
         import: "optional:file:.env[.properties]"
